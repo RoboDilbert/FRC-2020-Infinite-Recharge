@@ -1,4 +1,4 @@
-package frc.robot.util.sensors; 
+package frc.robot.subsystems.sensors; 
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
