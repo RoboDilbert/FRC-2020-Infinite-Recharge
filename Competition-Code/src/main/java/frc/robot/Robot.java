@@ -19,7 +19,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SPI;
 
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.*;
+import frc.robot.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,6 +47,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     Drive.init();
+    TeleopControl.init();
   }
 
   @Override
@@ -77,7 +79,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-  
+    TeleopControl.run();
   }
 
   /**

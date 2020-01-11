@@ -14,7 +14,7 @@ public class TeleopControl{
     private static Joystick driver;
     private static Joystick coDriver;
 
-    double roboGyro;
+    private static double roboGyro;
 
     // public double yValue;
     // public double xValue;
@@ -23,16 +23,20 @@ public class TeleopControl{
     // public float rightPower;
     // public double roboGyro; 
     
-    public void init(){
+    public static void init(){
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         //add usb camera
     }
     
-    public void run(){
+    public static void run(){
 
         Gyro.updateGyroAngle(roboGyro);
-        Drive.run(driver.getX(), driver.getY(), driver.getZ(), roboGyro);
+        Drive.run(driver.getX(), driver.getY(), driver.getZ()/3, roboGyro);
+
+        if(driver.getRawButton(3)){
+            Gyro.resetGyro();
+        }
         // yValue = m_leftStick.getY();
         // xValue = m_leftStick.getX();
         // zValue = m_leftStick.getZ();
