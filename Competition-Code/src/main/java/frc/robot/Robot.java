@@ -34,28 +34,6 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  AHRS ahrs;
-  private MecanumDrive m_myRobot;
-  private Joystick m_leftStick;
-  private CANSparkMax m_leftFrontMotor;
-  private CANSparkMax m_leftBackMotor;
-  private CANSparkMax m_rightFrontMotor;
-  private CANSparkMax m_rightBackMotor;
-  private static final int leftFrontDeviceID = 1; 
-  private static final int leftBackDeviceID = 3;
-  private static final int rightFrontDeviceID = 5;
-  private static final int rightBackDeviceID = 2;
-  private CANEncoder m_leftBackEncoder;
-  private CANEncoder m_leftFrontEncoder;                                                                                 
-  private CANEncoder m_rightBackEncoder;
-  private CANEncoder m_rightFrontEncoder;
-  public double yValue;
-  public double xValue;
-  public double zValue;
-  public float leftPower;
-  public float rightPower;
-  public double roboGyro; 
-
 
   /**
    * This function is run when the robot is first started up and should be

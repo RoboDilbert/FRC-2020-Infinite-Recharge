@@ -2,12 +2,19 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import frc.robot.subsystems.*;
+import frc.robot.util.*;
+import frc.robot.util.sensors.*;
 
 public class TeleopControl{
 
+
     // AHRS ahrs;
     
-    // private Joystick m_leftStick;
+    private static Joystick driver;
+    private static Joystick coDriver;
+
+    double roboGyro;
 
     // public double yValue;
     // public double xValue;
@@ -17,11 +24,15 @@ public class TeleopControl{
     // public double roboGyro; 
     
     public void init(){
-
+        driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
+        coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
+        //add usb camera
     }
     
     public void run(){
 
+        Gyro.updateGyroAngle(roboGyro);
+        Drive.run(driver.getX(), driver.getY(), driver.getZ(), roboGyro);
         // yValue = m_leftStick.getY();
         // xValue = m_leftStick.getX();
         // zValue = m_leftStick.getZ();

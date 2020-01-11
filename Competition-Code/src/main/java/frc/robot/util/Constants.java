@@ -9,4 +9,6 @@ public class Constants{
     public static final int turretDeviceID = 6;
     public static final int kServoID = 7;
     public static double turretPower = 0.0;
+    public static int DRIVER_CONTROLLER_ID = 0;
+    public static int CODRIVER_CONTROLLER_ID = 1;
 }
