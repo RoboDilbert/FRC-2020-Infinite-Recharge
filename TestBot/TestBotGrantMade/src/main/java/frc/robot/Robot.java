@@ -7,19 +7,9 @@
 
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.SPI;
-
-import frc.robot.subsystems.Drive;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,29 +24,6 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  AHRS ahrs;
-  private MecanumDrive m_myRobot;
-  private Joystick m_leftStick;
-  private CANSparkMax m_leftFrontMotor;
-  private CANSparkMax m_leftBackMotor;
-  private CANSparkMax m_rightFrontMotor;
-  private CANSparkMax m_rightBackMotor;
-  private static final int leftFrontDeviceID = 1; 
-  private static final int leftBackDeviceID = 3;
-  private static final int rightFrontDeviceID = 5;
-  private static final int rightBackDeviceID = 2;
-  private CANEncoder m_leftBackEncoder;
-  private CANEncoder m_leftFrontEncoder;                                                                                 
-  private CANEncoder m_rightBackEncoder;
-  private CANEncoder m_rightFrontEncoder;
-  public double yValue;
-  public double xValue;
-  public double zValue;
-  public float leftPower;
-  public float rightPower;
-  public double roboGyro; 
-
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -66,14 +33,31 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-    Drive.init();
   }
 
+  /**
+   * This function is called every robot packet, no matter the mode. Use
+   * this for items like diagnostics that you want ran during disabled,
+   * autonomous, teleoperated and test.
+   *
+   * <p>This runs after the mode specific periodic functions, but before
+   * LiveWindow and SmartDashboard integrated updating.
+   */
   @Override
   public void robotPeriodic() {
   }
 
+  /**
+   * This autonomous (along with the chooser code above) shows how to select
+   * between different autonomous modes using the dashboard. The sendable
+   * chooser code works with the Java SmartDashboard. If you prefer the
+   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+   * getString line to get the auto name from the text box below the Gyro
+   *
+   * <p>You can add additional auto modes by adding additional comparisons to
+   * the switch structure below with additional strings. If using the
+   * SendableChooser make sure to add them to the chooser code above as well.
+   */
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
@@ -81,6 +65,9 @@ public class Robot extends TimedRobot {
     System.out.println("Auto selected: " + m_autoSelected);
   }
 
+  /**
+   * This function is called periodically during autonomous.
+   */
   @Override
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
@@ -99,7 +86,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-  
   }
 
   /**

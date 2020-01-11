@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 public class TeleopControl{
 
     // AHRS ahrs;
-    // private MecanumDrive m_myRobot;
+    
     // private Joystick m_leftStick;
 
     // public double yValue;
