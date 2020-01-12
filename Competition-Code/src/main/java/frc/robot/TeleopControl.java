@@ -33,13 +33,18 @@ public class TeleopControl{
 
         Constants.roboGyro = Gyro.updateGyroAngle();
         Gyro.getGyroValues();
-        Drive.run(driver.getX()/Constants.movementRestriction, driver.getY()/Constants.movementRestriction, driver.getZ()/3, Constants.roboGyro);
 
         if(driver.getRawButton(3)){
             Gyro.resetGyro();
         }
         if(driver.getRawButton(1)){
             Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ()/3, Constants.roboGyro);
+        }
+       else if(driver.getRawButton(2)){
+            Drive.driveWithoutTurn(driver.getX()/Constants.movementRestriction, driver.getY()/Constants.movementRestriction, Constants.roboGyro);
+        }
+        else{
+            Drive.run(driver.getX()/Constants.movementRestriction, driver.getY()/Constants.movementRestriction, driver.getZ()/3, Constants.roboGyro);
         }
     }
 }

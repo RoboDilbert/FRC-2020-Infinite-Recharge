@@ -57,6 +57,9 @@ public class Drive{
             my_Robot.driveCartesian(0, 0, 0, 0);
         }
     }
+    public static void driveWithoutTurn(double stickX, double stickY, double roboGyro){
+        Drive.run(stickX, stickY, 0, roboGyro);
+    }
 
     public static void getSpeed(){
         SmartDashboard.getNumber("LeftFrontSpeed", m_leftFrontEncoder.getVelocity());
