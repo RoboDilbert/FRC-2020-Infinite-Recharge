@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.Constants;
+import frc.robot.util.sensors.*;
 
 public class Drive{
 
@@ -29,7 +30,32 @@ public class Drive{
     }
 
     public static void run(double stickX, double stickY, double stickZ, double roboGyro){
+        double xDeadband = .05;
+        double yDeadband = .05;
+        double zDeadband = .05;
+        if(stickX < xDeadband){
+            stickX = 0;
+        }
+        if(stickY < yDeadband){
+            stickY = 0;
+        }
+        if(stickZ < zDeadband){
+            stickZ = 0;
+        }
         my_Robot.driveCartesian(stickX, -stickY, stickZ, -roboGyro);
+    }
+
+    public static void lineUpShot(double stickX, double stickY, double stickZ, double roboGyro){
+        double x = Limelight.tx.getDouble(0.0);
+        if(x > 0){
+            my_Robot.driveCartesian(-(Math.pow((0.0025 * x), 2)), stickY, 0, -roboGyro);
+        }
+        else if(x < 0){
+            my_Robot.driveCartesian((Math.pow((0.0025 * x), 2)), stickY, 0, -roboGyro);
+        }
+        else{
+            my_Robot.driveCartesian(0, 0, 0, 0);
+        }
     }
 
     public static void getSpeed(){
