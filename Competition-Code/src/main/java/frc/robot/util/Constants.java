@@ -8,6 +8,7 @@ public class Constants{
     public static final int rightFrontDeviceID = 5;
     public static final int rightBackDeviceID = 2;
     public static final int kServoID = 7;
+    public static final int movementRestriction = 2;
     //turret
     public static final int turretDeviceID = 6;
     public static double turretPower = 0.0;

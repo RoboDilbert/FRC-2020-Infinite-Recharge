@@ -30,16 +30,16 @@ public class Drive{
     }
 
     public static void run(double stickX, double stickY, double stickZ, double roboGyro){
-        double xDeadband = .05;
-        double yDeadband = .05;
-        double zDeadband = .05;
-        if(stickX < xDeadband){
+        double xDeadband = .1;
+        double yDeadband = .1;
+        double zDeadband = .1;
+        if(Math.abs(stickX) < xDeadband){
             stickX = 0;
         }
-        if(stickY < yDeadband){
+        if(Math.abs(stickY) < yDeadband){
             stickY = 0;
         }
-        if(stickZ < zDeadband){
+        if(Math.abs(stickZ) < zDeadband){
             stickZ = 0;
         }
         my_Robot.driveCartesian(stickX, -stickY, stickZ, -roboGyro);

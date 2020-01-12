@@ -25,14 +25,15 @@ public class TeleopControl{
     
     public static void init(){
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
-        coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
+        //coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         //add usb camera
     }
     
     public static void run(){
 
-        Gyro.updateGyroAngle(Constants.roboGyro);
-        Drive.run(driver.getX(), driver.getY(), driver.getZ()/3, Constants.roboGyro);
+        Constants.roboGyro = Gyro.updateGyroAngle();
+        Gyro.getGyroValues();
+        Drive.run(driver.getX()/Constants.movementRestriction, driver.getY()/Constants.movementRestriction, driver.getZ()/3, Constants.roboGyro);
 
         if(driver.getRawButton(3)){
             Gyro.resetGyro();

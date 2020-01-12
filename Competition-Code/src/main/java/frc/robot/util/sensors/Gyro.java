@@ -9,8 +9,8 @@ public class Gyro{
 
     static AHRS ahrs = new AHRS(SPI.Port.kMXP);
     
-    public static void updateGyroAngle(double gyroVar){
-        gyroVar = ahrs.getAngle();
+    public static double updateGyroAngle() {
+        return ahrs.getAngle();
     }
 
     public static void getGyroValues(){
