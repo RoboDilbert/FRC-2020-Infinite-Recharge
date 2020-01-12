@@ -14,7 +14,7 @@ public class TeleopControl{
     private static Joystick driver;
     private static Joystick coDriver;
 
-    private static double roboGyro;
+    
 
     // public double yValue;
     // public double xValue;
@@ -31,14 +31,14 @@ public class TeleopControl{
     
     public static void run(){
 
-        Gyro.updateGyroAngle(roboGyro);
-        Drive.run(driver.getX(), driver.getY(), driver.getZ()/3, roboGyro);
+        Gyro.updateGyroAngle(Constants.roboGyro);
+        Drive.run(driver.getX(), driver.getY(), driver.getZ()/3, Constants.roboGyro);
 
         if(driver.getRawButton(3)){
             Gyro.resetGyro();
         }
         if(driver.getRawButton(1)){
-            Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ()/3, roboGyro);
+            Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ()/3, Constants.roboGyro);
         }
     }
 }

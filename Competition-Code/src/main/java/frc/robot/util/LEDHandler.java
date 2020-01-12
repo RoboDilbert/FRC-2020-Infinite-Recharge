@@ -1,10 +1,10 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.I2C;
+import frc.robot.util.Constants;
 
 public class LEDHandler{
 
-    private int Arduino_Address = 0;
     private static I2C Response;
 
     private enum LEDStatus{
@@ -40,27 +40,27 @@ public class LEDHandler{
     }
 
     public void ALT_BLUE_YELLOW(){
-        Response.write(Arduino_Address, LEDStatus.ALT_BLUE_YELLOW.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.ALT_BLUE_YELLOW.getLEDStatus());
     }
     public void BLUE(){
-        Response.write(Arduino_Address, LEDStatus.BLUE.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.BLUE.getLEDStatus());
     }
     public void GREEN(){
-        Response.write(Arduino_Address, LEDStatus.GREEN.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.GREEN.getLEDStatus());
     }
     public void YELLOW(){
-        Response.write(Arduino_Address, LEDStatus.YELLOW.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.YELLOW.getLEDStatus());
     }
     public void RED(){
-        Response.write(Arduino_Address, LEDStatus.RED.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.RED.getLEDStatus());
     }
     public void SCROLLING_RAINBOW(){
-        Response.write(Arduino_Address, LEDStatus.SCROLLING_RAINBOW.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.SCROLLING_RAINBOW.getLEDStatus());
     }
     public void FWD_SCROLL_BLUE_YELLOW(){
-        Response.write(Arduino_Address, LEDStatus.FWD_SCROLL_BLUE_YELLOW.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.FWD_SCROLL_BLUE_YELLOW.getLEDStatus());
     }
     public void RVS_SCROLL_BLUE_YELLOW(){
-        Response.write(Arduino_Address, LEDStatus.RVS_SCROLL_BLUE_YELLOW.getLEDStatus());
+        Response.write(Constants.Arduino_Address, LEDStatus.RVS_SCROLL_BLUE_YELLOW.getLEDStatus());
     }
 }
