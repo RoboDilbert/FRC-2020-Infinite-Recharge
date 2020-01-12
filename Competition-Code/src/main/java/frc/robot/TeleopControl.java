@@ -38,7 +38,7 @@ public class TeleopControl{
             Gyro.resetGyro();
         }
         if(driver.getRawButton(1)){
-            Limelight.lineUpShot();
+            Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ()/3, roboGyro);
         }
     }
 }
