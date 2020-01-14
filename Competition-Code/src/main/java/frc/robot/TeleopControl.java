@@ -14,7 +14,7 @@ public class TeleopControl{
     private static Joystick driver;
     private static Joystick coDriver;
 
-    
+    private static RevColor colorSensor;
 
     // public double yValue;
     // public double xValue;
@@ -27,13 +27,16 @@ public class TeleopControl{
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         //coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         //add usb camera
+        colorSensor = new RevColor();
     }
     
     public static void run(){
 
+
+        // Driving Program w/ Gyro -----------------------------------------------------------------------
+
         Constants.roboGyro = Gyro.updateGyroAngle();
         Gyro.getGyroValues();
-
         if(driver.getRawButton(3)){
             Gyro.resetGyro();
         }
@@ -46,5 +49,9 @@ public class TeleopControl{
         else{
             Drive.run(driver.getX()/Constants.movementRestriction, driver.getY()/Constants.movementRestriction, driver.getZ()/3, Constants.roboGyro);
         }
+
+        //-------------------------------------------------------------------------------------------------------------------
+
+        colorSensor.displayColor();
     }
 }

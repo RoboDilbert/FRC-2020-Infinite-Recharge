@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.I2C;
+
 public class Constants{
 
     // Drive
@@ -29,4 +31,10 @@ public class Constants{
     public static int Arduino_Address = 0;
     // Gyro
     public static double roboGyro;
+
+    //I2C Port
+    public static I2C.Port i2cPort;
+
+    public static double colorVar;
+   
 }
