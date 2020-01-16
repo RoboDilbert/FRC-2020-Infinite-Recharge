@@ -36,6 +36,9 @@ public class Constants{
     public static double colorVar;
     //TOF Sensor
     public static int INDEX_SENSOR_CAN_ID = 17;
+    //Game Data Color
+    public static String gameData;
+
 
 
    
