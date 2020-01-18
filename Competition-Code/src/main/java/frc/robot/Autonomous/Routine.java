@@ -1,6 +1,7 @@
-package frc.robot;
+package frc.robot.Autonomous;
 
-public class Autonomous{
+
+public class Routine{
 
     public void init(){
 
