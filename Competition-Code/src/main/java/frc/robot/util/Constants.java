@@ -16,8 +16,8 @@ public class Constants{
     public static double turretPower = 0.0;
     // GamePad
     public static final int kGamepadButtonA = 1;
-    public static int DRIVER_CONTROLLER_ID = 0;
-    public static int CODRIVER_CONTROLLER_ID = 1;
+    public static int DRIVER_CONTROLLER_ID = 1;
+    public static int CODRIVER_CONTROLLER_ID = 0;
     // Pneumatics
     public static int UTILITIES_COMPRESSOR_PORT = 0;
 	public static final boolean COMPRESSOR_ON = true;

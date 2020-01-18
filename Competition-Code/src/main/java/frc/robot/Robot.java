@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.subsystems.*;
+import frc.robot.util.sensors.Limelight;
 import frc.robot.*;
 
 /**
@@ -36,10 +37,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    //SmartDashboard.putData("Auto choices", m_chooser);
 
     Drive.init();
     TeleopControl.init();
+    Limelight.initUSBCamera();
   }
 
   @Override
@@ -70,7 +72,7 @@ public class Robot extends TimedRobot {
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
+  public  void teleopPeriodic() {
     TeleopControl.run();
   }
 

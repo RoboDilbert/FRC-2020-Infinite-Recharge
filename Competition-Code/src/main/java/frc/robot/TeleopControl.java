@@ -11,7 +11,7 @@ public class TeleopControl{
 
     // AHRS ahrs;
     
-    private static Joystick driver;
+    public static Joystick driver;
     private static Joystick coDriver;
 
     private static RevColor colorSensor;
