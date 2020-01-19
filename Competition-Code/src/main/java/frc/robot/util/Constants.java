@@ -35,7 +35,13 @@ public class Constants{
     public static I2C.Port i2cPort;
     public static double colorVar;
     //TOF Sensor
-    public static int INDEX_SENSOR_CAN_ID = 17;
+    public static int LEFT_PP_ID = 17;
+    public static int RIGHT_PP_ID = 18;
+    public static double rightPPDistance = 0;
+    public static double leftPPDistance = 0;
+    public static double averagePPLength = 0;
+    public static boolean isSeeing;
+    public static boolean inPosition = false;
     //Game Data Color
     public static String gameData;
 

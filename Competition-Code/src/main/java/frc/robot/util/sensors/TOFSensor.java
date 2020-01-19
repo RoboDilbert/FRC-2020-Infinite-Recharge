@@ -8,25 +8,53 @@ import frc.robot.util.Constants;
 
 public class TOFSensor{
 
-    TimeOfFlight indexSensor = new TimeOfFlight(Constants.INDEX_SENSOR_CAN_ID);
+    public TimeOfFlight leftPP = new TimeOfFlight(Constants.LEFT_PP_ID);
+    public TimeOfFlight rightPP = new TimeOfFlight(Constants.RIGHT_PP_ID);
 
-    public double getDistance(TimeOfFlight sensor){
-        return sensor.getRange();
+    public void getPPLength(double left, double right, double average){
+         right = rightPP.getRange();
+         left = leftPP.getRange();
+         average = (right + left)/2;
+    }
+    
+
+    public void lockedOn(boolean sight){
+        if(rightPP.isRangeValid() && leftPP.isRangeValid()){
+            sight = true;
+        }
+        else{
+            sight = false;
+        }
     }
 
-    public boolean lockedOn(TimeOfFlight sensor){
-        return sensor.isRangeValid();
-    }
-
-    public void setRangeMode(TimeOfFlight sensor, String mode){
+    public void setPPRangeMode(String mode){
         if(mode.equals("Long")){
-            sensor.setRangingMode(RangingMode.Long, 100);
+            leftPP.setRangingMode(RangingMode.Long, 100);
+            rightPP.setRangingMode(RangingMode.Long, 100);
         }
         else if(mode.equals("Medium")){
-            sensor.setRangingMode(RangingMode.Medium, 100);
+            leftPP.setRangingMode(RangingMode.Medium, 100);
+            rightPP.setRangingMode(RangingMode.Medium, 100);
         }
         else if(mode.equals("short")){
-            sensor.setRangingMode(RangingMode.Short, 100);
+            leftPP.setRangingMode(RangingMode.Short, 100);
+            rightPP.setRangingMode(RangingMode.Short, 100);
         }
+    }
+    public void arePPEqual(boolean output){
+        if(leftPP.getRange() > 28 && leftPP.getRange() < 32 && rightPP.getRange() < 32 && rightPP.getRange() > 28){
+            output = true;
+        }
+        else{
+            output = false;
+        }
+    }
+    public void outputTOFData(){
+      double test =  rightPP.getRange();
+      double test2 = leftPP.getRange();
+        SmartDashboard.putNumber("LeftPP", test2);
+        SmartDashboard.putNumber("RightPP", test);
+        System.out.println(test);
+        SmartDashboard.updateValues();
     }
 }
