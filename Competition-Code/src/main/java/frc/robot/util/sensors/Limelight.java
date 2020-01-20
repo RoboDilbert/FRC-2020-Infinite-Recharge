@@ -39,7 +39,7 @@ public class Limelight{
 
         drive.setFPS(30);
         drive.setVideoMode(videoMode);
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(1);
     }
 
     //Methods to access information
