@@ -7,12 +7,16 @@
 
 package frc.robot;
 
+import com.playingwithfusion.TimeOfFlight;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.subsystems.*;
-import frc.robot.*;
+import frc.robot.util.sensors.*;
+import frc.robot.Autonomous.*;
+//import frc.robot.Autonomous.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,19 +31,21 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto", kCustomAuto);
+    //SmartDashboard.putData("Auto choices", m_chooser);
+    System.out.println("alkwdfjlkasdjf");
 
     Drive.init();
     TeleopControl.init();
+    Limelight.initUSBCamera();
   }
 
   @Override
@@ -48,30 +54,40 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // m_autoSelected = "kCustomAuto";//m_chooser.getSelected();
+    //                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    // System.out.println("Auto selected: " + m_autoSelected);
+    
+   
   }
 
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    Routine.run();
+    
+    // switch (m_autoSelected) {
+    //   case kCustomAuto:
+    //     // Put custom auto code herea
+    //     //break;
+    //   case kDefaultAuto:
+        
+    //   default:
+    //     // Put default auto code here
+    //     startCompetition();
+    //     SmartDashboard.putString("POOOOOOOOOOO","POOOOOOOOOOOOOOOOOOOO");
+    //     Routine.run();
+    //     break;
+    // }
   }
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
+  public  void teleopPeriodic() {
     TeleopControl.run();
+    //TOFSensor.outputTOFData();
+    //SmartDashboard.putNumber("x", Routine.cameraX);
   }
 
   /**

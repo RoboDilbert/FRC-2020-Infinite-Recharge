@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +23,10 @@ public class Drive{
     
     public static void init(){
         my_Robot = new MecanumDrive(m_leftFrontMotor, m_leftBackMotor, m_rightFrontMotor, m_rightBackMotor);
+        m_leftFrontMotor.setIdleMode(IdleMode.kBrake);
+        m_leftBackMotor.setIdleMode(IdleMode.kBrake);
+        m_rightFrontMotor.setIdleMode(IdleMode.kBrake);
+        m_rightBackMotor.setIdleMode(IdleMode.kBrake);
         m_leftFrontEncoder = m_leftFrontMotor.getEncoder();
         m_leftBackEncoder = m_leftBackMotor.getEncoder();
         m_rightFrontEncoder = m_rightFrontMotor.getEncoder();

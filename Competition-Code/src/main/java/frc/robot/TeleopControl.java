@@ -5,16 +5,17 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.subsystems.*;
 import frc.robot.util.*;
 import frc.robot.util.sensors.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TeleopControl{
 
 
     // AHRS ahrs;
     
-    private static Joystick driver;
+    public static Joystick driver;
     private static Joystick coDriver;
 
-    private static RevColor colorSensor;
+   // private static RevColor colorSensor;
 
     // public double yValue;
     // public double xValue;
@@ -27,7 +28,7 @@ public class TeleopControl{
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         //coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         //add usb camera
-        colorSensor = new RevColor();
+        //colorSensor = new RevColor();
     }
     
     public static void run(){
@@ -52,6 +53,7 @@ public class TeleopControl{
 
         //-------------------------------------------------------------------------------------------------------------------
 
-        colorSensor.displayColor();
+        //colorSensor.displayColor();
+        SmartDashboard.updateValues();
     }
 }

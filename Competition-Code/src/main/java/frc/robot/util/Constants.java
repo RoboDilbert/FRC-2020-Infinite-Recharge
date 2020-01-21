@@ -16,8 +16,8 @@ public class Constants{
     public static double turretPower = 0.0;
     // GamePad
     public static final int kGamepadButtonA = 1;
-    public static int DRIVER_CONTROLLER_ID = 0;
-    public static int CODRIVER_CONTROLLER_ID = 1;
+    public static int DRIVER_CONTROLLER_ID = 1;
+    public static int CODRIVER_CONTROLLER_ID = 0;
     // Pneumatics
     public static int UTILITIES_COMPRESSOR_PORT = 0;
 	public static final boolean COMPRESSOR_ON = true;
@@ -34,7 +34,16 @@ public class Constants{
     //I2C Port
     public static double colorVar;
     //TOF Sensor
-    public static int INDEX_SENSOR_CAN_ID = 17;
+    public static int LEFT_PP_ID = 17;
+    public static int RIGHT_PP_ID = 18;
+    public static double rightPPDistance = 0;
+    public static double leftPPDistance = 0;
+    public static double averagePPLength = 0;
+    public static boolean isSeeing;
+    public static boolean inPosition = false;
+    //Game Data Color
+    public static String gameData;
+
 
 
    
