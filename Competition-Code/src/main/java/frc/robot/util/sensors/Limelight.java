@@ -10,14 +10,14 @@ import frc.robot.subsystems.*;
 
 public class Limelight{
     
-    NetworkTable table;
+    static NetworkTable table;
     public static NetworkTableEntry camMode, ledMode, tx, ty, ta, tv, ts, tl;
 
     public static UsbCamera drive;
     public static VideoMode videoMode;
 
 
-    public Limelight(){
+    public static void LimelightInitialize(){
         //Set Table to Limelight
         table = NetworkTableInstance.getDefault().getTable("limelight");
 
