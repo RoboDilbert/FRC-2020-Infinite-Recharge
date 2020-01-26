@@ -18,6 +18,8 @@ public class Routine{
 
     public static void run(){
 
+        Constants.inPosition = false;
+
         Limelight.LimelightInitialize();
 
         //Get in Position
@@ -55,24 +57,24 @@ public class Routine{
 
             //Y Power
             if(Constants.isSeeing == true){
-                if(Constants.averagePPLength < 700){
+                if(Constants.leftPPDistance < 700 || Constants.rightPPDistance < 700){
                         YPower = -0.1;
                 }
-                else if( Constants.averagePPLength > 750){
-                    YPower = (1.8*Math.pow((Constants.averagePPLength - 150) , 2)) /10000000;
+                else if(Constants.averagePPLength > 750){
+                    YPower = ((1.8*Math.pow((Constants.averagePPLength - 150) , 2)) /10000000) + .03;
                     if(YPower > 0.5){
                         YPower = 0.5;
                     }
                 }
-                if(TOFSensor.leftPP.getRange() < 806 && TOFSensor.leftPP.getRange() > 0 
-                   && TOFSensor.rightPP.getRange() < 806 && TOFSensor.rightPP.getRange() > 0){
+                if(TOFSensor.leftPP.getRange() < 750 && TOFSensor.leftPP.getRange() > 700 
+                   && TOFSensor.rightPP.getRange() < 750 && TOFSensor.rightPP.getRange() > 700){
                     YPower = 0;
                 }
 
             }else if(Constants.isSeeing == false){//If we don't see anything, drive straight
                 YPower = 0.15;
-                if(TOFSensor.leftPP.getRange() < 806 && TOFSensor.leftPP.getRange() > 0 
-                   && TOFSensor.rightPP.getRange() < 806 && TOFSensor.rightPP.getRange() > 0){
+                if(TOFSensor.leftPP.getRange() < 750 && TOFSensor.leftPP.getRange() > 700 
+                   && TOFSensor.rightPP.getRange() < 750 && TOFSensor.rightPP.getRange() > 700){
                     YPower = 0;
                 }
             }
@@ -110,8 +112,8 @@ public class Routine{
 
             Drive.run(-XPower, -YPower, ZPower, 0);
 
-            if(TOFSensor.leftPP.getRange() > 760 && TOFSensor.leftPP.getRange() < 806
-             && TOFSensor.rightPP.getRange() < 806 && TOFSensor.rightPP.getRange() > 760
+            if(TOFSensor.leftPP.getRange() > 700 && TOFSensor.leftPP.getRange() < 760
+             && TOFSensor.rightPP.getRange() < 766 && TOFSensor.rightPP.getRange() > 700
              && cameraX > -1 && cameraX < 1){
                 Constants.inPosition = true;
             }
