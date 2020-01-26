@@ -23,14 +23,12 @@ public class TeleopControl{
     // public float leftPower;
     // public float rightPower;
     // public double roboGyro; 
-    public static TOFSensor blah;
     
     public static void init(){
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         //coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         //add usb camera
         //colorSensor = new RevColor();
-        blah = new TOFSensor();
     }
     
     public static void run(){
@@ -56,10 +54,6 @@ public class TeleopControl{
         //-------------------------------------------------------------------------------------------------------------------
 
         //colorSensor.displayColor();
-        
-        blah.outputTOFData();
-        blah.setPPRangeMode("long");
-
         SmartDashboard.updateValues();
     }
 }

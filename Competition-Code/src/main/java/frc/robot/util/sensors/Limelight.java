@@ -10,14 +10,14 @@ import frc.robot.subsystems.*;
 
 public class Limelight{
     
-    NetworkTable table;
+    static NetworkTable table;
     public static NetworkTableEntry camMode, ledMode, tx, ty, ta, tv, ts, tl;
 
     public static UsbCamera drive;
     public static VideoMode videoMode;
 
 
-    public Limelight(){
+    public static void LimelightInitialize(){
         //Set Table to Limelight
         table = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -36,7 +36,6 @@ public class Limelight{
     public static void initUSBCamera() {
         drive = CameraServer.getInstance().startAutomaticCapture();
         videoMode = new VideoMode(PixelFormat.kYUYV, 800, 448, 30);
-
         drive.setFPS(30);
         drive.setVideoMode(videoMode);
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(1);
