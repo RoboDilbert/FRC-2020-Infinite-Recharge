@@ -10,6 +10,7 @@ public class Constants{
     public static final int rightFrontDeviceID = 5;
     public static final int rightBackDeviceID = 2;
     public static final int motorIntakeID = 9;
+    public static final int motorSpinID = 10;
     public static final int kServoID = 7;
     public static final int movementRestriction = 2;
     //turret
@@ -44,7 +45,18 @@ public class Constants{
     public static boolean inPosition = false;
     //Game Data Color
     public static String gameData;
+    //Autonomous - Routine
+    public static double XPower = 0;
+    public static double YPower = 0;
+    public static double ZPower = 0;
+    public static double cameraX = 0;
+    public static double angle = 0;
+    public static double complimentAngle = 0;
+    public static double feedForward = 0.03;
 
+
+    //Color Wheel
+    public static double searchSpeed = 0.5;
 
 
    
