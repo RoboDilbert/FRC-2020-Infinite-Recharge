@@ -12,6 +12,7 @@ import com.playingwithfusion.TimeOfFlight.RangingMode;
 
 public class Drive{
 
+<<<<<<< HEAD
     public static MecanumDrive my_Robot;
     public static final CANSparkMax m_leftFrontMotor = new CANSparkMax(Constants.leftFrontDeviceID, MotorType.kBrushless);
     public static final CANSparkMax m_leftBackMotor = new CANSparkMax(Constants.leftBackDeviceID, MotorType.kBrushless);
@@ -24,6 +25,17 @@ public class Drive{
 
     public static TimeOfFlight leftPP = new TimeOfFlight(Constants.LEFT_PP_ID);
     public static TimeOfFlight rightPP = new TimeOfFlight(Constants.RIGHT_PP_ID);
+=======
+    private static MecanumDrive my_Robot;
+    private static final CANSparkMax m_leftFrontMotor = new CANSparkMax(Constants.leftFrontDeviceID, MotorType.kBrushless);
+    private static final CANSparkMax m_leftBackMotor = new CANSparkMax(Constants.leftBackDeviceID, MotorType.kBrushless);
+    private static final CANSparkMax m_rightFrontMotor = new CANSparkMax(Constants.rightFrontDeviceID, MotorType.kBrushless);
+    private static final CANSparkMax m_rightBackMotor = new CANSparkMax(Constants.rightBackDeviceID, MotorType.kBrushless);
+    private static CANEncoder m_leftFrontEncoder;
+    private static CANEncoder m_leftBackEncoder;
+    private static CANEncoder m_rightFrontEncoder;
+    private static CANEncoder m_rightBackEncoder;
+>>>>>>> 3d5ae033ea352f834342e1d2ec9ebbb9c23c013c
     
     
     public static void init(){

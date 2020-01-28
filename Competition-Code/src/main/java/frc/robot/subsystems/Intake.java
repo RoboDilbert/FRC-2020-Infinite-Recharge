@@ -16,13 +16,13 @@ public class Intake {
     private static CANSparkMax m_intakeMotor;
     private CANEncoder m_intakeMotorEncoder;
     
-    public DoubleSolenoid intakeDrop;
+    private DoubleSolenoid intakeDrop;
     
     
     public void init() {
         if(intakeDrop == null){
         intakeDrop = new DoubleSolenoid(1, 2);
-        m_intakeMotor = new CANSparkMax(Constants.motorIntakeID, MotorType.kBrushless);
+        m_intakeMotor = new CANSparkMax(Constants.motorIntakeID, MotorType.kBrushed);
         m_intakeMotorEncoder = m_intakeMotor.getEncoder();
     }   
 
@@ -32,13 +32,10 @@ public class Intake {
     // Pneumatic Drop (possibly Motors)
     public void dropIntake() throws InterruptedException {
         intakeDrop.set(Value.kForward);
-        Thread.sleep(300);
-        intakeDrop.set(Value.kOff);
     }
 
     public void liftIntake() throws InterruptedException{
         intakeDrop.set(Value.kReverse);
-        Thread.sleep(500);
     }
 
     //---------------------------------------------------------------------
