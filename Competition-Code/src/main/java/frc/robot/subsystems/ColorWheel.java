@@ -34,31 +34,7 @@ public void init() {
 }   
 
 
-public void searchColor(){
-    if(gameData.length() > 0)
-{
-  switch (gameData.charAt(0))
-  {
-    case 'B' :
-    //return String Blue;
-      break;
-    case 'G' :
-      //Green case code
-      break;
-    case 'R' :
-      //Red case code
-      break;
-    case 'Y' :
-      //Yellow case code
-      break;
-    default :
-      //This is corrupt data
-      break;
-  }
-} else {
-  //Code for no data received yet
-}
-}
+
 
 public void spinThatWheel(SpeedController spinThatWheel){
 spinThatWheel.set(Constants.searchSpeed);

@@ -17,21 +17,24 @@ public class TeleopControl{
     public static Joystick driver;
     private static Joystick coDriver;
 
-   // private static RevColor colorSensor;
-    private static boolean foundColor;
+    private static RevColor colorSensor;
+    private static ColorWheel wheelColor;
+    private static String foundColor;
     // public double yValue;
     // public double xValue;
     // public double zValue;
     // public float leftPower;
     // public float rightPower;
     // public double roboGyro;
+    private static String gameData;
 
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
-        String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        gameData = DriverStation.getInstance().getGameSpecificMessage();
         // coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         // add usb camera
-        // colorSensor = new RevColor();
+        wheelColor = new ColorWheel();
+        colorSensor = new RevColor();
     }
 
     public static void run() {
@@ -57,8 +60,10 @@ public class TeleopControl{
         // -------------------------------------------------------------------------------------------------------------------
 
         // colorSensor.displayColor();
-        if (coDriver.getRawButton(12) && foundColor == false) {
-            
+        
+        if (coDriver.getRawButton(12) && foundColor != gameData) {
+            foundColor = colorSensor.searchColor();
+            //wheelColor.spinThatWheel();
         }
 
         SmartDashboard.updateValues();
