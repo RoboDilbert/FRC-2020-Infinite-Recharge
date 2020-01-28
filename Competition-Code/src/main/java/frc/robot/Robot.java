@@ -5,6 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+// 2020 COMPETITION ROBOT CODE
+
 package frc.robot;
 
 import com.playingwithfusion.TimeOfFlight;
@@ -86,7 +88,11 @@ public class Robot extends TimedRobot {
   @Override
   public  void teleopPeriodic() {
     TeleopControl.run();
-    //TOFSensor.outputTOFData();
+    SmartDashboard.getNumber("LeftFrontSpeed", Drive.m_leftFrontEncoder.getVelocity());
+    SmartDashboard.getNumber("LeftBackSpeed", Drive.m_leftBackEncoder.getVelocity());
+    SmartDashboard.getNumber("RightFrontSpeed", Drive.m_rightFrontEncoder.getVelocity());
+    SmartDashboard.getNumber("RightBackSpeed", Drive.m_rightBackEncoder.getVelocity());
+    SmartDashboard.updateValues();    //TOFSensor.outputTOFData();
     //SmartDashboard.putNumber("x", Routine.cameraX);
   }
 
