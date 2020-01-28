@@ -1,6 +1,7 @@
 package frc.robot.Autonomous;
 
 import com.playingwithfusion.TimeOfFlight.RangingMode;
+import com.playingwithfusion.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
@@ -30,14 +31,14 @@ public class Routine{
         while(Constants.inPosition == false){// TODO WHILE NOT SHOT
             cameraX = Limelight.tx.getDouble(0.0);
            
-            if(TOFSensor.rightPP.getRange() >  0 || TOFSensor.leftPP.getRange() > 0){
+            if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){
                 Constants.isSeeing = true;
             }
             else{
                 Constants.isSeeing = false;
             }
-            Constants.rightPPDistance = TOFSensor.rightPP.getRange();
-            Constants.leftPPDistance = TOFSensor.leftPP.getRange();
+            Constants.rightPPDistance = Drive.rightPP.getRange();
+            Constants.leftPPDistance = Drive.leftPP.getRange();
             Constants.averagePPLength = (Constants.rightPPDistance + Constants.leftPPDistance)/2;
 
 
@@ -70,15 +71,15 @@ public class Routine{
                         YPower = 0.2;
                     }
                 }
-                if(TOFSensor.leftPP.getRange() < 750 && TOFSensor.leftPP.getRange() > 700 
-                   && TOFSensor.rightPP.getRange() < 750 && TOFSensor.rightPP.getRange() > 700){
+                if(Drive.leftPP.getRange() < 750 && Drive.leftPP.getRange() > 700 
+                   && Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 700){
                     YPower = 0;
                 }
 
             }else if(Constants.isSeeing == false){//If we don't see anything, drive straight
                 YPower = 0.1;
-                if(TOFSensor.leftPP.getRange() < 750 && TOFSensor.leftPP.getRange() > 700 
-                   && TOFSensor.rightPP.getRange() < 750 && TOFSensor.rightPP.getRange() > 700){
+                if(Drive.leftPP.getRange() < 750 && Drive.leftPP.getRange() > 700 
+                   && Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 700){
                     YPower = 0;
                 }
             }
@@ -115,21 +116,21 @@ public class Routine{
         }
         
         if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 2000){
-            TOFSensor.rightPP.setRangingMode(RangingMode.Long, 25);
-            TOFSensor.leftPP.setRangingMode(RangingMode.Long, 25);
+            Drive.rightPP.setRangingMode(RangingMode.Long, 25);
+            Drive.leftPP.setRangingMode(RangingMode.Long, 25);
         } else if(Constants.averagePPLength < 2000 && Constants.averagePPLength > 25){
-            TOFSensor.rightPP.setRangingMode(RangingMode.Medium, 25);
-            TOFSensor.leftPP.setRangingMode(RangingMode.Medium, 25);
+            Drive.rightPP.setRangingMode(RangingMode.Medium, 25);
+            Drive.leftPP.setRangingMode(RangingMode.Medium, 25);
         }else if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 25){
-            TOFSensor.rightPP.setRangingMode(RangingMode.Short, 25);
-            TOFSensor.leftPP.setRangingMode(RangingMode.Short, 25);
+            Drive.rightPP.setRangingMode(RangingMode.Short, 25);
+            Drive.leftPP.setRangingMode(RangingMode.Short, 25);
         }
             
 
             Drive.run(-XPower, -YPower, ZPower, 0);
 
-            if(TOFSensor.leftPP.getRange() > 700 && TOFSensor.leftPP.getRange() < 765
-             && TOFSensor.rightPP.getRange() < 765 && TOFSensor.rightPP.getRange() > 700
+            if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 765
+             && Drive.rightPP.getRange() < 765 && Drive.rightPP.getRange() > 700
              && cameraX > -1 && cameraX < 1){
                 Constants.inPosition = true;
             }
