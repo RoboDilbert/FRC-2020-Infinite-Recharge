@@ -45,6 +45,14 @@ public class Constants{
     public static boolean inPosition = false;
     //Game Data Color
     public static String gameData;
+    //Autonomous - Routine
+    public static double XPower = 0;
+    public static double YPower = 0;
+    public static double ZPower = 0;
+    public static double cameraX = 0;
+    public static double angle = 0;
+    public static double complimentAngle = 0;
+    public static double feedForward = 0.03;
 
 
 
