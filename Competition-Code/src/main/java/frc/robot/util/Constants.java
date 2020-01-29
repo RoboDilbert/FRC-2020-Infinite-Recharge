@@ -64,5 +64,9 @@ public class Constants{
     public static String bufferColor;
     public static int colorCount = 0;
 
+    //Shooter
+    public static int leftShooterDeviceID = 19;
+    public static int rightShooterDeviceID = 20;
+
    
 }
