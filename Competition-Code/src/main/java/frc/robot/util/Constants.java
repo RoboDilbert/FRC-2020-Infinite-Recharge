@@ -21,6 +21,7 @@ public class Constants{
     public static int DRIVER_CONTROLLER_ID = 1;
     public static int CODRIVER_CONTROLLER_ID = 0;
     // Pneumatics
+    public static  boolean compressorState = true;
     public static int UTILITIES_COMPRESSOR_PORT = 0;
 	public static final boolean COMPRESSOR_ON = true;
     public static final boolean COMPRESSOR_OFF = false;

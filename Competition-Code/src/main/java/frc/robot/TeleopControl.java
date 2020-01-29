@@ -64,6 +64,15 @@ public class TeleopControl{
 
         // -------------------------------------------------------------------------------------------------------------------
 
+        //Wall of Wheels Testing
+        if(driver.getRawButton(4)){
+            WallOfWheels.PowerWall(WallOfWheels.WallDirections.FORWARD);
+        } else if(driver.getRawButton(5)){
+            WallOfWheels.PowerWall(WallOfWheels.WallDirections.REVERSE);
+        }else if(driver.getRawButton(6)){
+            WallOfWheels.PowerWall(WallOfWheels.WallDirections.STOP);
+        }
+
         // colorSensor.displayColor();
         
         if (coDriver.getRawButton(12) && foundColor != gameData) {
@@ -73,6 +82,8 @@ public class TeleopControl{
         else{
             wheelColor.WheelSearch(SearchValue.STOP);
         }
+
+        //--------------------------------------------------------------------------------------------------------------------
 
         SmartDashboard.updateValues();
     }
