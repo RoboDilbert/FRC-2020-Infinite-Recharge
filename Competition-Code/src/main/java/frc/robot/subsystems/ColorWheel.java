@@ -16,6 +16,12 @@ import frc.robot.util.Constants;
 
 
 public class ColorWheel{
+public enum SearchValue{
+COLOR,
+REVERSE,
+FORWARD,
+STOP
+}
 
 String gameData = DriverStation.getInstance().getGameSpecificMessage();
 
@@ -28,24 +34,34 @@ private DoubleSolenoid wheelCylinder;
 public void init() {
     if(wheelCylinder == null){
     wheelCylinder = new DoubleSolenoid(1, 2);
-    m_wheelSpin = new CANSparkMax(Constants.motorSpinID, MotorType.kBrushless);
-    m_wheelSpinEncoder = m_wheelSpin.getEncoder();
+   m_wheelSpin = new CANSparkMax(Constants.motorSpinID, MotorType.kBrushless);
+   m_wheelSpinEncoder = m_wheelSpin.getEncoder();
+   m_wheelSpin.setIdleMode(IdleMode.kBrake);
     }
 }   
 
-
-
-
-public void spinThatWheel(SpeedController spinThatWheel){
-spinThatWheel.set(Constants.searchSpeed);
+public void WheelSearch(SearchValue value){
+    spinThatWheelControl(m_wheelSpin, value);
 }
 
-public void spinWheelReverse(SpeedController spinReverse){
-spinReverse.set(-1);
+public void powerLevelOne(SearchValue value, String color){
+    int colorCounter = Constants.colorCount;
+
 }
 
-public void SpinWheelStop(SpeedController spinStop){
-spinStop.set(0);
+private void spinThatWheelControl(SpeedController spinThatWheel, SearchValue value){
+if(value == SearchValue.COLOR){
+    spinThatWheel.set(Constants.searchSpeed);
+}
+else if(value == SearchValue.FORWARD){
+    spinThatWheel.set(1);
+}
+else if(value == SearchValue.REVERSE){
+    spinThatWheel.set(-1);
+}
+else if (value == SearchValue.STOP){
+    spinThatWheel.set(0);
+}
 }
 
 public void dropWheel() throws InterruptedException {
