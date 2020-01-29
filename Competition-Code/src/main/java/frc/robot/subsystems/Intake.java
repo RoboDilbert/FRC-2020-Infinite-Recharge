@@ -18,7 +18,12 @@ public class Intake {
     
     private DoubleSolenoid intakeDrop;
     
-    
+    public enum ballValues{
+        INTAKE,
+        STOP,
+        REVERSE
+    }
+
     public void init() {
         if(intakeDrop == null){
         intakeDrop = new DoubleSolenoid(1, 2);
@@ -40,15 +45,21 @@ public class Intake {
 
     //---------------------------------------------------------------------
     // intake motor
-    public void intakeBalls(SpeedController m_intakeMotorSpeed){
-        m_intakeMotorSpeed.set(1);
+
+    public void intakeControl(ballValues value){
+        controlBalls(m_intakeMotor, value);
     }
 
-    public void stopBalls(SpeedController m_intakeMotorSpeed){
-        m_intakeMotorSpeed.set(0);
+    private void controlBalls(SpeedController m_intake,ballValues value){
+        if(value == ballValues.INTAKE){
+            m_intake.set(1);
+        }
+        else if(value == ballValues.REVERSE){
+            m_intake.set(-1);
+        }
+        else{
+            m_intake.set(0);
+        }
     }
 
-    public void reverseBalls(SpeedController m_intakeMotorSpeed){
-        m_intakeMotorSpeed.set(-1);
-    }
 }

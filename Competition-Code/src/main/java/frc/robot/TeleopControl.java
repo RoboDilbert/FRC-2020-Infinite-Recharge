@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.ColorWheel.SearchValue;
+import frc.robot.subsystems.Intake.ballValues;
 import frc.robot.util.*;
 import frc.robot.util.sensors.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +25,7 @@ public class TeleopControl{
 
     private static RevColor colorSensor;
     private static ColorWheel wheelColor;
+    private static Intake ballIntake;
     private static String foundColor;
     // public double yValue;
     // public double xValue;
@@ -42,6 +44,7 @@ public class TeleopControl{
         // add usb camera
         wheelColor = new ColorWheel();
         colorSensor = new RevColor();
+        ballIntake = new Intake();
     }
 
     public static void run() {
@@ -75,8 +78,9 @@ public class TeleopControl{
             WallOfWheels.PowerWall(WallOfWheels.WallDirections.STOP);
         }
 
-        // colorSensor.displayColor();
+        //----------------------------------------------------------------------------------------------
         
+        //Color Wheel
         if (coDriver.getRawButton(12) && foundColor != gameData) {
             foundColor = colorSensor.searchColor();
             wheelColor.WheelSearch(SearchValue.COLOR);
@@ -106,6 +110,14 @@ public class TeleopControl{
 
         //--------------------------------------------------------------------------------------------------------------------
 
+        //Intake
+
+        if(coDriver.getRawButton(9)){
+            ballIntake.intakeControl(ballValues.INTAKE);
+        }
+
+
+        //------------------------------------------------------------------------------------------------------
         SmartDashboard.updateValues();
     }
 }
