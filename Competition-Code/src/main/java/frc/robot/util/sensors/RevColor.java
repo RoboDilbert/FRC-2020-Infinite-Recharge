@@ -16,6 +16,9 @@ Color detectedColor = m_colorSensor.getColor();
 double IR = m_colorSensor.getIR();
 int proximity = m_colorSensor.getProximity();
 double value;
+Color B;
+ Color R;
+Color G;
 
 public void displayColor(){
     SmartDashboard.putNumber("Red", detectedColor.red);
@@ -41,8 +44,25 @@ value = IR;
 else if(command == "proximity"){
  value = (double) proximity;
 }
-   
  return value;
+}
+
+public String searchColor(){
+ Color found = m_colorSensor.getColor();
+ 
+    if(found == B){
+        return "B";
+    }
+    else if(found == R){
+        return "R";
+    }
+    else if(found == G){
+        return "G";
+    }
+    else{
+        return null;
+    }
+    
 }
 
 
