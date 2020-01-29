@@ -31,7 +31,9 @@ public class TeleopControl{
     // public float leftPower;
     // public float rightPower;
     // public double roboGyro;
+    private static int ColorCount;
     private static String gameData;
+    private static boolean colorFlag;
 
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
@@ -78,6 +80,25 @@ public class TeleopControl{
         if (coDriver.getRawButton(12) && foundColor != gameData) {
             foundColor = colorSensor.searchColor();
             wheelColor.WheelSearch(SearchValue.COLOR);
+        }
+        else if(coDriver.getRawButton(11) && ColorCount <= 6){
+            if(Constants.initalColor == null){
+                Constants.initalColor = colorSensor.searchColor();
+                Constants.bufferColor = Constants.initalColor;
+                colorFlag = true;
+            }
+            wheelColor.WheelSearch(SearchValue.FORWARD);
+            Constants.bufferColor = Constants.nextColor;
+            Constants.nextColor = colorSensor.searchColor();
+            if(Constants.bufferColor == Constants.nextColor || Constants.bufferColor == null){
+                colorFlag = true;
+            }
+            else{
+                colorFlag = false;
+            }
+            if(Constants.initalColor == Constants.nextColor && colorFlag == false){
+                ColorCount++;
+            }
         }
         else{
             wheelColor.WheelSearch(SearchValue.STOP);
