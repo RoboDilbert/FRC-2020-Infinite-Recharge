@@ -3,9 +3,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.ColorWheel.SearchValue;
 import frc.robot.util.*;
 import frc.robot.util.sensors.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANEncoder;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -63,7 +68,10 @@ public class TeleopControl{
         
         if (coDriver.getRawButton(12) && foundColor != gameData) {
             foundColor = colorSensor.searchColor();
-            //wheelColor.spinThatWheel();
+            wheelColor.WheelSearch(SearchValue.COLOR);
+        }
+        else{
+            wheelColor.WheelSearch(SearchValue.STOP);
         }
 
         SmartDashboard.updateValues();

@@ -58,7 +58,8 @@ public class Constants{
 
     //Color Wheel
     public static double searchSpeed = 0.5;
-
+    public static String initalColor;
+    public static int colorCount = 0;
 
    
 }
