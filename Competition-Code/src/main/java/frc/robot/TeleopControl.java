@@ -109,14 +109,16 @@ public class TeleopControl{
         }
 
         //--------------------------------------------------------------------------------------------------------------------
+
         //Intake
 
         if(coDriver.getRawButton(9)){
             ballIntake.intakeControl(ballValues.INTAKE);
         }
 
+
         //------------------------------------------------------------------------------------------------------
-        Drive.getSpeed();
+        
         SmartDashboard.updateValues();
     }
 }
