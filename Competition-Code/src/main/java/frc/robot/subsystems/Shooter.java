@@ -34,8 +34,13 @@ public class Shooter{
             controller2.set(0.8);
         }
 
-        else if( true){
-
+        else if( value == ShooterDirections.REVERSE){
+            controller1.set(-0.8);
+            controller2.set(-0.8);
+        }
+        else if (value == ShooterDirections.STOP){
+            controller1.set(0);
+            controller2.set(0);
         }
     }
     
