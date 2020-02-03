@@ -29,7 +29,8 @@ private static CANSparkMax m_wheelSpin;
 private CANEncoder m_wheelSpinEncoder;
     
 private DoubleSolenoid wheelCylinder;
-
+private RevColor colorSensor;
+private int colorCounter = Constants.colorCount;
 
 public void init() {
     if(wheelCylinder == null){
@@ -37,6 +38,7 @@ public void init() {
    m_wheelSpin = new CANSparkMax(Constants.motorSpinID, MotorType.kBrushless);
    m_wheelSpinEncoder = m_wheelSpin.getEncoder();
    m_wheelSpin.setIdleMode(IdleMode.kBrake);
+   colorSensor = new RevColor();
     }
 }   
 
@@ -45,9 +47,11 @@ public void WheelSearch(SearchValue value){
 }
 
 public void powerLevelOne(SearchValue value, String color){
-    int colorCounter = Constants.colorCount;
+   
+    
 
 }
+
 
 private void spinThatWheelControl(SpeedController spinThatWheel, SearchValue value){
 if(value == SearchValue.COLOR){

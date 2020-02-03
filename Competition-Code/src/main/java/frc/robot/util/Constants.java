@@ -14,7 +14,6 @@ public class Constants{
     public static final int kServoID = 7;
     public static final int movementRestriction = 2;
     //turret
-    public static final int turretDeviceID = 6;
     public static double turretPower = 0.0;
     // GamePad
     public static final int kGamepadButtonA = 1;
@@ -55,12 +54,14 @@ public class Constants{
     public static double angle = 0;
     public static double complimentAngle = 0;
     public static double feedForward = 0.03;
-
-
     //Color Wheel
     public static double searchSpeed = 0.5;
     public static String initalColor;
+    public static String nextColor;
+    public static String bufferColor;
     public static int colorCount = 0;
+    //Wall of Wheels
+    public static int WallOfWheelsID = 6;
 
     //Shooter
     public static int leftShooterDeviceID = 19;

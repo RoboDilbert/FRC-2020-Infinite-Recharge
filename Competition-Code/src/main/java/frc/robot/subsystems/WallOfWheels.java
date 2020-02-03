@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import frc.robot.util.*;
 
 public class WallOfWheels{
-    public static final CANSparkMax wallMotor = new CANSparkMax(Constants.leftFrontDeviceID, MotorType.kBrushless);
+    public static final CANSparkMax wallMotor = new CANSparkMax(Constants.WallOfWheelsID, MotorType.kBrushed);
 
     public static enum WallDirections{
         REVERSE, FORWARD, STOP;
