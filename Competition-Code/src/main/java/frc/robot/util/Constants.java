@@ -62,10 +62,14 @@ public class Constants{
     public static int colorCount = 0;
     //Wall of Wheels
     public static int WallOfWheelsID = 6;
-
     //Shooter
     public static int leftShooterDeviceID = 19;
     public static int rightShooterDeviceID = 20;
+    //Indexer
+    public static int FeedID = 11;
+    public static int ShootID = 12;
+    public static int UPPER_INDEXER_ID = 13;
+    public static int LOWER_INDEXER_ID = 14;
 
    
 }
