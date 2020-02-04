@@ -14,6 +14,8 @@ public class Shooter{
     public static final CANSparkMax leftShooter = new CANSparkMax(Constants.leftShooterDeviceID, MotorType.kBrushless);
     public static final CANSparkMax rightShooter = new CANSparkMax(Constants.rightShooterDeviceID, MotorType.kBrushless);
 
+    public static CANEncoder leftShooterEncoder;
+    public static CANEncoder rightShooterEncoder;
     
     public static enum ShooterDirections{
         FORWARD, REVERSE, STOP, DUNNO;
@@ -25,6 +27,10 @@ public class Shooter{
         leftShooter.setIdleMode(IdleMode.kCoast);
         rightShooter.setIdleMode(IdleMode.kCoast);
         rightShooter.setInverted(true);
+
+        leftShooterEncoder = leftShooter.getEncoder();
+        rightShooterEncoder = rightShooter.getEncoder();
+
         
     }
 
