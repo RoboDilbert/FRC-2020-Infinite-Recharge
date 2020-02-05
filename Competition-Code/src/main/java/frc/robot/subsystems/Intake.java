@@ -32,7 +32,7 @@ public class Intake {
     }   
 
     }
-
+    
     // --------------------------------------------------------------------
     // Pneumatic Drop (possibly Motors)
     public void dropIntake() throws InterruptedException {
