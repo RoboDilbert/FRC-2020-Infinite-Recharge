@@ -118,7 +118,20 @@ public class TeleopControl{
 
 
         //------------------------------------------------------------------------------------------------------
-        
+        //indexer test
+        if (coDriver.getRawButton(2)){
+            Indexer.indexFeed.set(0.25);
+        }
+        if(coDriver.getRawButton(5)){
+            Indexer.indexShoot.set(0.25);
+        }
+        //-------------------------------------------------------------------------------------------------------
+        //shooter test
+        if(coDriver.getTrigger()){
+            Shooter.Shooter.set(0.6);
+        }
+
+
         SmartDashboard.updateValues();
     }
 }
