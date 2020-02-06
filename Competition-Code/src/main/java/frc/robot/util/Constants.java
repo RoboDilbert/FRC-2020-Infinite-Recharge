@@ -69,6 +69,10 @@ public class Constants{
     public static int ShootID = 12;
     public static int UPPER_INDEXER_ID = 13;
     public static int LOWER_INDEXER_ID = 14;
+    // Lifter
+    public static int lifterWheelLeft = 20;
+    public static int lifterWheelRight = 21;
+    public static int lifterSpeed = 1;
 
    
 }
