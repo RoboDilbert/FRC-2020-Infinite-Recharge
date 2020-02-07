@@ -9,7 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
-
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.util.sensors.*;
 
 
@@ -34,17 +34,19 @@ private DoubleSolenoid m_pinLock2;
         liftWheel2 = new CANSparkMax(Constants.lifterWheelRight,MotorType.kBrushless);
         m_lift1 = liftWheel1.getEncoder();
         m_lift2 = liftWheel2.getEncoder();
-        m_pinLock1 = new DoubleSolenoid(1, 0);
-        m_pinLock2 = new DoubleSolenoid(1, 0);
+        m_pinLock1 = new DoubleSolenoid(Constants.pinLockForward, Constants.pinLockBack);
+       // m_pinLock2 = new DoubleSolenoid(1, 0);
 
     }
 
-    public void sensorSelector(){
-
+    public void liftLock(){
+        m_pinLock1.set(Value.kForward);
+       // m_pinLock2.set(Value.kForward);
     }
 
-    public void storageFill(){
-
+    public void liftUnlock(){
+        m_pinLock1.set(Value.kReverse);
+       // m_pinLock2.set(Value.kReverse);
     }
 
     public void liftReverse(){

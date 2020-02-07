@@ -24,15 +24,23 @@ public class Shooter{
     public static void init(){
         
         Shooter.setIdleMode(IdleMode.kCoast);
-       
-
         ShooterEncoder = Shooter.getEncoder();
-      
-
-        
     }
 
-    public static void ShooterControl(SpeedController controller1, ShooterDirections value){
+    public static void ShooterForward(){
+        ShooterControl(Shooter, ShooterDirections.FORWARD);
+    }
+
+    public static void ShooterReverse(){
+        ShooterControl(Shooter, ShooterDirections.REVERSE);
+    }
+
+    public static void ShooterStop(){
+        ShooterControl(Shooter, ShooterDirections.STOP);
+    }
+
+
+    private static void ShooterControl(SpeedController controller1, ShooterDirections value){
         if(value == ShooterDirections.FORWARD){
             controller1.set(0.8);
         }

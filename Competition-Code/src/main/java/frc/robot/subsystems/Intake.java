@@ -26,7 +26,7 @@ public class Intake {
 
     public void init() {
         if(intakeDrop == null){
-        intakeDrop = new DoubleSolenoid(1, 2);
+        intakeDrop = new DoubleSolenoid(Constants.intakeDropForward, Constants.intakeDropBack);
         m_intakeMotor = new CANSparkMax(Constants.motorIntakeID, MotorType.kBrushed);
         m_intakeMotorEncoder = m_intakeMotor.getEncoder();
     }   
