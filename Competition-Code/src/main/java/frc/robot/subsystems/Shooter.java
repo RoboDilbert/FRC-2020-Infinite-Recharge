@@ -11,11 +11,10 @@ public class Shooter{
 
     
     
-    public static final CANSparkMax leftShooter = new CANSparkMax(Constants.leftShooterDeviceID, MotorType.kBrushless);
-    public static final CANSparkMax rightShooter = new CANSparkMax(Constants.rightShooterDeviceID, MotorType.kBrushless);
-
-    public static CANEncoder leftShooterEncoder;
-    public static CANEncoder rightShooterEncoder;
+    public static final CANSparkMax Shooter = new CANSparkMax(Constants.ShooterDeviceID, MotorType.kBrushless);
+    
+    public static CANEncoder ShooterEncoder;
+   
     
     public static enum ShooterDirections{
         FORWARD, REVERSE, STOP, DUNNO;
@@ -24,29 +23,33 @@ public class Shooter{
     
     public static void init(){
         
-        leftShooter.setIdleMode(IdleMode.kCoast);
-        rightShooter.setIdleMode(IdleMode.kCoast);
-        rightShooter.setInverted(true);
-
-        leftShooterEncoder = leftShooter.getEncoder();
-        rightShooterEncoder = rightShooter.getEncoder();
-
-        
+        Shooter.setIdleMode(IdleMode.kCoast);
+        ShooterEncoder = Shooter.getEncoder();
     }
 
-    public static void ShooterControl(SpeedController controller1, SpeedController controller2, ShooterDirections value){
+    public static void ShooterForward(){
+        ShooterControl(Shooter, ShooterDirections.FORWARD);
+    }
+
+    public static void ShooterReverse(){
+        ShooterControl(Shooter, ShooterDirections.REVERSE);
+    }
+
+    public static void ShooterStop(){
+        ShooterControl(Shooter, ShooterDirections.STOP);
+    }
+
+
+    private static void ShooterControl(SpeedController controller1, ShooterDirections value){
         if(value == ShooterDirections.FORWARD){
             controller1.set(0.8);
-            controller2.set(0.8);
         }
 
         else if( value == ShooterDirections.REVERSE){
             controller1.set(-0.8);
-            controller2.set(-0.8);
         }
         else if (value == ShooterDirections.STOP){
             controller1.set(0);
-            controller2.set(0);
         }
     }
     

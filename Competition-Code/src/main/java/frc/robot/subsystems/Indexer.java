@@ -61,6 +61,7 @@ public class Indexer{
             if(uppperIndex.getRange() < 100){
                 PowerFeed(IndexPower.SPIN);
                 PowerShooter(IndexPower.SPIN);
+                ballz -= 1;
             }
             else{
                 PowerFeed(IndexPower.STOP);
