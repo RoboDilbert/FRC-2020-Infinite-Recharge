@@ -40,7 +40,7 @@ public class TeleopControl{
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         gameData = DriverStation.getInstance().getGameSpecificMessage();
-        // coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
+        coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         // add usb camera
         wheelColor = new ColorWheel();
         colorSensor = new RevColor();
@@ -135,10 +135,10 @@ public class TeleopControl{
         //-------------------------------------------------------------------------------------------------------
         //shooter test
         if(coDriver.getTrigger()){
-            Shooter.Shooter.set(0.6);
+            Shooter.ShooterForward();
         }
         else{
-            Shooter.Shooter.set(0.0);
+            Shooter.ShooterStop();
         }
 
 
