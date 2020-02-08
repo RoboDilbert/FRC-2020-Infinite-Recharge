@@ -1,13 +1,13 @@
 package frc.robot.Autonomous;
 
 import com.playingwithfusion.TimeOfFlight.RangingMode;
-import com.playingwithfusion.*;
+//import com.playingwithfusion.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.util.*;
 import frc.robot.util.sensors.*;
-import frc.robot.util.sensors.Gyro;
+//import frc.robot.util.sensors.Gyro;
 
 public class Routine{
 
@@ -20,7 +20,7 @@ public class Routine{
         Limelight.LimelightInitialize();
 
         //Get in Position
-        while(Constants.inPosition == false){ //TODO WHILE NOT SHOT
+        while(Constants.inPosition == false){ 
             Constants.cameraX = Limelight.tx.getDouble(0.0);
            
             if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){

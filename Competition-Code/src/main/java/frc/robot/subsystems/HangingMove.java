@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
+//import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.util.*;
@@ -49,6 +51,10 @@ private CANEncoder hangingWheelEncoder;
         else if(value == wheelDirection.STOP){
             motor1.set(0);
         }
+    }
+
+    public void hangingDebug(){
+        SmartDashboard.putNumber("Hang Motor Velocity", hangingWheelEncoder.getVelocity());
     }
 
 }
