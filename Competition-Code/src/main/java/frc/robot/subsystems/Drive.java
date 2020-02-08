@@ -73,17 +73,17 @@ public class Drive{
     
 
     public static void getSpeed(){
-        SmartDashboard.getNumber("LeftFrontSpeed", m_leftFrontEncoder.getVelocity());
-        SmartDashboard.getNumber("LeftBackSpeed", m_leftBackEncoder.getVelocity());
-        SmartDashboard.getNumber("RightFrontSpeed", m_rightFrontEncoder.getVelocity());
-        SmartDashboard.getNumber("RightBackSpeed", m_rightBackEncoder.getVelocity());
+        SmartDashboard.putNumber("LeftFrontSpeed", m_leftFrontEncoder.getVelocity());
+        SmartDashboard.putNumber("LeftBackSpeed", m_leftBackEncoder.getVelocity());
+        SmartDashboard.putNumber("RightFrontSpeed", m_rightFrontEncoder.getVelocity());
+        SmartDashboard.putNumber("RightBackSpeed", m_rightBackEncoder.getVelocity());
         SmartDashboard.updateValues();
     }
     public static void getPosition(){
-        SmartDashboard.getNumber("LeftFrontSpeed", m_leftFrontEncoder.getPosition());
-        SmartDashboard.getNumber("LeftBackSpeed", m_leftBackEncoder.getPosition());
-        SmartDashboard.getNumber("RightFrontSpeed", m_rightFrontEncoder.getPosition());
-        SmartDashboard.getNumber("RightBackSpeed", m_rightBackEncoder.getPosition());
+        SmartDashboard.putNumber("LeftFrontSpeed", m_leftFrontEncoder.getPosition());
+        SmartDashboard.putNumber("LeftBackSpeed", m_leftBackEncoder.getPosition());
+        SmartDashboard.putNumber("RightFrontSpeed", m_rightFrontEncoder.getPosition());
+        SmartDashboard.putNumber("RightBackSpeed", m_rightBackEncoder.getPosition());
         SmartDashboard.updateValues();
     }
 

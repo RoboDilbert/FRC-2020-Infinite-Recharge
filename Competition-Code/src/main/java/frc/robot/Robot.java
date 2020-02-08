@@ -32,7 +32,6 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
   
   /**
    * This function is run when the robot is first started up and should be
@@ -101,5 +100,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+
+  @Override
+  public void disabledPeriodic(){
+
+  }
+
+  @Override
+  public void disabledInit(){
+    
   }
 }
