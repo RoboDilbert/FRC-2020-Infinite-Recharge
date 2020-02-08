@@ -72,14 +72,14 @@ public static final int motorIntakeID = 7;
 public static final int motorSpinID = 8;
 public static final int FeedID = 9;
 public static final int ShootID = 10;
-public static final int UPPER_INDEXER_ID = 13;
-public static final int LOWER_INDEXER_ID = 14;
-public static final int LEFT_PP_ID = 15;
-public static final int RIGHT_PP_ID = 16;
-public static final int ShooterDeviceID = 17;
-public static final int lifterWheelLeft = 18;
-public static final int lifterWheelRight = 19;
-public static final int hangingWheel = 20;
+public static final int UPPER_INDEXER_ID = 11;
+public static final int LOWER_INDEXER_ID = 12;
+public static final int LEFT_PP_ID = 13;
+public static final int RIGHT_PP_ID = 14;
+public static final int ShooterDeviceID = 15;
+public static final int lifterWheelLeft = 16;
+public static final int lifterWheelRight = 17;
+public static final int hangingWheel = 18;
 
 
 }
