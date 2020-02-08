@@ -20,7 +20,7 @@ public class Routine{
         Limelight.LimelightInitialize();
 
         //Get in Position
-        while(Constants.inPosition == false){// TODO WHILE NOT SHOT
+        while(Constants.inPosition == false){ //TODO WHILE NOT SHOT
             Constants.cameraX = Limelight.tx.getDouble(0.0);
            
             if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){

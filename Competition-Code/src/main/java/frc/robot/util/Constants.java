@@ -24,6 +24,12 @@ public class Constants{
     public static int UTILITIES_COMPRESSOR_PORT = 0;
 	public static final boolean COMPRESSOR_ON = true;
     public static final boolean COMPRESSOR_OFF = false;
+    public static final int colorWheelForward = 1;
+    public static final int colorWheelBack = 2;
+    public static final int intakeDropForward = 3;
+    public static final int intakeDropBack = 4;
+    public static final int pinLockForward = 5;
+    public static final int pinLockBack = 6;
     // Camera
     public static final int CAMERA1_WIDTH = 160;
 	public static final int CAMERA1_HEIGHT = 120;
@@ -62,10 +68,21 @@ public class Constants{
     public static int colorCount = 0;
     //Wall of Wheels
     public static int WallOfWheelsID = 6;
-
     //Shooter
-    public static int leftShooterDeviceID = 19;
-    public static int rightShooterDeviceID = 20;
+    public static int ShooterDeviceID = 19;
+    //Indexer
+    public static int FeedID = 11;
+    public static int ShootID = 12;
+    public static int UPPER_INDEXER_ID = 13;
+    public static int LOWER_INDEXER_ID = 14;
+    // Lifter
+    public static int lifterWheelLeft = 20;
+    public static int lifterWheelRight = 21;
+    public static int lifterSpeed = 1;
+    // Hanging Wheel
+
+    public static int hangingWheel = 24;
+    //
 
    
 }

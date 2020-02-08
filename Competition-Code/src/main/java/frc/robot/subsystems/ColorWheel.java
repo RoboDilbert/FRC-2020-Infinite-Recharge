@@ -34,7 +34,7 @@ private int colorCounter = Constants.colorCount;
 
 public void init() {
     if(wheelCylinder == null){
-    wheelCylinder = new DoubleSolenoid(1, 2);
+    wheelCylinder = new DoubleSolenoid(Constants.colorWheelForward, Constants.colorWheelBack);
    m_wheelSpin = new CANSparkMax(Constants.motorSpinID, MotorType.kBrushless);
    m_wheelSpinEncoder = m_wheelSpin.getEncoder();
    m_wheelSpin.setIdleMode(IdleMode.kBrake);

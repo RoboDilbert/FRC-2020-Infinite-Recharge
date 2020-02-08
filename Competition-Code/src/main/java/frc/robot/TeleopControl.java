@@ -109,14 +109,39 @@ public class TeleopControl{
         }
 
         //--------------------------------------------------------------------------------------------------------------------
+
         //Intake
 
         if(coDriver.getRawButton(9)){
             ballIntake.intakeControl(ballValues.INTAKE);
         }
 
+
         //------------------------------------------------------------------------------------------------------
-        Drive.getSpeed();
+        //indexer test
+        if (coDriver.getRawButton(2)){
+            Indexer.indexFeed.set(0.25);
+        }
+        else{
+            Indexer.indexFeed.set(0.0);
+        }
+        
+        if(coDriver.getRawButton(5)){
+            Indexer.indexShoot.set(0.25);
+        }
+        else{
+            Indexer.indexShoot.set(0.0);
+        }
+        //-------------------------------------------------------------------------------------------------------
+        //shooter test
+        if(coDriver.getTrigger()){
+            Shooter.Shooter.set(0.6);
+        }
+        else{
+            Shooter.Shooter.set(0.0);
+        }
+
+
         SmartDashboard.updateValues();
     }
 }
