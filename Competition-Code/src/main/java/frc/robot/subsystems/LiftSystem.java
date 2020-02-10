@@ -1,16 +1,17 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.Constants;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
+//import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.util.sensors.*;
+//import frc.robot.util.sensors.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class LiftSystem{
@@ -21,7 +22,7 @@ private CANEncoder m_lift1;
 private CANEncoder m_lift2;
 
 private DoubleSolenoid m_pinLock1;
-private DoubleSolenoid m_pinLock2;
+//private DoubleSolenoid m_pinLock2;
 
     public enum lifterSpeed{
         Forward,
@@ -41,12 +42,12 @@ private DoubleSolenoid m_pinLock2;
 
     public void liftLock(){
         m_pinLock1.set(Value.kForward);
-       // m_pinLock2.set(Value.kForward);
+        
     }
 
     public void liftUnlock(){
         m_pinLock1.set(Value.kReverse);
-       // m_pinLock2.set(Value.kReverse);
+        
     }
 
     public void liftReverse(){
@@ -74,6 +75,11 @@ private DoubleSolenoid m_pinLock2;
             motor1.set(0);
             motor2.set(0);
         }
+    }
+
+    public void liftDebug(){
+        SmartDashboard.putNumber("lift1",m_lift1.getPosition());
+        SmartDashboard.putNumber("lift2", m_lift2.getPosition());
     }
     
 }

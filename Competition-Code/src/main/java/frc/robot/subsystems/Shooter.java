@@ -12,7 +12,7 @@ public class Shooter{
     
     
     public static final CANSparkMax Shooter = new CANSparkMax(Constants.ShooterDeviceID, MotorType.kBrushless);
-    
+
     public static CANEncoder ShooterEncoder;
    
     

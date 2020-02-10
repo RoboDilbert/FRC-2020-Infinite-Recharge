@@ -5,13 +5,6 @@ import edu.wpi.first.wpilibj.I2C;
 public class Constants{
 
     // Drive
-    public static final int leftFrontDeviceID = 1; 
-    public static final int leftBackDeviceID = 3;
-    public static final int rightFrontDeviceID = 5;
-    public static final int rightBackDeviceID = 2;
-    public static final int motorIntakeID = 9;
-    public static final int motorSpinID = 10;
-    public static final int kServoID = 7;
     public static final int movementRestriction = 2;
     //turret
     public static double turretPower = 0.0;
@@ -43,8 +36,6 @@ public class Constants{
     public static I2C.Port i2cPort;
     public static double colorVar;
     //TOF Sensor
-    public static int LEFT_PP_ID = 17;
-    public static int RIGHT_PP_ID = 18;
     public static double rightPPDistance = 0;
     public static double leftPPDistance = 0;
     public static double averagePPLength = 0;
@@ -66,23 +57,29 @@ public class Constants{
     public static String nextColor;
     public static String bufferColor;
     public static int colorCount = 0;
-    //Wall of Wheels
-    public static int WallOfWheelsID = 6;
-    //Shooter
-    public static int ShooterDeviceID = 19;
-    //Indexer
-    public static int FeedID = 11;
-    public static int ShootID = 12;
-    public static int UPPER_INDEXER_ID = 13;
-    public static int LOWER_INDEXER_ID = 14;
-    // Lifter
-    public static int lifterWheelLeft = 20;
-    public static int lifterWheelRight = 21;
-    public static int lifterSpeed = 1;
-    // Hanging Wheel
-
-    public static int hangingWheel = 24;
-    //
-
    
+    // Lifter
+    public static int lifterSpeed = 1;
+    
+//Can IDs
+public static final int leftFrontDeviceID = 1;
+public static final int rightBackDeviceID = 2;
+public static final int leftBackDeviceID = 3;
+public static final int rightFrontDeviceID = 4;
+public static final int kServoID = 5;
+public static final int WallOfWheelsID = 6;
+public static final int motorIntakeID = 7;
+public static final int motorSpinID = 8;
+public static final int FeedID = 9;
+public static final int ShootID = 10;
+public static final int UPPER_INDEXER_ID = 11;
+public static final int LOWER_INDEXER_ID = 12;
+public static final int LEFT_PP_ID = 13;
+public static final int RIGHT_PP_ID = 14;
+public static final int ShooterDeviceID = 15;
+public static final int lifterWheelLeft = 16;
+public static final int lifterWheelRight = 17;
+public static final int hangingWheel = 18;
+
+
 }
