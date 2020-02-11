@@ -9,16 +9,13 @@
 
 package frc.robot;
 
-//import com.playingwithfusion.TimeOfFlight;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 //  import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.subsystems.*;
+import frc.robot.util.*;
+import frc.robot.util.Pneumatics.*;
 import frc.robot.util.sensors.*;
 import frc.robot.Autonomous.*;
-//import frc.robot.Autonomous.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,10 +39,17 @@ public class Robot extends TimedRobot {
     // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     // m_chooser.addOption("My Auto", kCustomAuto);
     //SmartDashboard.putData("Auto choices", m_chooser);
-    System.out.println("alkwdfjlkasdjf");
-
+    ColorWheel.init();
     Drive.init();
+    HangingMove.init();
+    Indexer.init();
+    Intake.init();
+    LiftSystem.init();
+    Shooter.init();
+    WallOfWheels.init();
     TeleopControl.init();
+    Pneumatics.init();
+    Pneumatics.controlCompressor(CompressorState.DISABLED);
     Limelight.initUSBCamera();
   }
 
@@ -85,14 +89,8 @@ public class Robot extends TimedRobot {
    * This function is called periodically during operator control.
    */
   @Override
-  public  void teleopPeriodic() {
+  public void teleopPeriodic() {
     TeleopControl.run();
-    // SmartDashboard.getNumber("LeftFrontSpeed", Drive.m_leftFrontEncoder.getVelocity());
-    // SmartDashboard.getNumber("LeftBackSpeed", Drive.m_leftBackEncoder.getVelocity());
-    // SmartDashboard.getNumber("RightFrontSpeed", Drive.m_rightFrontEncoder.getVelocity());
-    // SmartDashboard.getNumber("RightBackSpeed", Drive.m_rightBackEncoder.getVelocity());
-    SmartDashboard.updateValues();    //TOFSensor.outputTOFData();
-    //SmartDashboard.putNumber("x", Routine.cameraX);
   }
 
   /**

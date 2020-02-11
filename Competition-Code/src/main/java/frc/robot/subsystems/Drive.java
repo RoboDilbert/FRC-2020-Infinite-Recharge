@@ -13,17 +13,17 @@ import com.playingwithfusion.TimeOfFlight.RangingMode;
 public class Drive{
 
     public static MecanumDrive my_Robot;
-    public static final CANSparkMax m_leftFrontMotor = new CANSparkMax(Constants.leftFrontDeviceID, MotorType.kBrushless);
-    public static final CANSparkMax m_leftBackMotor = new CANSparkMax(Constants.leftBackDeviceID, MotorType.kBrushless);
-    public static final CANSparkMax m_rightFrontMotor = new CANSparkMax(Constants.rightFrontDeviceID, MotorType.kBrushless);
-    public static final CANSparkMax m_rightBackMotor = new CANSparkMax(Constants.rightBackDeviceID, MotorType.kBrushless);
+    public static final CANSparkMax m_leftFrontMotor = new CANSparkMax(Constants.leftFrontMotorID, MotorType.kBrushless);
+    public static final CANSparkMax m_leftBackMotor = new CANSparkMax(Constants.leftBackMotorID, MotorType.kBrushless);
+    public static final CANSparkMax m_rightFrontMotor = new CANSparkMax(Constants.rightFrontMotorID, MotorType.kBrushless);
+    public static final CANSparkMax m_rightBackMotor = new CANSparkMax(Constants.rightBackMotorID, MotorType.kBrushless);
     public static CANEncoder m_leftFrontEncoder;
     public static CANEncoder m_leftBackEncoder;
     public static CANEncoder m_rightFrontEncoder;
     public static CANEncoder m_rightBackEncoder;
 
-    public static TimeOfFlight leftPP = new TimeOfFlight(Constants.LEFT_PP_ID);
-    public static TimeOfFlight rightPP = new TimeOfFlight(Constants.RIGHT_PP_ID);
+    public static TimeOfFlight leftPP = new TimeOfFlight(Constants.LEFT_PP_TOF_ID);
+    public static TimeOfFlight rightPP = new TimeOfFlight(Constants.RIGHT_PP_TOF_ID);
     
     public static void init(){
         my_Robot = new MecanumDrive(m_leftFrontMotor, m_leftBackMotor, m_rightFrontMotor, m_rightBackMotor);

@@ -4,53 +4,44 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.SpeedController;
 import frc.robot.util.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Shooter{
-
-    
-    
-    public static final CANSparkMax Shooter = new CANSparkMax(Constants.ShooterDeviceID, MotorType.kBrushless);
-
-    public static CANEncoder ShooterEncoder;
    
-    
-    public static enum ShooterDirections{
-        FORWARD, REVERSE, STOP, DUNNO;
+    private static CANSparkMax ShooterMotor;
+    private static CANEncoder ShooterMotorEncoder;
+   
+    public static enum ShooterState{
+        FORWARD, 
+        REVERSE, 
+        STOP;
     }
    
-    
     public static void init(){
-        
-        Shooter.setIdleMode(IdleMode.kCoast);
-        ShooterEncoder = Shooter.getEncoder();
+        ShooterMotor = new CANSparkMax(Constants.ShooterMotorID, MotorType.kBrushless);
+        ShooterMotor.setIdleMode(IdleMode.kCoast);
+        ShooterMotorEncoder = ShooterMotor.getEncoder();
     }
 
-    public static void ShooterForward(){
-        ShooterControl(Shooter, ShooterDirections.FORWARD);
+    public static void controlShooter(ShooterState value){
+        powerShooter(ShooterMotor, value);
     }
 
-    public static void ShooterReverse(){
-        ShooterControl(Shooter, ShooterDirections.REVERSE);
-    }
-
-    public static void ShooterStop(){
-        ShooterControl(Shooter, ShooterDirections.STOP);
-    }
-
-
-    private static void ShooterControl(SpeedController controller1, ShooterDirections value){
-        if(value == ShooterDirections.FORWARD){
-            controller1.set(0.8);
+    private static void powerShooter(SpeedController controller1, ShooterState value){
+        if(value == ShooterState.FORWARD){
+            controller1.set(Constants.shooterSpeed);
         }
-
-        else if( value == ShooterDirections.REVERSE){
-            controller1.set(-0.8);
+        else if( value == ShooterState.REVERSE){
+            controller1.set(-Constants.shooterSpeed);
         }
-        else if (value == ShooterDirections.STOP){
+        else if (value == ShooterState.STOP){
             controller1.set(0);
         }
     }
-    
+
+    public static void debugShooter(){
+        SmartDashboard.putNumber("Shooter Encoder", ShooterMotorEncoder.getPosition());
+    }
 }

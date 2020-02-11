@@ -2,59 +2,48 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-//import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.util.*;
 
 public class HangingMove{
 
-private static CANSparkMax hangingWheel;
-private CANEncoder hangingWheelEncoder;
+    private static CANSparkMax HangingMoveMotor;
+    private static CANEncoder HangingMoveMotorEncoder;
 
-    private enum wheelDirection{
+    private enum HangingMoveState{
         LEFT,
         RIGHT,
         STOP
     }
 
-
-    public void init(){
-        hangingWheel = new CANSparkMax(Constants.hangingWheel, MotorType.kBrushless);
-        hangingWheelEncoder = hangingWheel.getEncoder();
-
+    public static void init(){
+        HangingMoveMotor = new CANSparkMax(Constants.hangingWheelMotorID, MotorType.kBrushless);
+        HangingMoveMotor.setIdleMode(IdleMode.kBrake);
+        HangingMoveMotorEncoder = HangingMoveMotor.getEncoder();
     }
 
-    public void moveLeft(){
-        moveControl(hangingWheel, wheelDirection.LEFT);
+    public void controlMove(HangingMoveState value){
+        powerMove(HangingMoveMotor, value);
     }
 
-    public void moveRight(){
-        moveControl(hangingWheel, wheelDirection.RIGHT);
-    }
-
-    public void moveStop(){
-        moveControl(hangingWheel, wheelDirection.STOP);
-    }
-
-
-    private void moveControl(SpeedController motor1, wheelDirection value){
-        if(value == wheelDirection.LEFT){
-            motor1.set(1);
+    private void powerMove(SpeedController motor1, HangingMoveState value){
+        if(value == HangingMoveState.LEFT){
+            motor1.set(Constants.hangerSpeed);
         }
-        else if(value == wheelDirection.RIGHT){
-            motor1.set(-1);
+        else if(value == HangingMoveState.RIGHT){
+            motor1.set(-Constants.hangerSpeed);
         }
-        else if(value == wheelDirection.STOP){
+        else if(value == HangingMoveState.STOP){
             motor1.set(0);
         }
     }
 
     public void hangingDebug(){
-        SmartDashboard.putNumber("Hang Motor Velocity", hangingWheelEncoder.getVelocity());
+        SmartDashboard.putNumber("Hang Motor Velocity", HangingMoveMotorEncoder.getVelocity());
     }
 
 }

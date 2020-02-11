@@ -6,23 +6,27 @@ import edu.wpi.first.wpilibj.Compressor;
 public class Pneumatics{
 
     //Sets up a compressor for use
-    private Compressor compress = new Compressor(Constants.UTILITIES_COMPRESSOR_PORT);
-    
-    public void setCompressorState(boolean state){
-        compress.setClosedLoopControl(state);
-        Constants.compressorState = state;
+    private static Compressor compress;
+
+    public static enum CompressorState{
+        ENABLED, 
+        DISABLED;
     }
 
-    public final void turnOnCompressor(){
-        setCompressorState(Constants.COMPRESSOR_ON);
+    public static void init(){
+        compress = new Compressor(Constants.UTILITIES_COMPRESSOR_PORT);
     }
 
-    public final void turnOffCompressor(){
-        setCompressorState(Constants.COMPRESSOR_OFF);
-
+    public static void controlCompressor(CompressorState value){
+        powerCompressor(value);
     }
 
-    public boolean getCompressorState(){
-        return Constants.compressorState;
+    private static void powerCompressor(CompressorState value){
+        if(value == CompressorState.ENABLED){
+            compress.setClosedLoopControl(true);
+        } 
+        else if(value == CompressorState.DISABLED){
+            compress.setClosedLoopControl(false);
+        }
     }
 }
