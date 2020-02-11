@@ -69,7 +69,7 @@ public class TeleopControl{
 
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels Control
-        if(driver.getRawButton(8)){
+        if(driver.getRawButton(7)){
             WallOfWheels.controlWall(WallState.FORWARD);
         } else if(driver.getRawButton(11)){
             WallOfWheels.controlWall(WallState.REVERSE);
@@ -108,7 +108,7 @@ public class TeleopControl{
 
         //--------------------------------------------------------------------------------------------------------------------
         // Intake Control
-        if(driver.getRawButton(7)){
+        if(driver.getRawButton(4)){
             Intake.controlIntake(IntakeState.INTAKE);
         }
         else{
@@ -133,7 +133,7 @@ public class TeleopControl{
 
         //-------------------------------------------------------------------------------------------------------
         // Shooter Control
-        if(coDriver.getTrigger()){
+        if(driver.getTrigger()){
             Shooter.controlShooter(ShooterState.FORWARD);
         }
         else{
