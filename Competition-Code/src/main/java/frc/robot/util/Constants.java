@@ -50,6 +50,7 @@ public class Constants{
     public static double angle = 0;
     public static double complimentAngle = 0;
     public static double feedForward = 0.03;
+    public static boolean notShot = true;
     //Color Wheel
     public static double searchSpeed = 0.5;
     public static String initalColor;
