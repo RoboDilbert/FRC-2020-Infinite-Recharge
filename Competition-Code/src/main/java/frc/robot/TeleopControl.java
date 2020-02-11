@@ -67,79 +67,79 @@ public class TeleopControl{
                     driver.getZ() / 3, Constants.roboGyro);
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
+        // // -------------------------------------------------------------------------------------------------------------------
 
         //Wall of Wheels Testing
-        if(driver.getRawButton(4)){
+        if(driver.getRawButton(7)){
             WallOfWheels.PowerWall(WallOfWheels.WallDirections.FORWARD);
-        } else if(driver.getRawButton(5)){
+        } else if(driver.getRawButton(11)){
             WallOfWheels.PowerWall(WallOfWheels.WallDirections.REVERSE);
-        }else if(driver.getRawButton(6)){
+        }else if(driver.getRawButton(9)){
             WallOfWheels.PowerWall(WallOfWheels.WallDirections.STOP);
         }
 
-        //----------------------------------------------------------------------------------------------
+        // //----------------------------------------------------------------------------------------------
         
-        //Color Wheel
-        if (coDriver.getRawButton(12) && foundColor != gameData) {
-            foundColor = colorSensor.searchColor();
-            wheelColor.WheelSearch(SearchValue.COLOR);
-        }
-        else if(coDriver.getRawButton(11) && ColorCount <= 6){
-            if(Constants.initalColor == null){
-                Constants.initalColor = colorSensor.searchColor();
-                Constants.bufferColor = Constants.initalColor;
-                colorFlag = true;
-            }
-            wheelColor.WheelSearch(SearchValue.FORWARD);
-            Constants.bufferColor = Constants.nextColor;
-            Constants.nextColor = colorSensor.searchColor();
-            if(Constants.bufferColor == Constants.nextColor || Constants.bufferColor == null){
-                colorFlag = true;
-            }
-            else{
-                colorFlag = false;
-            }
-            if(Constants.initalColor == Constants.nextColor && colorFlag == false){
-                ColorCount++;
-            }
-        }
-        else{
-            wheelColor.WheelSearch(SearchValue.STOP);
-        }
+        // //Color Wheel
+        // if (coDriver.getRawButton(12) && foundColor != gameData) {
+        //     foundColor = colorSensor.searchColor();
+        //     wheelColor.WheelSearch(SearchValue.COLOR);
+        // }
+        // else if(coDriver.getRawButton(11) && ColorCount <= 6){
+        //     if(Constants.initalColor == null){
+        //         Constants.initalColor = colorSensor.searchColor();
+        //         Constants.bufferColor = Constants.initalColor;
+        //         colorFlag = true;
+        //     }
+        //     wheelColor.WheelSearch(SearchValue.FORWARD);
+        //     Constants.bufferColor = Constants.nextColor;
+        //     Constants.nextColor = colorSensor.searchColor();
+        //     if(Constants.bufferColor == Constants.nextColor || Constants.bufferColor == null){
+        //         colorFlag = true;
+        //     }
+        //     else{
+        //         colorFlag = false;
+        //     }
+        //     if(Constants.initalColor == Constants.nextColor && colorFlag == false){
+        //         ColorCount++;
+        //     }
+        // }
+        // else{
+        //     wheelColor.WheelSearch(SearchValue.STOP);
+        // }
 
-        //--------------------------------------------------------------------------------------------------------------------
+        // //--------------------------------------------------------------------------------------------------------------------
 
-        //Intake
+        // //Intake
 
-        if(coDriver.getRawButton(9)){
-            ballIntake.intakeControl(ballValues.INTAKE);
-        }
+        // if(driver.getRawButton(5)){
+        //     ballIntake.intakeControl(ballValues.INTAKE);
+        // }
 
 
-        //------------------------------------------------------------------------------------------------------
-        //indexer test
-        if (coDriver.getRawButton(2)){
+        // //------------------------------------------------------------------------------------------------------
+        // //indexer test
+        if (driver.getRawButton(5)){
             Indexer.indexFeed.set(0.25);
         }
         else{
             Indexer.indexFeed.set(0.0);
         }
         
-        if(coDriver.getRawButton(5)){
+        if(driver.getRawButton(6)){
             Indexer.indexShoot.set(0.25);
         }
         else{
             Indexer.indexShoot.set(0.0);
         }
-        //-------------------------------------------------------------------------------------------------------
-        //shooter test
-        if(coDriver.getTrigger()){
-            Shooter.ShooterForward();
-        }
-        else{
-            Shooter.ShooterStop();
-        }
+        // //-------------------------------------------------------------------------------------------------------
+        // //shooter test
+        // if(coDriver.getTrigger()){
+        //     Shooter.ShooterForward();
+        // }
+        // else{
+        //     Shooter.ShooterStop();
+        // }
 
 
         SmartDashboard.updateValues();
