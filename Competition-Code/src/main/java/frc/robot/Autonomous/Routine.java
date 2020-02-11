@@ -20,7 +20,7 @@ public class Routine{
         Limelight.LimelightInitialize();
 
         //Get in Position
-        while(Constants.inPosition == false){ 
+        while(Constants.notShot){ 
             Constants.cameraX = Limelight.tx.getDouble(0.0);
            
             if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){
@@ -130,6 +130,11 @@ public class Routine{
                 Constants.inPosition = false;
             }
 
+            if(Constants.inPosition){
+                Indexer.ShootAll();
+                Constants.notShot = false;
+            }
+
             SmartDashboard.putBoolean("isSeeing", Constants.isSeeing);
             SmartDashboard.putNumber("LeftDistance", Constants.leftPPDistance);
             SmartDashboard.putNumber("RightDistance", Constants.rightPPDistance);
@@ -139,6 +144,7 @@ public class Routine{
             SmartDashboard.putNumber("LimelightX", Constants.cameraX);
             SmartDashboard.putNumber("XPower", Constants.XPower);
             SmartDashboard.putNumber("ZPower", Constants.ZPower);
+            SmartDashboard.putBoolean("notShot",Constants.notShot);
             SmartDashboard.updateValues();
         }
 

@@ -11,7 +11,7 @@ import frc.robot.util.Constants;
 import com.playingwithfusion.TimeOfFlight;
 //import com.playingwithfusion.TimeOfFlight.RangingMode;
 import edu.wpi.first.wpilibj.SpeedController;
-
+import edu.wpi.first.wpilibj.Timer;
 
 public class Indexer{
 
@@ -53,7 +53,16 @@ public class Indexer{
     }
 
     public static void ShootAll(){
-        //spin both motors
+        double time = Timer.getFPGATimestamp();
+
+        if(time < 10){
+            PowerFeed(IndexPower.SPIN);
+            PowerShooter(IndexPower.SPIN);
+        } else if(time > 10){
+            PowerFeed(IndexPower.STOP);
+            PowerShooter(IndexPower.STOP);
+        }
+        time = 0;
     }
 
     public static void ShootOne(){

@@ -33,7 +33,6 @@ public class Constants{
     // Gyro
     public static double roboGyro;
     //I2C Port
-    public static I2C.Port i2cPort;
     public static double colorVar;
     //TOF Sensor
     public static double rightPPDistance = 0;
@@ -51,6 +50,7 @@ public class Constants{
     public static double angle = 0;
     public static double complimentAngle = 0;
     public static double feedForward = 0.03;
+    public static boolean notShot = true;
     //Color Wheel
     public static double searchSpeed = 0.5;
     public static String initalColor;
