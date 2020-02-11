@@ -1,15 +1,16 @@
 package frc.robot.subsystems;
 
-import frc.robot.util.Pneumatics;
+//import frc.robot.util.Pneumatics;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.Constants;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
+//import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake {
 
@@ -18,16 +19,21 @@ public class Intake {
     
     private DoubleSolenoid intakeDrop;
     
-    
+    public enum ballValues{
+        INTAKE,
+        STOP,
+        REVERSE
+    }
+
     public void init() {
         if(intakeDrop == null){
-        intakeDrop = new DoubleSolenoid(1, 2);
+        intakeDrop = new DoubleSolenoid(Constants.intakeDropForward, Constants.intakeDropBack);
         m_intakeMotor = new CANSparkMax(Constants.motorIntakeID, MotorType.kBrushed);
         m_intakeMotorEncoder = m_intakeMotor.getEncoder();
     }   
 
     }
-
+    
     // --------------------------------------------------------------------
     // Pneumatic Drop (possibly Motors)
     public void dropIntake() throws InterruptedException {
@@ -40,15 +46,24 @@ public class Intake {
 
     //---------------------------------------------------------------------
     // intake motor
-    public void intakeBalls(SpeedController m_intakeMotorSpeed){
-        m_intakeMotorSpeed.set(1);
+
+    public void intakeControl(ballValues value){
+        controlBalls(m_intakeMotor, value);
     }
 
-    public void stopBalls(SpeedController m_intakeMotorSpeed){
-        m_intakeMotorSpeed.set(0);
+    private void controlBalls(SpeedController m_intake,ballValues value){
+        if(value == ballValues.INTAKE){
+            m_intake.set(1);
+        }
+        else if(value == ballValues.REVERSE){
+            m_intake.set(-1);
+        }
+        else{
+            m_intake.set(0);
+        }
     }
 
-    public void reverseBalls(SpeedController m_intakeMotorSpeed){
-        m_intakeMotorSpeed.set(-1);
+    public void intakeDebug(){
+        SmartDashboard.putNumber("intake velocity", m_intakeMotorEncoder.getVelocity());
     }
 }

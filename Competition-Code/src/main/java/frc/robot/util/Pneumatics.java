@@ -1,17 +1,16 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Pneumatics{
 
-    private  boolean compressorState = true;
     //Sets up a compressor for use
     private Compressor compress = new Compressor(Constants.UTILITIES_COMPRESSOR_PORT);
     
     public void setCompressorState(boolean state){
         compress.setClosedLoopControl(state);
-        compressorState = state;
+        Constants.compressorState = state;
     }
 
     public final void turnOnCompressor(){
@@ -24,6 +23,6 @@ public class Pneumatics{
     }
 
     public boolean getCompressorState(){
-        return compressorState;
+        return Constants.compressorState;
     }
 }

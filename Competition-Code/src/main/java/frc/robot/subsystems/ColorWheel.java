@@ -1,17 +1,18 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.util.sensors.RevColor;
-import frc.robot.util.Pneumatics;
+//import frc.robot.util.sensors.RevColor;
+//import frc.robot.util.Pneumatics;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.Constants;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SpeedController;
-import frc.robot.util.Constants;
+//import frc.robot.util.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -29,14 +30,16 @@ private static CANSparkMax m_wheelSpin;
 private CANEncoder m_wheelSpinEncoder;
     
 private DoubleSolenoid wheelCylinder;
-
+// private RevColor colorSensor;
+// private int colorCounter = Constants.colorCount;
 
 public void init() {
     if(wheelCylinder == null){
-    wheelCylinder = new DoubleSolenoid(1, 2);
+    wheelCylinder = new DoubleSolenoid(Constants.colorWheelForward, Constants.colorWheelBack);
    m_wheelSpin = new CANSparkMax(Constants.motorSpinID, MotorType.kBrushless);
    m_wheelSpinEncoder = m_wheelSpin.getEncoder();
    m_wheelSpin.setIdleMode(IdleMode.kBrake);
+   //colorSensor = new RevColor();
     }
 }   
 
@@ -45,9 +48,11 @@ public void WheelSearch(SearchValue value){
 }
 
 public void powerLevelOne(SearchValue value, String color){
-    int colorCounter = Constants.colorCount;
+   
+    
 
 }
+
 
 private void spinThatWheelControl(SpeedController spinThatWheel, SearchValue value){
 if(value == SearchValue.COLOR){
@@ -73,6 +78,10 @@ public void liftWheel() throws InterruptedException{
 
 }
 
+public void colorWheelDebug(){
+SmartDashboard.putNumber("Color Wheel Velocity", m_wheelSpinEncoder.getVelocity());
 
+
+}
 
 }
