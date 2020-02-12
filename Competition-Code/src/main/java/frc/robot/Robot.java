@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 //  import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.*;
 import frc.robot.util.*;
+import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.Pneumatics.*;
 import frc.robot.util.sensors.*;
 import frc.robot.Autonomous.*;
@@ -34,12 +35,14 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
+
+   public static IntakeToggle currentIntakeState;
   @Override
   public void robotInit() {
     // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     // m_chooser.addOption("My Auto", kCustomAuto);
     //SmartDashboard.putData("Auto choices", m_chooser);
-    ColorWheel.init();
+    //ColorWheel.init();
     Drive.init();
     HangingMove.init();
     Indexer.init();
@@ -51,6 +54,8 @@ public class Robot extends TimedRobot {
     Pneumatics.init();
     Pneumatics.controlCompressor(CompressorState.DISABLED);
     Limelight.initUSBCamera();
+
+    currentIntakeState = IntakeToggle.STOP;
   }
 
   @Override

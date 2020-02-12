@@ -67,8 +67,8 @@ public class Constants{
     public static final double hangerSpeed = .2;
 
     // Indexer
-    public static final double feedIndexerSpeed = .2;
-    public static final double shootIndexerSpeed = .2;
+    public static final double feedIndexerSpeed = .4;
+    public static final double shootIndexerSpeed = .4;
 
     // Intake
     public static final double intakeSpeed = .2;
@@ -80,7 +80,7 @@ public class Constants{
     public static final double shooterSpeed = .5;
 
     // Wall of Wheels
-    public static final double wallOfWheelsSpeed = .4;
+    public static final double wallOfWheelsSpeed = .6;
     
     //Can IDs
     public static final int leftFrontMotorID = 1;
@@ -100,4 +100,15 @@ public class Constants{
     public static final int lifterLeftMotorID = 16;//not hooked up
     public static final int lifterRightMotorID = 17;
     public static final int hangingWheelMotorID = 18; //not hooked up
+
+    public static enum IntakeToggle{
+        FORWARD,
+        REVERSE,
+        STOP;
+    }
+
+    public static enum ShooterToggle{
+        
+    }
+    
 }

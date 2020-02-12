@@ -22,7 +22,7 @@ public class Indexer{
     private static TimeOfFlight uppperIndex = new TimeOfFlight(Constants.UPPER_INDEXER_TOF_ID);
     private static TimeOfFlight lowerIndex = new TimeOfFlight(Constants.LOWER_INDEXER_TOF_ID);
 
-    private static int currentBallCount = 0;
+    private static int currentBallCount;
 
     public static enum SelectIndexer{
         FEEDER,
@@ -42,20 +42,21 @@ public class Indexer{
         IndexShootMotor.setIdleMode(IdleMode.kCoast);
         IndexFeedMotorEncoder = IndexFeedMotor.getEncoder();
         IndexShootMotorEncoder = IndexShootMotor.getEncoder();
+        currentBallCount = 0;
     }
 
     public static void controlIndexer(SelectIndexer selectValue, IndexerState stateValue){
         if(selectValue == SelectIndexer.FEEDER){
-            powerIndexer(IndexFeedMotor, stateValue);
+            powerIndexer(IndexFeedMotor, stateValue, -Constants.feedIndexerSpeed);
         }
         else if(selectValue == SelectIndexer.SHOOT){
-            powerIndexer(IndexShootMotor, stateValue);
+            powerIndexer(IndexShootMotor, stateValue, -Constants.shootIndexerSpeed);
         }
     }
 
-    private static void powerIndexer(SpeedController power, IndexerState value){
+    private static void powerIndexer(SpeedController power, IndexerState value, double speed){
         if(value == IndexerState.FORWARD){
-            power.set(.4);
+            power.set(speed);
         }else if(value == IndexerState.STOP){
             power.set(0);
         }
@@ -64,14 +65,14 @@ public class Indexer{
     public static void ShootAll(){
         double time = Timer.getFPGATimestamp();
 
-        if(time < 10){
+        if(time < time + 10){
             controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
             controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-        } else if(time > 10){
+        } else if(time > time + 10){
             controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
         }
-        time = 0;
+        currentBallCount = 0;
     }
 
     public static void ShootOne(){
@@ -88,30 +89,30 @@ public class Indexer{
         }
     }
 
-    public static void Index(){
+    public static boolean Index(){
+        boolean tempFeedBool = false;
         if(currentBallCount < 3){
-            if(uppperIndex.getRange() < 100){
-                if(uppperIndex.getRange() < 100 || lowerIndex.getRange() < 100){
-                    controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
-                }else{
-                    controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
-                    currentBallCount += 1;
-                }
+            if(uppperIndex.getRange() < 100 || lowerIndex.getRange() < 100){
+                controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                tempFeedBool = true;
+            }else{
+                controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             }
         }
         else if(currentBallCount == 3){
-            if(uppperIndex.getRange() < 100){
-                if(uppperIndex.getRange() < 100 && lowerIndex.getRange() > 100){
-                    controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
-                }else{
-                    controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
-                    currentBallCount += 1;
-                }
+            if(uppperIndex.getRange() < 100 && lowerIndex.getRange() > 100){
+                controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+            }else{
+                controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                //currentBallCount += 1;
             }
         }
+        return tempFeedBool;
     }
 
     public static void debugIndexer(){
+        SmartDashboard.putNumber("Upper TOF", uppperIndex.getRange());
+        SmartDashboard.putNumber("Lower TOF", lowerIndex.getRange());
         SmartDashboard.putNumber("Feeder Indexer Motor Encoder", IndexFeedMotorEncoder.getPosition());
         SmartDashboard.putNumber("Shoot Indexer Motor Encoder", IndexShootMotorEncoder.getPosition());
     }
