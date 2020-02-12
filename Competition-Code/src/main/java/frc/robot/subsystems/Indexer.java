@@ -23,6 +23,7 @@ public class Indexer{
     private static TimeOfFlight lowerIndex = new TimeOfFlight(Constants.LOWER_INDEXER_TOF_ID);
 
     private static int currentBallCount;
+    private static boolean ballCountFlag = false;
 
     public static enum SelectIndexer{
         FEEDER,
@@ -104,8 +105,12 @@ public class Indexer{
                 controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
             }else{
                 controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
-                //currentBallCount += 1;
+                //tempFeedBool = true;
             }
+        }
+        if(ballCountFlag = true){
+            currentBallCount++;
+            ballCountFlag = false;
         }
         return tempFeedBool;
     }

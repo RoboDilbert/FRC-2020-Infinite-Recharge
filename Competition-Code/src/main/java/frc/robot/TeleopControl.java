@@ -44,7 +44,6 @@ public class TeleopControl{
     private static boolean colorFlag;
 
     private static boolean autoIndex;
-    private static boolean ballCountFlag;
     private static int shooterCount;
 
     public static void init() {
