@@ -41,7 +41,11 @@ public class Shooter{
         }
     }
 
+    public static double getShooterWheelSpeed(){
+        return ShooterMotorEncoder.getVelocity();
+    }
+
     public static void debugShooter(){
-        SmartDashboard.putNumber("Shooter Encoder", ShooterMotorEncoder.getPosition());
+        SmartDashboard.putNumber("Shooter Speed", ShooterMotorEncoder.getVelocity());
     }
 }

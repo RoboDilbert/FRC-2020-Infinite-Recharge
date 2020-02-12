@@ -68,7 +68,7 @@ public class Constants{
 
     // Indexer
     public static final double feedIndexerSpeed = .4;
-    public static final double shootIndexerSpeed = .4;
+    public static final double shootIndexerSpeed = .1;
 
     // Intake
     public static final double intakeSpeed = .2;
@@ -77,7 +77,7 @@ public class Constants{
     public static final double lifterSpeed = .3;
 
     // Shooter
-    public static final double shooterSpeed = .5;
+    public static final double shooterSpeed = .8;
 
     // Wall of Wheels
     public static final double wallOfWheelsSpeed = .6;

@@ -9,6 +9,7 @@ import frc.robot.subsystems.Intake.*;
 //import frc.robot.subsystems.LiftSystem.*;
 import frc.robot.subsystems.Shooter.*;
 import frc.robot.subsystems.WallOfWheels.*;
+import edu.wpi.first.wpilibj.Timer;
 
 import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
@@ -43,6 +44,8 @@ public class TeleopControl{
     private static boolean colorFlag;
 
     private static boolean autoIndex;
+    private static boolean ballCountFlag;
+    private static int shooterCount;
 
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
@@ -51,6 +54,7 @@ public class TeleopControl{
         // add usb camera
         colorSensor = new RevColor();
         autoIndex = false;
+        shooterCount = 0;
     }
 
     public static void run() {
@@ -76,7 +80,6 @@ public class TeleopControl{
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intale Control
     
-
         if(driver.getRawButton(7)){
             Robot.currentIntakeState = IntakeToggle.FORWARD;
         } else if(driver.getRawButton(9)){
@@ -124,44 +127,25 @@ public class TeleopControl{
         // else{
         //     ColorWheel.WheelSearch(SearchValue.STOP);
         // }
-
-        //--------------------------------------------------------------------------------------------------------------------
-        // Intake Control
-        // if(driver.getRawButton(4)){
-        //     Intake.controlIntake(IntakeState.INTAKE);
-        // }
-        // else{
-        //     Intake.controlIntake(IntakeState.STOP);
-        // }
-
         //------------------------------------------------------------------------------------------------------
         // Indexer Control
 
         autoIndex = Indexer.Index();
 
-        // if (driver.getRawButton(5)){
-        //     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
-        // }
-        // else{
-        //     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
-        // }
-        
-        // if(driver.getRawButton(6)){
-        //     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-        // }
-        // else{
-        //     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-        // }
-
         //-------------------------------------------------------------------------------------------------------
         // Shooter Control
+
+
         if(driver.getRawButton(1)){
-            
-            Shooter.controlShooter(ShooterState.FORWARD);
-            if(autoIndex = false){
-                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+            if(Shooter.getShooterWheelSpeed() < 4100){
+                Shooter.controlShooter(ShooterState.FORWARD);
+            } else if(Shooter.getShooterWheelSpeed() > 4100){
+                Shooter.controlShooter(ShooterState.FORWARD);
+                if(autoIndex = false){
+                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                }
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
             }
-            Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
         }
         else{
             Shooter.controlShooter(ShooterState.STOP);
@@ -169,9 +153,11 @@ public class TeleopControl{
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             }
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+            shooterCount = 0;
         }
 
         Indexer.debugIndexer();
+        Shooter.debugShooter();
         SmartDashboard.updateValues();
     }
 }
