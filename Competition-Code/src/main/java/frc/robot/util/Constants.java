@@ -68,19 +68,19 @@ public class Constants{
 
     // Indexer
     public static final double feedIndexerSpeed = .4;
-    public static final double shootIndexerSpeed = .1;
+    public static final double shootIndexerSpeed = .3;
 
     // Intake
-    public static final double intakeSpeed = .2;
+    public static final double intakeSpeed = .4;
 
     // LiftSystem
     public static final double lifterSpeed = .3;
 
     // Shooter
-    public static final double shooterSpeed = .8;
+    public static final double shooterSpeed = .70;
 
     // Wall of Wheels
-    public static final double wallOfWheelsSpeed = .6;
+    public static final double wallOfWheelsSpeed = 0.95;
     
     //Can IDs
     public static final int leftFrontMotorID = 1;

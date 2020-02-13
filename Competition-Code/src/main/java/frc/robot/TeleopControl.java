@@ -53,12 +53,13 @@ public class TeleopControl{
         // add usb camera
         colorSensor = new RevColor();
         autoIndex = false;
-        shooterCount = 0;
+        
+        
     }
 
     public static void run() {
         autoIndex = false;
-
+        
         // Driving Program w/ Gyro
         // -----------------------------------------------------------------------
         Constants.roboGyro = Gyro.updateGyroAngle();
@@ -136,15 +137,16 @@ public class TeleopControl{
 
 
         if(driver.getRawButton(1)){
-            if(Shooter.getShooterWheelSpeed() < 4100){
+            if(Shooter.getShooterWheelSpeed() < 3500){
                 Shooter.controlShooter(ShooterState.FORWARD);
-            } else if(Shooter.getShooterWheelSpeed() > 4100){
+            }else if(Shooter.getShooterWheelSpeed() > 3500){
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if(autoIndex = false){
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                 }
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
             }
+            Indexer.indexerClear();
         }
         else{
             Shooter.controlShooter(ShooterState.STOP);
@@ -152,7 +154,6 @@ public class TeleopControl{
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             }
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-            shooterCount = 0;
         }
 
         Indexer.debugIndexer();

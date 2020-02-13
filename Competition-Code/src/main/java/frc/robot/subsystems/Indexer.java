@@ -22,8 +22,9 @@ public class Indexer{
     private static TimeOfFlight uppperIndex = new TimeOfFlight(Constants.UPPER_INDEXER_TOF_ID);
     private static TimeOfFlight lowerIndex = new TimeOfFlight(Constants.LOWER_INDEXER_TOF_ID);
 
-    private static int currentBallCount;
+    public static int currentBallCount;
     private static boolean ballCountFlag = false;
+    
 
     public static enum SelectIndexer{
         FEEDER,
@@ -95,9 +96,14 @@ public class Indexer{
         if(currentBallCount < 3){
             if(uppperIndex.getRange() < 100 || lowerIndex.getRange() < 100){
                 controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                ballCountFlag = true;
                 tempFeedBool = true;
             }else{
                 controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                if(ballCountFlag == true){
+                    currentBallCount ++;
+                }
+                ballCountFlag = false;
             }
         }
         else if(currentBallCount == 3){
@@ -108,11 +114,14 @@ public class Indexer{
                 //tempFeedBool = true;
             }
         }
-        if(ballCountFlag = true){
-            currentBallCount++;
-            ballCountFlag = false;
-        }
+        // if(ballCountFlag = true){
+        //     currentBallCount++;
+        // }
         return tempFeedBool;
+    }
+
+    public static void indexerClear(){
+        currentBallCount = 0;
     }
 
     public static void debugIndexer(){
@@ -120,5 +129,8 @@ public class Indexer{
         SmartDashboard.putNumber("Lower TOF", lowerIndex.getRange());
         SmartDashboard.putNumber("Feeder Indexer Motor Encoder", IndexFeedMotorEncoder.getPosition());
         SmartDashboard.putNumber("Shoot Indexer Motor Encoder", IndexShootMotorEncoder.getPosition());
+        SmartDashboard.putBoolean("ballFlag", ballCountFlag);
+        SmartDashboard.putNumber("Ballz", currentBallCount);
+        
     }
 }
