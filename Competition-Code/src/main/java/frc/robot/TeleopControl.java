@@ -12,6 +12,8 @@ import frc.robot.subsystems.WallOfWheels.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.fasterxml.jackson.core.PrettyPrinter;
+
 import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.sensors.*;
@@ -147,12 +149,13 @@ public class TeleopControl{
                 if (autoIndex = false) {
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                 }
-                if (Constants.shootFlag == true || Shooter.getShooterWheelSpeed() > 3400) {
+                if (Constants.shootFlag == true || Shooter.getShooterWheelSpeed() > 3500) {
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
                     Constants.shootFlag = false;
-                    shootTimer.purge();
+                    SmartDashboard.updateValues();
+                    //shootTimer.purge();
                 } else {
-                    if (Constants.shootFlag == false || Constants.shootFlag == null) {
+                    if (Constants.shootFlag == false) {
                         shootTimer.schedule(shootTask, 1000);
                     }
                 }
@@ -169,6 +172,7 @@ public class TeleopControl{
 
         Indexer.debugIndexer();
         Shooter.debugShooter();
+        SmartDashboard.putBoolean("TimerFlag", Constants.shootFlag);
         SmartDashboard.updateValues();
     }
 }
@@ -178,5 +182,7 @@ class Helper extends TimerTask{
     public void run() 
     { 
         Constants.shootFlag = true;
+
+        SmartDashboard.updateValues();
     } 
 }
