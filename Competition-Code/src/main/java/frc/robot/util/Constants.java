@@ -7,18 +7,17 @@ public class Constants{
 
     // GamePad
     public static final int kGamepadButtonA = 1;
-    public static final int DRIVER_CONTROLLER_ID = 1;
-    public static final int CODRIVER_CONTROLLER_ID = 0;
+    public static final int DRIVER_CONTROLLER_ID = 0;
+    public static final int CODRIVER_CONTROLLER_ID = 1;
 
     // Pneumatics
     public static final boolean compressorState = true;
     public static final int UTILITIES_COMPRESSOR_PORT = 0;
-    public static final int colorWheelForward = 1;
-    public static final int colorWheelBack = 2;
-    public static final int intakeDropForward = 3;
-    public static final int intakeDropBack = 4;
-    public static final int pinLockForward = 5;
-    public static final int pinLockBack = 6;
+    public static final int colorWheelSolenoid = 0;
+    public static final int intakeDropForwardSolenoid = 1;
+    public static final int intakeDropBackSolenoid = 2;
+    public static final int pinLockForwardSolenoid = 5;
+    public static final int pinLockBackSolenoid = 6;
 
     // Camera
     public static final int CAMERA1_WIDTH = 160;
@@ -98,7 +97,7 @@ public class Constants{
     public static final int LEFT_PP_TOF_ID = 13;
     public static final int RIGHT_PP_TOF_ID = 14;
     public static final int IndexFeedMotorID = 15;
-    public static final int lifterLeftMotorID = 16;//not hooked up
+    public static final int lifterLeftMotorID = 16;
     public static final int lifterRightMotorID = 17;
     public static final int hangingWheelMotorID = 18; //not hooked up
 

@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putData("Auto choices", m_chooser);
     //ColorWheel.init();
     Drive.init();
-    HangingMove.init();
+    //HangingMove.init();
     Indexer.init();
     Intake.init();
     LiftSystem.init();
@@ -52,8 +52,8 @@ public class Robot extends TimedRobot {
     WallOfWheels.init();
     TeleopControl.init();
     Pneumatics.init();
-    Pneumatics.controlCompressor(CompressorState.DISABLED);
-    Limelight.initUSBCamera();
+    Pneumatics.controlCompressor(CompressorState.ENABLED);
+    //Limelight.initUSBCamera();
 
     currentIntakeState = IntakeToggle.STOP;
   }

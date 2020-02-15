@@ -33,7 +33,7 @@ public class LiftSystem{
         lifterMotor2.setIdleMode(IdleMode.kBrake);
         lifterMotor1Encoder = lifterMotor1.getEncoder();
         lifterMotor2Encoder = lifterMotor2.getEncoder();
-        m_pinLock1 = new DoubleSolenoid(Constants.pinLockForward, Constants.pinLockBack);
+        m_pinLock1 = new DoubleSolenoid(Constants.pinLockForwardSolenoid, Constants.pinLockBackSolenoid);
        // m_pinLock2 = new DoubleSolenoid(1, 0);
     }
 
@@ -45,17 +45,17 @@ public class LiftSystem{
         m_pinLock1.set(Value.kReverse);
     }
 
-    public void controlLifter(LifterState value){
+    public static void controlLifter(LifterState value){
         powerLifter(lifterMotor1, lifterMotor2, value);
     }
 
-    private void powerLifter(SpeedController motor1, SpeedController motor2, LifterState value ){
+    private static void powerLifter(SpeedController motor1, SpeedController motor2, LifterState value){
         if(value == LifterState.FORWARD){
-            motor1.set(Constants.lifterSpeed);
+            motor1.set(-Constants.lifterSpeed);
             motor2.set(Constants.lifterSpeed);
         }
         else if(value == LifterState.REVERSE){
-            motor1.set(-Constants.lifterSpeed);
+            motor1.set(Constants.lifterSpeed);
             motor2.set(-Constants.lifterSpeed);
         }
         else if (value == LifterState.STOP){

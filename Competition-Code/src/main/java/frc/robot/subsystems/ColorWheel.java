@@ -2,8 +2,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
 //import frc.robot.util.sensors.RevColor;
 //import frc.robot.util.Pneumatics;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.util.Constants;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -26,27 +25,27 @@ String gameData = DriverStation.getInstance().getGameSpecificMessage();
 private static CANSparkMax ColorWheelMotor;
 private static CANEncoder ColorWheelMotorEncoder;
     
-private static DoubleSolenoid wheelCylinder;
+private static Solenoid wheelCylinder;
 // private RevColor colorSensor;
 // private int colorCounter = Constants.colorCount;
 
 public static void init() {
-   wheelCylinder = new DoubleSolenoid(Constants.colorWheelForward, Constants.colorWheelBack);
+   wheelCylinder = new Solenoid(Constants.colorWheelSolenoid);
    ColorWheelMotor = new CANSparkMax(Constants.colorWheelMotorID, MotorType.kBrushless);
    ColorWheelMotorEncoder = ColorWheelMotor.getEncoder();
    ColorWheelMotor.setIdleMode(IdleMode.kBrake);
    //colorSensor = new RevColor();
 }   
 
-public static void WheelSearch(SearchValue value){
-    controlColorWheel(ColorWheelMotor, value);
+public static void controlColorWheel(SearchValue value){
+    powerColorWheel(ColorWheelMotor, value);
 }
 
 public void powerLevelOne(SearchValue value, String color){
  
 }
 
-private static void controlColorWheel(SpeedController spinThatWheel, SearchValue value){
+private static void powerColorWheel(SpeedController spinThatWheel, SearchValue value){
     if(value == SearchValue.COLOR){
         spinThatWheel.set(Constants.searchSpeed);
     }
@@ -61,12 +60,12 @@ private static void controlColorWheel(SpeedController spinThatWheel, SearchValue
     }
 }
 
-public void dropWheel() throws InterruptedException {
-    wheelCylinder.set(Value.kForward);
+public static void dropWheel(){
+    wheelCylinder.set(true);
 }
 
-public void liftWheel() throws InterruptedException{
-    wheelCylinder.set(Value.kReverse);
+public static void liftWheel(){
+    wheelCylinder.set(false);
 }
 
 public void colorWheelDebug(){

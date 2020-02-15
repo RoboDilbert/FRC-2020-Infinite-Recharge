@@ -6,6 +6,7 @@ import frc.robot.subsystems.ColorWheel.*;
 //import frc.robot.subsystems.HangingMove.*;
 import frc.robot.subsystems.Indexer.*;
 import frc.robot.subsystems.Intake.*;
+import frc.robot.subsystems.LiftSystem.LifterState;
 //import frc.robot.subsystems.LiftSystem.*;
 import frc.robot.subsystems.Shooter.*;
 import frc.robot.subsystems.WallOfWheels.*;
@@ -34,7 +35,6 @@ public class TeleopControl{
     public static Joystick driver;
     private static Joystick coDriver;
 
-    private static RevColor colorSensor;
     private static String foundColor;
     // public double yValue;
     // public double xValue;
@@ -47,18 +47,17 @@ public class TeleopControl{
     private static boolean colorFlag;
 
     private static boolean autoIndex;
-    private static int shooterCount;
+    private static int solenoidPosition = 1;
 
     static Timer shootTimer = new Timer();
-    static TimerTask shootTask = new Helper();
+    //static TimerTask shootTask = new Helper();
 
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         // add usb camera
-        colorSensor = new RevColor();
-        autoIndex = false;
+         autoIndex = false;
 
     }
 
@@ -72,9 +71,9 @@ public class TeleopControl{
         if (driver.getRawButton(3)) {
             Gyro.resetGyro();
         }
-        if (coDriver.getRawButton(1)) {
+        if (coDriver.getRawButton(9)) {
             Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ() / 3, Constants.roboGyro);
-        } else if (driver.getRawButton(2)) {
+        } else if (coDriver.getRawButton(10)) {
             Drive.driveWithoutTurn(driver.getX() / Constants.movementRestriction,
                     driver.getY() / Constants.movementRestriction, Constants.roboGyro);
         } else {
@@ -83,15 +82,15 @@ public class TeleopControl{
         }
 
         // -------------------------------------------------------------------------------------------------------------------
-        // Wall of Wheels & Intale Control
-
-        if (driver.getRawButton(7)) {
-            Robot.currentIntakeState = IntakeToggle.FORWARD;
-        } else if (driver.getRawButton(9)) {
-            Robot.currentIntakeState = IntakeToggle.STOP;
-        } else if (driver.getRawButton(11)) {
-            Robot.currentIntakeState = IntakeToggle.REVERSE;
-        }
+        // Wall of Wheels & Intake Control
+        
+            if (driver.getRawButton(7)) {
+                Robot.currentIntakeState = IntakeToggle.FORWARD;
+            } else if (driver.getRawButton(9)) {
+                Robot.currentIntakeState = IntakeToggle.STOP;
+            } else if (driver.getRawButton(11)) {
+                Robot.currentIntakeState = IntakeToggle.REVERSE;
+            }
 
         if (Robot.currentIntakeState == IntakeToggle.FORWARD) {
             WallOfWheels.controlWall(WallState.FORWARD);
@@ -102,6 +101,22 @@ public class TeleopControl{
         } else if (Robot.currentIntakeState == IntakeToggle.STOP) {
             WallOfWheels.controlWall(WallState.STOP);
             Intake.controlIntake(IntakeState.STOP);
+        }
+
+        if(driver.getRawButton(12)){
+            Intake.dropIntake();
+            solenoidPosition = 0;
+        }
+        if(driver.getRawButton(10)){
+            Intake.liftIntake();
+            solenoidPosition = 1;
+        }
+
+        if(coDriver.getRawButton(7)){
+            Indexer.controlIndexer(Indexer.SelectIndexer.FEEDER, IndexerState.FORWARD);
+        }
+        else{
+            Indexer.controlIndexer(Indexer.SelectIndexer.FEEDER, IndexerState.STOP);
         }
 
         // ----------------------------------------------------------------------------------------------
@@ -133,32 +148,53 @@ public class TeleopControl{
         // else{
         // ColorWheel.WheelSearch(SearchValue.STOP);
         // }
+
+        // if(driver.getRawButton(8)){
+        //     ColorWheel.controlColorWheel(SearchValue.FORWARD);
+        // }
+        // else{
+        //     ColorWheel.controlColorWheel(SearchValue.STOP);
+        // }
+
+        if(coDriver.getRawButton(4)){
+            ColorWheel.liftWheel();
+        }
+        if(coDriver.getRawButton(3)){
+            ColorWheel.dropWheel();
+        }
         // ------------------------------------------------------------------------------------------------------
         // Indexer Control
 
-        autoIndex = Indexer.Index();
+        //autoIndex = Indexer.Index();
 
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
 
         if (driver.getRawButton(1)) {
-            if (Shooter.getShooterWheelSpeed() < 3500) {
+            // if(driver.getRawButton(7) != false  && driver.getRawButton(11) != true){
+            //     Robot.currentIntakeState = IntakeToggle.STOP;
+            // }
+            if (Shooter.getShooterWheelSpeed() < 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
-            } else if (Shooter.getShooterWheelSpeed() > 3500) {
+                if(autoIndex = false){
+                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                }
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+            } else if (Shooter.getShooterWheelSpeed() > 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if (autoIndex = false) {
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                 }
-                if (Constants.shootFlag == true || Shooter.getShooterWheelSpeed() > 3500) {
+                //if (Shooter.getShooterWheelSpeed() > 3500) {
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-                    Constants.shootFlag = false;
+                   // Constants.shootFlag = false;
                     SmartDashboard.updateValues();
                     //shootTimer.purge();
-                } else {
-                    if (Constants.shootFlag == false) {
-                        shootTimer.schedule(shootTask, 1000);
-                    }
-                }
+                 //else {
+                    // if (Constants.shootFlag == false) {
+                    //     //shootTimer.schedule(shootTask, 1000);
+                    // }
+                //}
             }
             Indexer.indexerClear();
         }
@@ -170,6 +206,21 @@ public class TeleopControl{
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
         }
 
+        // -------------------------------------------------------------------------------------------------------
+        // Lifter Control
+        if(coDriver.getRawButton(1)){
+            LiftSystem.controlLifter(LifterState.FORWARD);
+        }else if(coDriver.getRawButton(2)){
+            LiftSystem.controlLifter(LifterState.REVERSE);
+        }else{
+            LiftSystem.controlLifter(LifterState.STOP);
+        }
+
+        //--------------------------------------------------------------------------------------------------------
+        //Hook Control
+        
+        //--------------------------------------------------------------------------------------------------------
+        //Debug Control
         Indexer.debugIndexer();
         Shooter.debugShooter();
         SmartDashboard.putBoolean("TimerFlag", Constants.shootFlag);
@@ -177,12 +228,12 @@ public class TeleopControl{
     }
 }
 
-class Helper extends TimerTask{
+// class Helper extends TimerTask{
 
-    public void run() 
-    { 
-        Constants.shootFlag = true;
+//     public void run() 
+//     { 
+//         Constants.shootFlag = true;
 
-        SmartDashboard.updateValues();
-    } 
-}
+//         SmartDashboard.updateValues();
+//     } 
+// }

@@ -22,18 +22,18 @@ public class Intake {
     }
 
     public static void init() {
-        intakeDrop = new DoubleSolenoid(Constants.intakeDropForward, Constants.intakeDropBack);
+        intakeDrop = new DoubleSolenoid(Constants.intakeDropForwardSolenoid, Constants.intakeDropBackSolenoid);
         IntakeMotor = new CANSparkMax(Constants.IntakeMotorID, MotorType.kBrushed);
         IntakeMotor.setIdleMode(IdleMode.kCoast);
     }
     
     // --------------------------------------------------------------------
     // Pneumatic Drop (possibly Motors)
-    public static void dropIntake() throws InterruptedException {
+    public static void dropIntake(){
         intakeDrop.set(Value.kForward);
     }
 
-    public static void liftIntake() throws InterruptedException{
+    public static void liftIntake(){
         intakeDrop.set(Value.kReverse);
     }
 
