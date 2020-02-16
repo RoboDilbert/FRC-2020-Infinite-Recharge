@@ -14,7 +14,7 @@ public class HangingMove{
     private static CANSparkMax HangingMoveMotor;
     private static CANEncoder HangingMoveMotorEncoder;
 
-    private enum HangingMoveState{
+    public enum HangingMoveState{
         LEFT,
         RIGHT,
         STOP
@@ -26,11 +26,11 @@ public class HangingMove{
         HangingMoveMotorEncoder = HangingMoveMotor.getEncoder();
     }
 
-    public void controlMove(HangingMoveState value){
+    public static void controlMove(HangingMoveState value){
         powerMove(HangingMoveMotor, value);
     }
 
-    private void powerMove(SpeedController motor1, HangingMoveState value){
+    private static void powerMove(SpeedController motor1, HangingMoveState value){
         if(value == HangingMoveState.LEFT){
             motor1.set(Constants.hangerSpeed);
         }
@@ -42,7 +42,7 @@ public class HangingMove{
         }
     }
 
-    public void hangingDebug(){
+    public static void hangingDebug(){
         SmartDashboard.putNumber("Hang Motor Velocity", HangingMoveMotorEncoder.getVelocity());
     }
 

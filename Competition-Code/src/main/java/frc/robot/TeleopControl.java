@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.ColorWheel.*;
+import frc.robot.subsystems.HangingMove.HangingMoveState;
 //import frc.robot.subsystems.HangingMove.*;
 import frc.robot.subsystems.Indexer.*;
 import frc.robot.subsystems.Intake.*;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 
 import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
+import frc.robot.util.Pneumatics.CompressorState;
 import frc.robot.util.sensors.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -34,6 +36,7 @@ public class TeleopControl{
     
     public static Joystick driver;
     private static Joystick coDriver;
+    private static Joystick ButtonLayout;
 
     private static String foundColor;
     // public double yValue;
@@ -45,9 +48,12 @@ public class TeleopControl{
     private static int ColorCount;
     private static String gameData;
     private static boolean colorFlag;
+    private static boolean intakeDirectionFlag;
+    private static boolean intakeFlipFlag = true;
 
     private static boolean autoIndex;
-    private static int solenoidPosition = 1;
+    private static boolean solenoidPosition; //false is up
+
 
     static Timer shootTimer = new Timer();
     //static TimerTask shootTask = new Helper();
@@ -55,10 +61,11 @@ public class TeleopControl{
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
+        ButtonLayout = new Joystick(Constants.BUTTON_LAYOUT_CONTROLLER_ID);
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         // add usb camera
          autoIndex = false;
-
+        solenoidPosition = false;
     }
 
     public static void run() {
@@ -71,9 +78,9 @@ public class TeleopControl{
         if (driver.getRawButton(3)) {
             Gyro.resetGyro();
         }
-        if (coDriver.getRawButton(9)) {
+        if (driver.getRawButton(2)) {
             Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ() / 3, Constants.roboGyro);
-        } else if (coDriver.getRawButton(10)) {
+        } else if (driver.getRawButton(5)) {
             Drive.driveWithoutTurn(driver.getX() / Constants.movementRestriction,
                     driver.getY() / Constants.movementRestriction, Constants.roboGyro);
         } else {
@@ -84,12 +91,15 @@ public class TeleopControl{
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intake Control
         
-            if (driver.getRawButton(7)) {
+            if (driver.getRawButton(4) && solenoidPosition == true && intakeDirectionFlag == false) {
                 Robot.currentIntakeState = IntakeToggle.FORWARD;
-            } else if (driver.getRawButton(9)) {
+                intakeDirectionFlag = true;
+            } else if (driver.getRawButton(4) && intakeDirectionFlag == true || driver.getRawButton(6) && intakeDirectionFlag == true){
                 Robot.currentIntakeState = IntakeToggle.STOP;
-            } else if (driver.getRawButton(11)) {
+                intakeDirectionFlag = false;
+            } else if (driver.getRawButton(6) && solenoidPosition == true == false) {
                 Robot.currentIntakeState = IntakeToggle.REVERSE;
+                intakeDirectionFlag = true;
             }
 
         if (Robot.currentIntakeState == IntakeToggle.FORWARD) {
@@ -103,20 +113,13 @@ public class TeleopControl{
             Intake.controlIntake(IntakeState.STOP);
         }
 
-        if(driver.getRawButton(12)){
+        if(ButtonLayout.getRawButton(6) && intakeFlipFlag == true){
             Intake.dropIntake();
-            solenoidPosition = 0;
+            solenoidPosition = true;
         }
-        if(driver.getRawButton(10)){
+        if(driver.getRawButton(6) && intakeFlipFlag == false){
             Intake.liftIntake();
-            solenoidPosition = 1;
-        }
-
-        if(coDriver.getRawButton(7)){
-            Indexer.controlIndexer(Indexer.SelectIndexer.FEEDER, IndexerState.FORWARD);
-        }
-        else{
-            Indexer.controlIndexer(Indexer.SelectIndexer.FEEDER, IndexerState.STOP);
+            solenoidPosition = false;
         }
 
         // ----------------------------------------------------------------------------------------------
@@ -156,6 +159,14 @@ public class TeleopControl{
         //     ColorWheel.controlColorWheel(SearchValue.STOP);
         // }
 
+        if(ButtonLayout.getRawButton(2)){
+            ColorWheel.controlColorWheel(SearchValue.FORWARD);
+        } else if(ButtonLayout.getRawButton(1)){
+            ColorWheel.controlColorWheel(SearchValue.REVERSE);
+        }else{
+            ColorWheel.controlColorWheel(SearchValue.STOP);
+        }
+
         if(coDriver.getRawButton(4)){
             ColorWheel.liftWheel();
         }
@@ -165,15 +176,23 @@ public class TeleopControl{
         // ------------------------------------------------------------------------------------------------------
         // Indexer Control
 
-        //autoIndex = Indexer.Index();
+        autoIndex = Indexer.Index();
+
+        if(coDriver.getRawButton(4)){
+            Indexer.currentBallCount++;
+        }else if(coDriver.getRawButton(2)){
+            Indexer.currentBallCount--;
+        }
 
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
 
         if (driver.getRawButton(1)) {
-            // if(driver.getRawButton(7) != false  && driver.getRawButton(11) != true){
-            //     Robot.currentIntakeState = IntakeToggle.STOP;
-            // }
+            Pneumatics.controlCompressor(CompressorState.DISABLED);
+            if(driver.getRawButton(4) != true  && driver.getRawButton(6) != true){
+                Robot.currentIntakeState = IntakeToggle.STOP;
+            }
+            
             if (Shooter.getShooterWheelSpeed() < 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if(autoIndex = false){
@@ -204,13 +223,14 @@ public class TeleopControl{
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             }
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+            Pneumatics.controlCompressor(CompressorState.ENABLED);
         }
 
         // -------------------------------------------------------------------------------------------------------
         // Lifter Control
-        if(coDriver.getRawButton(1)){
+        if(coDriver.getPOV() == 0){
             LiftSystem.controlLifter(LifterState.FORWARD);
-        }else if(coDriver.getRawButton(2)){
+        }else if(coDriver.getPOV() == 180){
             LiftSystem.controlLifter(LifterState.REVERSE);
         }else{
             LiftSystem.controlLifter(LifterState.STOP);
@@ -218,7 +238,14 @@ public class TeleopControl{
 
         //--------------------------------------------------------------------------------------------------------
         //Hook Control
-        
+        if(coDriver.getPOV() == 90){
+            HangingMove.controlMove(HangingMove.HangingMoveState.RIGHT);
+        }else if(coDriver.getPOV() == 270){
+            HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
+        }else{
+            HangingMove.controlMove(HangingMove.HangingMoveState.STOP);
+        }
+
         //--------------------------------------------------------------------------------------------------------
         //Debug Control
         Indexer.debugIndexer();

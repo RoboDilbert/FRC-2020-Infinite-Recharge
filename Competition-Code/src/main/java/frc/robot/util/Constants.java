@@ -3,12 +3,13 @@ package frc.robot.util;
 public class Constants{
 
     // Drive
-    public static final int movementRestriction = 2;
+    public static final int movementRestriction = 3;
 
     // GamePad
     public static final int kGamepadButtonA = 1;
     public static final int DRIVER_CONTROLLER_ID = 0;
     public static final int CODRIVER_CONTROLLER_ID = 1;
+    public static final int BUTTON_LAYOUT_CONTROLLER_ID = 2;
 
     // Pneumatics
     public static final boolean compressorState = true;
@@ -70,17 +71,17 @@ public class Constants{
     public static final double shootIndexerSpeed = .3;
 
     // Intake
-    public static final double intakeSpeed = .4;
+    public static final double intakeSpeed = .3;
 
     // LiftSystem
-    public static final double lifterSpeed = .3;
+    public static final double lifterSpeed = .5;
 
     // Shooter
     public static final double shooterSpeed = .70;
     public static boolean shootFlag = false;
 
     // Wall of Wheels
-    public static final double wallOfWheelsSpeed = 0.95;
+    public static final double wallOfWheelsSpeed = 0.65;
     
     //Can IDs
     public static final int leftFrontMotorID = 1;
@@ -99,7 +100,7 @@ public class Constants{
     public static final int IndexFeedMotorID = 15;
     public static final int lifterLeftMotorID = 16;
     public static final int lifterRightMotorID = 17;
-    public static final int hangingWheelMotorID = 18; //not hooked up
+    public static final int hangingWheelMotorID = 18;
 
     public static enum IntakeToggle{
         FORWARD,

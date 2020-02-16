@@ -23,7 +23,7 @@ public class Intake {
 
     public static void init() {
         intakeDrop = new DoubleSolenoid(Constants.intakeDropForwardSolenoid, Constants.intakeDropBackSolenoid);
-        IntakeMotor = new CANSparkMax(Constants.IntakeMotorID, MotorType.kBrushed);
+        IntakeMotor = new CANSparkMax(Constants.IntakeMotorID, MotorType.kBrushless);
         IntakeMotor.setIdleMode(IdleMode.kCoast);
     }
     
@@ -46,10 +46,10 @@ public class Intake {
 
     private static void powerIntake(SpeedController m_intake, IntakeState value){
         if(value == IntakeState.INTAKE){
-            m_intake.set(Constants.intakeSpeed);
+            m_intake.set(-Constants.intakeSpeed);
         }
         else if(value == IntakeState.REVERSE){
-            m_intake.set(-Constants.intakeSpeed);
+            m_intake.set(Constants.intakeSpeed);
         }
         else if(value == IntakeState.STOP){
             m_intake.set(0);
