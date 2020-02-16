@@ -3,7 +3,7 @@ package frc.robot.util;
 public class Constants{
 
     // Drive
-    public static final int movementRestriction = 3;
+    public static final int movementRestriction = 2;
 
     // GamePad
     public static final int kGamepadButtonA = 1;
@@ -74,8 +74,8 @@ public class Constants{
     public static final double intakeSpeed = .3;
 
     // LiftSystem
-    public static final double lifterSpeed = .5;
-
+    public static final double lifterSpeedUp = .9;
+    public static final double lifterSpeedDown = .5;
     // Shooter
     public static final double shooterSpeed = .70;
     public static boolean shootFlag = false;

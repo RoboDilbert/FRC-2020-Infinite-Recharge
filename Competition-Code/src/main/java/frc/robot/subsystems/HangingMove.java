@@ -32,10 +32,10 @@ public class HangingMove{
 
     private static void powerMove(SpeedController motor1, HangingMoveState value){
         if(value == HangingMoveState.LEFT){
-            motor1.set(Constants.hangerSpeed);
+            motor1.set(-Constants.hangerSpeed);
         }
         else if(value == HangingMoveState.RIGHT){
-            motor1.set(-Constants.hangerSpeed);
+            motor1.set(Constants.hangerSpeed);
         }
         else if(value == HangingMoveState.STOP){
             motor1.set(0);

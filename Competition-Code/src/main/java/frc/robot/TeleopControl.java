@@ -78,15 +78,17 @@ public class TeleopControl{
         if (driver.getRawButton(3)) {
             Gyro.resetGyro();
         }
-        if (driver.getRawButton(2)) {
-            Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ() / 3, Constants.roboGyro);
-        } else if (driver.getRawButton(5)) {
-            Drive.driveWithoutTurn(driver.getX() / Constants.movementRestriction,
-                    driver.getY() / Constants.movementRestriction, Constants.roboGyro);
-        } else {
+        // if (driver.getRawButton(2)) {
+        //     Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ() / 3, Constants.roboGyro);
+        // } 
+
+        // else if (driver.getRawButton(5)) {
+        //     Drive.run(driver.getX() / 4, driver.getY() / 4, driver.getZ() / 6, Constants.roboGyro);
+        // } 
+        //else {
             Drive.run(driver.getX() / Constants.movementRestriction, driver.getY() / Constants.movementRestriction,
                     driver.getZ() / 3, Constants.roboGyro);
-        }
+        //}
 
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intake Control
@@ -113,11 +115,11 @@ public class TeleopControl{
             Intake.controlIntake(IntakeState.STOP);
         }
 
-        if(ButtonLayout.getRawButton(6) && intakeFlipFlag == true){
+        if(ButtonLayout.getRawButton(5)){
             Intake.dropIntake();
             solenoidPosition = true;
         }
-        if(driver.getRawButton(6) && intakeFlipFlag == false){
+        if(ButtonLayout.getRawButton(6)){
             Intake.liftIntake();
             solenoidPosition = false;
         }
@@ -159,20 +161,20 @@ public class TeleopControl{
         //     ColorWheel.controlColorWheel(SearchValue.STOP);
         // }
 
-        if(ButtonLayout.getRawButton(2)){
-            ColorWheel.controlColorWheel(SearchValue.FORWARD);
-        } else if(ButtonLayout.getRawButton(1)){
-            ColorWheel.controlColorWheel(SearchValue.REVERSE);
-        }else{
-            ColorWheel.controlColorWheel(SearchValue.STOP);
-        }
+        // if(ButtonLayout.getRawButton(2)){
+        //     ColorWheel.controlColorWheel(SearchValue.FORWARD);
+        // } else if(ButtonLayout.getRawButton(1)){
+        //     ColorWheel.controlColorWheel(SearchValue.REVERSE);
+        // }else{
+        //     ColorWheel.controlColorWheel(SearchValue.STOP);
+        // }
 
-        if(coDriver.getRawButton(4)){
-            ColorWheel.liftWheel();
-        }
-        if(coDriver.getRawButton(3)){
-            ColorWheel.dropWheel();
-        }
+        // if(coDriver.getRawButton(4)){
+        //     ColorWheel.liftWheel();
+        // }
+        // if(coDriver.getRawButton(3)){
+        //     ColorWheel.dropWheel();
+        // }
         // ------------------------------------------------------------------------------------------------------
         // Indexer Control
 
@@ -248,9 +250,11 @@ public class TeleopControl{
 
         //--------------------------------------------------------------------------------------------------------
         //Debug Control
-        Indexer.debugIndexer();
-        Shooter.debugShooter();
-        SmartDashboard.putBoolean("TimerFlag", Constants.shootFlag);
+        // Indexer.debugIndexer();
+        // Shooter.debugShooter();
+        // SmartDashboard.putBoolean("TimerFlag", Constants.shootFlag);
+        SmartDashboard.getNumber("POV", coDriver.getPOV());
+        SmartDashboard.getNumber("get gyro", Constants.roboGyro);
         SmartDashboard.updateValues();
     }
 }

@@ -1,12 +1,25 @@
 package frc.robot.Autonomous;
 
 import com.playingwithfusion.TimeOfFlight.RangingMode;
-//import com.playingwithfusion.*;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.util.*;
 import frc.robot.util.sensors.*;
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.subsystems.ColorWheel.*;
+import frc.robot.subsystems.HangingMove.HangingMoveState;
+import frc.robot.subsystems.Indexer.*;
+import frc.robot.subsystems.Intake.*;
+import frc.robot.subsystems.LiftSystem.LifterState;
+import frc.robot.subsystems.Shooter.*;
+import frc.robot.subsystems.WallOfWheels.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import com.fasterxml.jackson.core.PrettyPrinter;
+import frc.robot.util.Constants.IntakeToggle;
+import frc.robot.util.Pneumatics.CompressorState;
+
+import edu.wpi.first.wpilibj.DriverStation;
 //import frc.robot.util.sensors.Gyro;
 
 public class Routine{
@@ -16,11 +29,12 @@ public class Routine{
     public static void run(){
 
         Constants.inPosition = false;
+        Constants.notShot = false;
 
         Limelight.LimelightInitialize();
 
         //Get in Position
-        while(Constants.notShot){ 
+        while(Constants.inPosition == false){ 
             Constants.cameraX = Limelight.tx.getDouble(0.0);
            
             if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){
@@ -38,7 +52,7 @@ public class Routine{
            //limelight locked on and X value of limelight
             if(Constants.cameraX < -1){
                 Constants.XPower = Math.pow((Math.pow((0.18 * Constants.cameraX), 2)), 1/1.5);
-                if(Constants.XPower > .215){
+                if(Constants.XPower > .15){
                     Constants.XPower = .15;
                 }
             } else if(Constants.cameraX > 1){
@@ -84,16 +98,17 @@ public class Routine{
 
             //     }
             // }
-        if(Constants.averagePPLength < (2508)){
-            if(Constants.leftPPDistance == 0 || Constants.rightPPDistance == 0){
-                Constants.ZPower = 0;
-            }
-             else{
-                Constants.ZPower = ((Constants.leftPPDistance - Constants.rightPPDistance)/750) + Constants.feedForward;
 
-                 if(Constants.ZPower > 0.12){
-                    Constants.ZPower = 0.12;
-                 }
+            //ZPower
+            if(Constants.averagePPLength < (2508)){
+                if(Constants.leftPPDistance == 0 || Constants.rightPPDistance == 0){
+                    Constants.ZPower = 0;
+                }
+                else{
+                    Constants.ZPower = ((Constants.leftPPDistance - Constants.rightPPDistance) / 750) + Constants.feedForward;
+                    if(Constants.ZPower > 0.12){
+                        Constants.ZPower = 0.12;
+                    }
                  
 
                 //  if(ZPower <= .07 && ZPower > 0){
@@ -102,38 +117,31 @@ public class Routine{
                 // else if(ZPower >= -.07 && ZPower < 0){
                 //     ZPower = -.09;
                 // }
-             }
-        }else{
-            Constants.ZPower = 0;
-        }
+                }
+            }else{
+                Constants.ZPower = 0;
+            }
         
-        if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 2000){
-            Drive.rightPP.setRangingMode(RangingMode.Long, 25);
-            Drive.leftPP.setRangingMode(RangingMode.Long, 25);
-        } else if(Constants.averagePPLength < 2000 && Constants.averagePPLength > 25){
-            Drive.rightPP.setRangingMode(RangingMode.Medium, 25);
-            Drive.leftPP.setRangingMode(RangingMode.Medium, 25);
-        }else if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 25){
-            Drive.rightPP.setRangingMode(RangingMode.Short, 25);
-            Drive.leftPP.setRangingMode(RangingMode.Short, 25);
-        }
+            if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 2000){
+                Drive.rightPP.setRangingMode(RangingMode.Long, 25);
+                Drive.leftPP.setRangingMode(RangingMode.Long, 25);
+            } else if(Constants.averagePPLength < 2000 && Constants.averagePPLength > 25){
+                Drive.rightPP.setRangingMode(RangingMode.Medium, 25);
+                Drive.leftPP.setRangingMode(RangingMode.Medium, 25);
+            }else if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 25){
+                Drive.rightPP.setRangingMode(RangingMode.Short, 25);
+                Drive.leftPP.setRangingMode(RangingMode.Short, 25);
+            }
             
 
             Drive.run(-Constants.XPower, -Constants.YPower, Constants.ZPower, 0);
 
             if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 765
-             && Drive.rightPP.getRange() < 765 && Drive.rightPP.getRange() > 700
-             && Constants.cameraX > -1 && Constants.cameraX < 1){
+            && Drive.rightPP.getRange() < 765 && Drive.rightPP.getRange() > 700
+            && Constants.cameraX > -1 && Constants.cameraX < 1){
                 Constants.inPosition = true;
             }
-            else{
-                Constants.inPosition = false;
-            }
-
-            if(Constants.inPosition){
-                Indexer.ShootAll();
-                Constants.notShot = false;
-            }
+        
 
             SmartDashboard.putBoolean("isSeeing", Constants.isSeeing);
             SmartDashboard.putNumber("LeftDistance", Constants.leftPPDistance);
@@ -152,7 +160,17 @@ public class Routine{
         Drive.run(0, 0, 0, 0);
         
         //Shoot
-
-        //Drive to trench
+        while(Constants.notShot == false){
+            if (Shooter.getShooterWheelSpeed() < 3300) {
+                Shooter.controlShooter(ShooterState.FORWARD);
+                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+            } else if (Shooter.getShooterWheelSpeed() > 3300) {
+                Shooter.controlShooter(ShooterState.FORWARD);
+                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+            }
+        }
+        Indexer.indexerClear();
     }
 }

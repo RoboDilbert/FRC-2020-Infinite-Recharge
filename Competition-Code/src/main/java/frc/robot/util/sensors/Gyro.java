@@ -7,8 +7,15 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Gyro{
 
-    static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+    static AHRS ahrs;
     
+    public static void init() {
+        ahrs = new AHRS(SPI.Port.kMXP);
+        SmartDashboard.putBoolean("init gyro bool", ahrs.isConnected());
+        SmartDashboard.putNumber("init gyro",ahrs.getAngle());
+        System.out.println("INIT GYRO");
+    }
+
     public static double updateGyroAngle() {
         return ahrs.getAngle();
     }

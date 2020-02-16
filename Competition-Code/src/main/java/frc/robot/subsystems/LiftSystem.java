@@ -51,12 +51,12 @@ public class LiftSystem{
 
     private static void powerLifter(SpeedController motor1, SpeedController motor2, LifterState value){
         if(value == LifterState.FORWARD){
-            motor1.set(-Constants.lifterSpeed);
-            motor2.set(Constants.lifterSpeed);
+            motor1.set(-Constants.lifterSpeedUp);
+            motor2.set(Constants.lifterSpeedUp);
         }
         else if(value == LifterState.REVERSE){
-            motor1.set(Constants.lifterSpeed);
-            motor2.set(-Constants.lifterSpeed);
+            motor1.set(Constants.lifterSpeedDown);
+            motor2.set(-Constants.lifterSpeedDown);
         }
         else if (value == LifterState.STOP){
             motor1.set(0);

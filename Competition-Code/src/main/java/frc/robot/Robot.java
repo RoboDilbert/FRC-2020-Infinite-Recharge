@@ -43,8 +43,9 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("My Auto", kCustomAuto);
     //SmartDashboard.putData("Auto choices", m_chooser);
     //ColorWheel.init();
+    Gyro.init();
     Drive.init();
-    //HangingMove.init();
+    HangingMove.init();
     Indexer.init();
     Intake.init();
     LiftSystem.init();
