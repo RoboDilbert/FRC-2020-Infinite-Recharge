@@ -64,7 +64,7 @@ public class Constants{
     public static int colorCount = 0;
    
     // Hanger Move
-    public static final double hangerSpeed = .2;
+    public static final double hangerSpeed = .8;
 
     // Indexer
     public static final double feedIndexerSpeed = .4;

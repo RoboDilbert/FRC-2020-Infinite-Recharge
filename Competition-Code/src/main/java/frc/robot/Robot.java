@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    Routine.run();
+    //Routine.run();
     
     // switch (m_autoSelected) {
     //   case kCustomAuto:

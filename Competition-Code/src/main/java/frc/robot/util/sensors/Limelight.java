@@ -38,7 +38,7 @@ public class Limelight{
         videoMode = new VideoMode(PixelFormat.kYUYV, 800, 448, 30);
         drive.setFPS(30);
         drive.setVideoMode(videoMode);
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
+       // NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
     }
 
     //Methods to access information
@@ -103,5 +103,6 @@ public class Limelight{
         SmartDashboard.putString("Limelight Skew", Double.toString(ts.getDouble(0.0)));
         SmartDashboard.putString("Limelight Latency", Double.toString(tl.getDouble(0.0)));
         SmartDashboard.putString("Limelight Valid", Boolean.toString(tv.getDouble(0.0) == 1.0));
+        
     }
 }

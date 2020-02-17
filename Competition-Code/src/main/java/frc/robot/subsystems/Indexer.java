@@ -109,8 +109,13 @@ public class Indexer{
         else if(currentBallCount == 3){
             if(uppperIndex.getRange() < 100 && lowerIndex.getRange() > 100){
                 controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                ballCountFlag = true;
             }else{
                 controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                if(ballCountFlag == true){
+                    currentBallCount++;
+                }
+                ballCountFlag = false;
                 //tempFeedBool = true;
             }
         }
@@ -125,10 +130,10 @@ public class Indexer{
     }
 
     public static void debugIndexer(){
-        SmartDashboard.putNumber("Upper TOF", uppperIndex.getRange());
-        SmartDashboard.putNumber("Lower TOF", lowerIndex.getRange());
-        SmartDashboard.putNumber("Feeder Indexer Motor Encoder", IndexFeedMotorEncoder.getPosition());
-        SmartDashboard.putNumber("Shoot Indexer Motor Encoder", IndexShootMotorEncoder.getPosition());
+       // SmartDashboard.putNumber("Upper TOF", uppperIndex.getRange());
+        //SmartDashboard.putNumber("Lower TOF", lowerIndex.getRange());
+        //SmartDashboard.putNumber("Feeder Indexer Motor Encoder", IndexFeedMotorEncoder.getPosition());
+        //SmartDashboard.putNumber("Shoot Indexer Motor Encoder", IndexShootMotorEncoder.getPosition());
         SmartDashboard.putBoolean("ballFlag", ballCountFlag);
         SmartDashboard.putNumber("Ballz", currentBallCount);
         

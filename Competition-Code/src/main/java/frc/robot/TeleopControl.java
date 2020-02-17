@@ -99,7 +99,7 @@ public class TeleopControl{
             } else if (driver.getRawButton(4) && intakeDirectionFlag == true || driver.getRawButton(6) && intakeDirectionFlag == true){
                 Robot.currentIntakeState = IntakeToggle.STOP;
                 intakeDirectionFlag = false;
-            } else if (driver.getRawButton(6) && solenoidPosition == true == false) {
+            } else if (driver.getRawButton(6) && solenoidPosition == true && intakeDirectionFlag == false) {
                 Robot.currentIntakeState = IntakeToggle.REVERSE;
                 intakeDirectionFlag = true;
             }
@@ -250,11 +250,12 @@ public class TeleopControl{
 
         //--------------------------------------------------------------------------------------------------------
         //Debug Control
-        // Indexer.debugIndexer();
-        // Shooter.debugShooter();
+         Indexer.debugIndexer();
+         //Shooter.debugShooter();
         // SmartDashboard.putBoolean("TimerFlag", Constants.shootFlag);
-        SmartDashboard.getNumber("POV", coDriver.getPOV());
-        SmartDashboard.getNumber("get gyro", Constants.roboGyro);
+        //SmartDashboard.getNumber("POV", coDriver.getPOV());
+        SmartDashboard.getNumber("LeftPP", Drive.leftPP.getRange());
+        SmartDashboard.putNumber("RightPP", Drive.rightPP.getRange());
         SmartDashboard.updateValues();
     }
 }
