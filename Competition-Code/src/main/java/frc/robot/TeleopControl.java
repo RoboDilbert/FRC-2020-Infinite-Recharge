@@ -232,20 +232,27 @@ public class TeleopControl{
         // Lifter Control
         if(coDriver.getPOV() == 0){
             LiftSystem.controlLifter(LifterState.FORWARD);
+        }else if(coDriver.getPOV() == 45){
+            LiftSystem.controlLifter(LifterState.FORWARD);
+            HangingMove.controlMove(HangingMove.HangingMoveState.RIGHT);
+        }else if(coDriver.getPOV() == 90){
+            HangingMove.controlMove(HangingMove.HangingMoveState.RIGHT);
+        }else if(coDriver.getPOV() == 135){
+            LiftSystem.controlLifter(LifterState.REVERSE);
+            HangingMove.controlMove(HangingMove.HangingMoveState.RIGHT);
         }else if(coDriver.getPOV() == 180){
             LiftSystem.controlLifter(LifterState.REVERSE);
-        }else{
-            LiftSystem.controlLifter(LifterState.STOP);
-        }
-
-        //--------------------------------------------------------------------------------------------------------
-        //Hook Control
-        if(coDriver.getPOV() == 90){
-            HangingMove.controlMove(HangingMove.HangingMoveState.RIGHT);
+        }else if(coDriver.getPOV() == 225){
+            LiftSystem.controlLifter(LifterState.REVERSE);
+            HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
         }else if(coDriver.getPOV() == 270){
+            HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
+        }else if(coDriver.getPOV() == 315){
+            LiftSystem.controlLifter(LifterState.FORWARD);
             HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
         }else{
             HangingMove.controlMove(HangingMove.HangingMoveState.STOP);
+            LiftSystem.controlLifter(LifterState.STOP);
         }
 
         //--------------------------------------------------------------------------------------------------------
