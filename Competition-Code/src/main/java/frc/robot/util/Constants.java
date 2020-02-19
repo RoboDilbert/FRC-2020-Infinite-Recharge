@@ -81,7 +81,7 @@ public class Constants{
     public static boolean shootFlag = false;
 
     // Wall of Wheels
-    public static final double wallOfWheelsSpeed = 0.65;
+    public static final double wallOfWheelsSpeed = 0.90;
     
     //Can IDs
     public static final int leftFrontMotorID = 1;
