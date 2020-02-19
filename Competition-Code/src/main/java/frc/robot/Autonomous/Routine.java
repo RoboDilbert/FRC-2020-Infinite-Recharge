@@ -5,21 +5,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.util.*;
 import frc.robot.util.sensors.*;
-import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.subsystems.ColorWheel.*;
-import frc.robot.subsystems.HangingMove.HangingMoveState;
+import frc.robot.util.sensors.Limelight.LightMode;
 import frc.robot.subsystems.Indexer.*;
-import frc.robot.subsystems.Intake.*;
-import frc.robot.subsystems.LiftSystem.LifterState;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Shooter.*;
-import frc.robot.subsystems.WallOfWheels.*;
-import java.util.Timer;
-import java.util.TimerTask;
-import com.fasterxml.jackson.core.PrettyPrinter;
-import frc.robot.util.Constants.IntakeToggle;
-import frc.robot.util.Pneumatics.CompressorState;
 
-import edu.wpi.first.wpilibj.DriverStation;
 //import frc.robot.util.sensors.Gyro;
 
 public class Routine{
@@ -34,8 +24,9 @@ public class Routine{
         Limelight.LimelightInitialize();
 
         //Get in Position
-        while(Constants.inPosition == false){ 
+        if(Constants.inPosition == false){ 
             Constants.cameraX = Limelight.tx.getDouble(0.0);
+            Limelight.setLedMode(LightMode.ON);
            
             if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){
                 Constants.isSeeing = true;
@@ -143,24 +134,26 @@ public class Routine{
             }
         
 
-            SmartDashboard.putBoolean("isSeeing", Constants.isSeeing);
-            SmartDashboard.putNumber("LeftDistance", Constants.leftPPDistance);
-            SmartDashboard.putNumber("RightDistance", Constants.rightPPDistance);
-            SmartDashboard.putNumber("AverageDistance", Constants.averagePPLength);
-            SmartDashboard.putBoolean("inPosition", Constants.inPosition);
-            SmartDashboard.putNumber("YPower", Constants.YPower);
-            SmartDashboard.putNumber("LimelightX", Constants.cameraX);
-            SmartDashboard.putNumber("XPower", Constants.XPower);
-            SmartDashboard.putNumber("ZPower", Constants.ZPower);
-            SmartDashboard.putBoolean("notShot",Constants.notShot);
-            SmartDashboard.updateValues();
+            // SmartDashboard.putBoolean("isSeeing", Constants.isSeeing);
+            // SmartDashboard.putNumber("LeftDistance", Constants.leftPPDistance);
+            // SmartDashboard.putNumber("RightDistance", Constants.rightPPDistance);
+            // SmartDashboard.putNumber("AverageDistance", Constants.averagePPLength);
+            // SmartDashboard.putBoolean("inPosition", Constants.inPosition);
+            // SmartDashboard.putNumber("YPower", Constants.YPower);
+            // SmartDashboard.putNumber("LimelightX", Constants.cameraX);
+            // SmartDashboard.putNumber("XPower", Constants.XPower);
+            // SmartDashboard.putNumber("ZPower", Constants.ZPower);
+            // SmartDashboard.putBoolean("notShot",Constants.notShot);
+            // SmartDashboard.updateValues();
         }
 
         //Cut Power
         Drive.run(0, 0, 0, 0);
+        Limelight.setLedMode(LightMode.OFF);
         
         //Shoot
-        while(Constants.notShot == false){
+        
+        if(Timer.getMatchTime() < 10 && Timer.getMatchTime() > 0){
             if (Shooter.getShooterWheelSpeed() < 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);

@@ -11,7 +11,7 @@ import frc.robot.subsystems.LiftSystem.LifterState;
 //import frc.robot.subsystems.LiftSystem.*;
 import frc.robot.subsystems.Shooter.*;
 import frc.robot.subsystems.WallOfWheels.*;
-import java.util.Timer;
+import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 
 import com.fasterxml.jackson.core.PrettyPrinter;
@@ -50,6 +50,7 @@ public class TeleopControl{
     private static boolean colorFlag;
     private static boolean intakeDirectionFlag;
     private static boolean intakeFlipFlag = true;
+    private static boolean toggleFlag;
 
     private static boolean autoIndex;
     private static boolean solenoidPosition; //false is up
@@ -92,15 +93,22 @@ public class TeleopControl{
 
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intake Control
+            if(driver.getRawButton(4) || driver.getRawButton(6)){
+                toggleFlag = true;
+            }
+            else{
+                toggleFlag = false;
+            }
+
         
             if (driver.getRawButton(4) && solenoidPosition == true && intakeDirectionFlag == false) {
-                Robot.currentIntakeState = IntakeToggle.FORWARD;
+                Robot.currentIntakeState = IntakeToggle.REVERSE;
                 intakeDirectionFlag = true;
-            } else if (driver.getRawButton(4) && intakeDirectionFlag == true || driver.getRawButton(6) && intakeDirectionFlag == true){
+            } else if (driver.getRawButton(4) && intakeDirectionFlag == true && toggleFlag == false || driver.getRawButton(6) && intakeDirectionFlag == true && toggleFlag == false){
                 Robot.currentIntakeState = IntakeToggle.STOP;
                 intakeDirectionFlag = false;
             } else if (driver.getRawButton(6) && solenoidPosition == true && intakeDirectionFlag == false) {
-                Robot.currentIntakeState = IntakeToggle.REVERSE;
+                Robot.currentIntakeState = IntakeToggle.FORWARD;
                 intakeDirectionFlag = true;
             }
 
@@ -254,15 +262,18 @@ public class TeleopControl{
             HangingMove.controlMove(HangingMove.HangingMoveState.STOP);
             LiftSystem.controlLifter(LifterState.STOP);
         }
+        //-------------------------------------------------------------------------------------------------------
+        //Compressor Shut Off
+        
+        if(Timer.getMatchTime() < 30){
+            Pneumatics.controlCompressor(CompressorState.DISABLED);
+        }
 
-        //--------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------
         //Debug Control
          Indexer.debugIndexer();
          //Shooter.debugShooter();
-        // SmartDashboard.putBoolean("TimerFlag", Constants.shootFlag);
-        //SmartDashboard.getNumber("POV", coDriver.getPOV());
-        SmartDashboard.getNumber("LeftPP", Drive.leftPP.getRange());
-        SmartDashboard.putNumber("RightPP", Drive.rightPP.getRange());
+        SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }
 }

@@ -16,6 +16,7 @@ import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.Pneumatics.*;
 import frc.robot.util.sensors.*;
+import frc.robot.util.sensors.Limelight.LightMode;
 import frc.robot.Autonomous.*;
 
 /**
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
     TeleopControl.init();
     Pneumatics.init();
     Pneumatics.controlCompressor(CompressorState.ENABLED);
+    Limelight.setLedMode(LightMode.OFF);
     //Limelight.initUSBCamera();
 
     currentIntakeState = IntakeToggle.STOP;
