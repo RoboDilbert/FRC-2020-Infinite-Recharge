@@ -55,9 +55,9 @@ public class Robot extends TimedRobot {
     TeleopControl.init();
     Pneumatics.init();
     Pneumatics.controlCompressor(CompressorState.ENABLED);
-    Limelight.setLedMode(LightMode.OFF);
+    
+    //Limelight.setLedMode(LightMode.OFF);
     //Limelight.initUSBCamera();
-
     currentIntakeState = IntakeToggle.STOP;
   }
 
@@ -67,17 +67,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // m_autoSelected = "kCustomAuto";//m_chooser.getSelected();
+    // m_autoSelected = "kCustomAuto"; //m_chooser.getSelected();
     //                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     // System.out.println("Auto selected: " + m_autoSelected);
-    
-   
+    Routine.init();
   }
 
   @Override
   public void autonomousPeriodic() {
-    //Routine.run();
-    
+    Routine.run();
+    Routine.debugAuto();
+
     // switch (m_autoSelected) {
     //   case kCustomAuto:
     //     // Put custom auto code herea

@@ -75,7 +75,7 @@ public class TeleopControl{
         // Driving Program w/ Gyro
         // -----------------------------------------------------------------------
         Constants.roboGyro = Gyro.updateGyroAngle();
-        Gyro.getGyroValues();
+        //Gyro.getGyroValues();
         if (driver.getRawButton(3)) {
             Gyro.resetGyro();
         }
@@ -265,15 +265,15 @@ public class TeleopControl{
         //-------------------------------------------------------------------------------------------------------
         //Compressor Shut Off
         
-        if(Timer.getMatchTime() < 30){
-            Pneumatics.controlCompressor(CompressorState.DISABLED);
-        }
+        // if(Timer.getMatchTime() < 30){
+        //     Pneumatics.controlCompressor(CompressorState.DISABLED);
+        // }
 
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
-         Indexer.debugIndexer();
+         //Indexer.debugIndexer();
          //Shooter.debugShooter();
-        SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+        //SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }
 }

@@ -24,6 +24,9 @@ public class Drive{
 
     public static TimeOfFlight leftPP = new TimeOfFlight(Constants.LEFT_PP_TOF_ID);
     public static TimeOfFlight rightPP = new TimeOfFlight(Constants.RIGHT_PP_TOF_ID);
+    public static double rightPPDistance = 0;
+    public static double leftPPDistance = 0;
+    public static double averagePPLength = 0;
     
     public static void init(){
         my_Robot = new MecanumDrive(m_leftFrontMotor, m_leftBackMotor, m_rightFrontMotor, m_rightBackMotor);

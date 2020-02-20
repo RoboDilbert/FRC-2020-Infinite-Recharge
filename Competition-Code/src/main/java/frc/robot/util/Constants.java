@@ -12,7 +12,7 @@ public class Constants{
     public static final int BUTTON_LAYOUT_CONTROLLER_ID = 2;
 
     // Pneumatics
-    public static final boolean compressorState = true;
+    
     public static final int UTILITIES_COMPRESSOR_PORT = 0;
     public static final int colorWheelSolenoid = 0;
     public static final int intakeDropForwardSolenoid = 1;
@@ -36,24 +36,15 @@ public class Constants{
     public static double colorVar;
 
     //TOF Sensor
-    public static double rightPPDistance = 0;
-    public static double leftPPDistance = 0;
-    public static double averagePPLength = 0;
-    public static boolean isSeeing;
-    public static boolean inPosition = false;
+
+    
+    
 
     //Game Data Color
     public static String gameData;
 
     //Autonomous - Routine
-    public static double XPower = 0;
-    public static double YPower = 0;
-    public static double ZPower = 0;
-    public static double cameraX = 0;
-    public static double angle = 0;
-    public static double complimentAngle = 0;
-    public static double feedForward = 0.03;
-    public static boolean notShot = true;
+
 
     //Color Wheel
     public static final double searchSpeed = 0.5;

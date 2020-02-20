@@ -9,161 +9,167 @@ import frc.robot.util.sensors.Limelight.LightMode;
 import frc.robot.subsystems.Indexer.*;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Shooter.*;
-
-//import frc.robot.util.sensors.Gyro;
-
 public class Routine{
 
     //public static TOFSensor tofSensor = new TOFSensor();
+    private static double XPower;
+    private static double YPower;
+    private static double ZPower ;
+    private static double cameraX;
+    private static double angle;
+    private static double complimentAngle;
+    private static double feedForward;
+    private static boolean notShot;
+    private static boolean inPosition;
+    private static boolean isSeeing;
+
+    public static void init(){
+        Limelight.LimelightInitialize();
+        XPower = 0;
+        YPower = 0;
+        ZPower = 0;
+        cameraX = 0;
+        angle = 0;
+        complimentAngle = 0;
+        feedForward = 0.03;
+        notShot = false;
+        inPosition = false;
+        isSeeing = false;
+    }
 
     public static void run(){
-
-        Constants.inPosition = false;
-        Constants.notShot = false;
-
-        Limelight.LimelightInitialize();
-
+        
         //Get in Position
-        if(Constants.inPosition == false){ 
-            Constants.cameraX = Limelight.tx.getDouble(0.0);
+        if(inPosition == false){ 
+            cameraX = Limelight.tx.getDouble(0.0);
             Limelight.setLedMode(LightMode.ON);
-           
+            debugAuto();
             if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){
-                Constants.isSeeing = true;
+                isSeeing = true;
             }
             else{
-                Constants.isSeeing = false;
+                isSeeing = false;
             }
-            Constants.rightPPDistance = Drive.rightPP.getRange();
-            Constants.leftPPDistance = Drive.leftPP.getRange();
-            Constants.averagePPLength = (Constants.rightPPDistance + Constants.leftPPDistance)/2;
-
+            Drive.rightPPDistance = Drive.rightPP.getRange();
+            Drive.leftPPDistance = Drive.leftPP.getRange();
+            Drive.averagePPLength = (Drive.rightPPDistance + Drive.leftPPDistance)/2;
 
            // X Power
            //limelight locked on and X value of limelight
-            if(Constants.cameraX < -1){
-                Constants.XPower = Math.pow((Math.pow((0.18 * Constants.cameraX), 2)), 1/1.5);
-                if(Constants.XPower > .15){
-                    Constants.XPower = .15;
+            if(cameraX < -1){
+                XPower = Math.pow((Math.pow((0.18 * cameraX), 2)), 1/1.5);
+                if(XPower > .15){
+                    XPower = .15;
                 }
-            } else if(Constants.cameraX > 1){
-                Constants.XPower = -Math.pow((Math.pow((0.18 * Constants.cameraX), 2)), 1/1.5);
-                if(Constants.XPower < -.15){
-                    Constants.XPower = -.15;
+            }
+            else if(cameraX > 1){
+                XPower = -Math.pow((Math.pow((0.18 * cameraX), 2)), 1/1.5);
+                if(XPower < -.15){
+                    XPower = -.15;
                 }
             }
             else{
-                Constants.XPower = 0;
+                XPower = 0;
             }
 
 
             //Y Power
-            if(Constants.isSeeing == true){
-                if(Constants.leftPPDistance < 700 && Constants.leftPPDistance > 0 || Constants.rightPPDistance < 700 && Constants.rightPPDistance > 0){
-                    Constants.YPower = -0.1;
+            if(isSeeing == true){
+                if(Drive.leftPPDistance < 700 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 700 && Drive.rightPPDistance > 0){
+                    YPower = -0.1;
                 }
-                else if(Constants.averagePPLength > 750){
-                    Constants.YPower = ((1.8*Math.pow((Constants.averagePPLength - 150) , 2)) /10000000) + Constants.feedForward;
-                    if(Constants.YPower > 0.2){
-                        Constants.YPower = 0.2;
+                else if(Drive.averagePPLength > 750){
+                    YPower = ((1.8*Math.pow((Drive.averagePPLength - 150) , 2)) /10000000) + feedForward;
+                    if(YPower > 0.2){
+                        YPower = 0.2;
                     }
                 }
-                if(Drive.leftPP.getRange() < 750 && Drive.leftPP.getRange() > 700 
-                   && Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 700){
-                    Constants.YPower = 0;
-                }
-
-            }else if(Constants.isSeeing == false){//If we don't see anything, drive straight
-                Constants.YPower = 0.1;
-                if(Drive.leftPP.getRange() < 750 && Drive.leftPP.getRange() > 700 
-                   && Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 700){
-                    Constants.YPower = 0;
+                if(Drive.leftPP.getRange() < 750 && Drive.leftPP.getRange() > 700 &&
+                                Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 700){
+                    YPower = 0;
                 }
             }
+            else if(isSeeing == false){//If we don't see anything, drive straight
+                YPower = 0.1;
+            }
             
-
-            // if (Constants.averagePPLength < 1000){
-            //     angle = Math.atan(Math.abs(YPower/XPower));
-            //     complimentAngle = 90-angle;
-            //     if(XPower < 0){
-
-            //     }
-            // }
-
             //ZPower
-            if(Constants.averagePPLength < (2508)){
-                if(Constants.leftPPDistance == 0 || Constants.rightPPDistance == 0){
-                    Constants.ZPower = 0;
+            if(Drive.averagePPLength < 2508){
+                if(Drive.leftPPDistance == 0 || Drive.rightPPDistance == 0){
+                    ZPower = 0;
                 }
                 else{
-                    Constants.ZPower = ((Constants.leftPPDistance - Constants.rightPPDistance) / 750) + Constants.feedForward;
-                    if(Constants.ZPower > 0.12){
-                        Constants.ZPower = 0.12;
+                    ZPower = ((Drive.leftPPDistance - Drive.rightPPDistance) / 750) + feedForward;
+                    if(ZPower > 0.12){
+                        ZPower = 0.12;
                     }
-                 
-
-                //  if(ZPower <= .07 && ZPower > 0){
-                //     ZPower = .09;
-                // }
-                // else if(ZPower >= -.07 && ZPower < 0){
-                //     ZPower = -.09;
-                // }
                 }
-            }else{
-                Constants.ZPower = 0;
+            }
+            else{
+                ZPower = 0;
             }
         
-            if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 2000){
-                Drive.rightPP.setRangingMode(RangingMode.Long, 25);
-                Drive.leftPP.setRangingMode(RangingMode.Long, 25);
-            } else if(Constants.averagePPLength < 2000 && Constants.averagePPLength > 25){
-                Drive.rightPP.setRangingMode(RangingMode.Medium, 25);
-                Drive.leftPP.setRangingMode(RangingMode.Medium, 25);
-            }else if(Constants.averagePPLength < 4000 && Constants.averagePPLength > 25){
-                Drive.rightPP.setRangingMode(RangingMode.Short, 25);
-                Drive.leftPP.setRangingMode(RangingMode.Short, 25);
-            }
+            // if(Drive.averagePPLength < 4000 && Drive.averagePPLength > 2000){
+            //     Drive.rightPP.setRangingMode(RangingMode.Long, 25);
+            //     Drive.leftPP.setRangingMode(RangingMode.Long, 25);
+            // }
+            // else if(Drive.averagePPLength < 2000 && Drive.averagePPLength > 25){
+            //     Drive.rightPP.setRangingMode(RangingMode.Medium, 25);
+            //     Drive.leftPP.setRangingMode(RangingMode.Medium, 25);
+            // }
+            // else if(Drive.averagePPLength < 4000 && Drive.averagePPLength > 25){
+            //     Drive.rightPP.setRangingMode(RangingMode.Short, 25);
+            //     Drive.leftPP.setRangingMode(RangingMode.Short, 25);
+            // }
             
-
-            Drive.run(-Constants.XPower, -Constants.YPower, Constants.ZPower, 0);
+            Drive.run(-XPower, -YPower, ZPower, 0);
 
             if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 765
             && Drive.rightPP.getRange() < 765 && Drive.rightPP.getRange() > 700
-            && Constants.cameraX > -1 && Constants.cameraX < 1){
-                Constants.inPosition = true;
+            && cameraX > -1 && cameraX < 1){
+                inPosition = true;
             }
-        
-
-            // SmartDashboard.putBoolean("isSeeing", Constants.isSeeing);
-            // SmartDashboard.putNumber("LeftDistance", Constants.leftPPDistance);
-            // SmartDashboard.putNumber("RightDistance", Constants.rightPPDistance);
-            // SmartDashboard.putNumber("AverageDistance", Constants.averagePPLength);
-            // SmartDashboard.putBoolean("inPosition", Constants.inPosition);
-            // SmartDashboard.putNumber("YPower", Constants.YPower);
-            // SmartDashboard.putNumber("LimelightX", Constants.cameraX);
-            // SmartDashboard.putNumber("XPower", Constants.XPower);
-            // SmartDashboard.putNumber("ZPower", Constants.ZPower);
-            // SmartDashboard.putBoolean("notShot",Constants.notShot);
-            // SmartDashboard.updateValues();
         }
-
-        //Cut Power
-        Drive.run(0, 0, 0, 0);
-        Limelight.setLedMode(LightMode.OFF);
-        
-        //Shoot
-        
-        if(Timer.getMatchTime() < 10 && Timer.getMatchTime() > 0){
+        if(inPosition = true){
+            System.out.println("In Position");
+            Drive.run(0, 0, 0, 0);
+            Limelight.setLedMode(LightMode.OFF);
+            //Shoot
+            //if(Timer.getMatchTime() < 10 && Timer.getMatchTime() > 0){
             if (Shooter.getShooterWheelSpeed() < 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-            } else if (Shooter.getShooterWheelSpeed() > 3300) {
+            }
+            else if (Shooter.getShooterWheelSpeed() > 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
             }
+            if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 765
+            && Drive.rightPP.getRange() < 765 && Drive.rightPP.getRange() > 700
+            && cameraX > -1 && cameraX < 1){
+                inPosition = true;
+            }
+            else{
+                inPosition = false;
+            }
+            Indexer.indexerClear();
         }
-        Indexer.indexerClear();
+        debugAuto();
+    }
+
+    public static void debugAuto(){
+            SmartDashboard.putBoolean("isSeeing", isSeeing);
+            SmartDashboard.putNumber("LeftDistance", Drive.leftPPDistance);
+            SmartDashboard.putNumber("RightDistance", Drive.rightPPDistance);
+            SmartDashboard.putNumber("AverageDistance", Drive.averagePPLength);
+            SmartDashboard.putBoolean("inPosition", inPosition);
+            SmartDashboard.putNumber("YPower", YPower);
+            SmartDashboard.putNumber("LimelightX", cameraX);
+            SmartDashboard.putNumber("XPower", XPower);
+            SmartDashboard.putNumber("ZPower", ZPower);
+          //  SmartDashboard.putBoolean("notShot", notShot);
+          SmartDashboard.updateValues();
     }
 }
