@@ -157,6 +157,7 @@ public class Routine{
             Indexer.indexerClear();
         }
         debugAuto();
+        
     }
 
     public static void debugAuto(){
