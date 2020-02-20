@@ -4,11 +4,13 @@ import com.playingwithfusion.TimeOfFlight.RangingMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.util.*;
+import frc.robot.util.Pneumatics.CompressorState;
 import frc.robot.util.sensors.*;
 import frc.robot.util.sensors.Limelight.LightMode;
 import frc.robot.subsystems.Indexer.*;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Shooter.*;
+
 public class Routine{
     //test
     //public static TOFSensor tofSensor = new TOFSensor();
@@ -90,7 +92,7 @@ public class Routine{
                 }
             }
             else if(isSeeing == false){//If we don't see anything, drive straight
-                YPower = 0.1;
+                YPower = -0.1;
             }
             
             //ZPower
@@ -109,51 +111,56 @@ public class Routine{
                 ZPower = 0;
             }
         
-            // if(Drive.averagePPLength < 4000 && Drive.averagePPLength > 2000){
-            //     Drive.rightPP.setRangingMode(RangingMode.Long, 25);
-            //     Drive.leftPP.setRangingMode(RangingMode.Long, 25);
-            // }
-            // else if(Drive.averagePPLength < 2000 && Drive.averagePPLength > 25){
-            //     Drive.rightPP.setRangingMode(RangingMode.Medium, 25);
-            //     Drive.leftPP.setRangingMode(RangingMode.Medium, 25);
-            // }
-            // else if(Drive.averagePPLength < 4000 && Drive.averagePPLength > 25){
-            //     Drive.rightPP.setRangingMode(RangingMode.Short, 25);
-            //     Drive.leftPP.setRangingMode(RangingMode.Short, 25);
-            // }
+            if(Drive.averagePPLength < 4000 && Drive.averagePPLength > 2000){
+                Drive.rightPP.setRangingMode(RangingMode.Long, 25);
+                Drive.leftPP.setRangingMode(RangingMode.Long, 25);
+            }
+            else if(Drive.averagePPLength < 2000 && Drive.averagePPLength > 25){
+                Drive.rightPP.setRangingMode(RangingMode.Medium, 25);
+                Drive.leftPP.setRangingMode(RangingMode.Medium, 25);
+            }
+            else if(Drive.averagePPLength < 4000 && Drive.averagePPLength > 25){
+                Drive.rightPP.setRangingMode(RangingMode.Short, 25);
+                Drive.leftPP.setRangingMode(RangingMode.Short, 25);
+            }
             
             Drive.run(-XPower, -YPower, ZPower, 0);
 
-            if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 765
-            && Drive.rightPP.getRange() < 765 && Drive.rightPP.getRange() > 700
+            if(Drive.leftPP.getRange() > 1200 && Drive.leftPP.getRange() < 1300
+            && Drive.rightPP.getRange() < 1300 && Drive.rightPP.getRange() > 1200
             && cameraX > -1 && cameraX < 1){
                 inPosition = true;
             }
         }
-        if(inPosition = true){
+        if(inPosition == true){
+            Pneumatics.controlCompressor(CompressorState.DISABLED);
             System.out.println("In Position");
             Drive.run(0, 0, 0, 0);
             Limelight.setLedMode(LightMode.OFF);
             //Shoot
             //if(Timer.getMatchTime() < 10 && Timer.getMatchTime() > 0){
-            if (Shooter.getShooterWheelSpeed() < 3300) {
+            if (Shooter.getShooterWheelSpeed() < 3600) {
+            
                 Shooter.controlShooter(ShooterState.FORWARD);
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
             }
-            else if (Shooter.getShooterWheelSpeed() > 3300) {
+            else if (Shooter.getShooterWheelSpeed() > 3600) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
             }
-            if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 765
-            && Drive.rightPP.getRange() < 765 && Drive.rightPP.getRange() > 700
-            && cameraX > -1 && cameraX < 1){
-                inPosition = true;
-            }
-            else{
-                inPosition = false;
-            }
+            // if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 800
+            // && Drive.rightPP.getRange() < 800 && Drive.rightPP.getRange() > 700
+            // && cameraX > -1 && cameraX < 1){
+            //     inPosition = true;
+            // }
+            // else{
+            //     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+            //     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+            //     Shooter.controlShooter(ShooterState.STOP);
+            //     inPosition = false;
+            // }
             Indexer.indexerClear();
         }
         debugAuto();
