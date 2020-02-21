@@ -53,8 +53,6 @@ public class TeleopControl{
     private static boolean toggleFlag;
 
     private static boolean autoIndex;
-    private static boolean solenoidPosition; //false is up
-
 
     static Timer shootTimer = new Timer();
     //static TimerTask shootTask = new Helper();
@@ -66,7 +64,6 @@ public class TeleopControl{
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         // add usb camera
          autoIndex = false;
-        solenoidPosition = false;
     }
 
     public static void run() {
@@ -93,44 +90,46 @@ public class TeleopControl{
 
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intake Control
-            if(driver.getRawButton(4) || driver.getRawButton(6)){
-                toggleFlag = true;
-            }
-            else{
-                toggleFlag = false;
-            }
 
-        
-            if (driver.getRawButton(4) && solenoidPosition == true && intakeDirectionFlag == false) {
-                Robot.currentIntakeState = IntakeToggle.REVERSE;
-                intakeDirectionFlag = true;
-            } else if (driver.getRawButton(4) && intakeDirectionFlag == true && toggleFlag == false || driver.getRawButton(6) && intakeDirectionFlag == true && toggleFlag == false){
-                Robot.currentIntakeState = IntakeToggle.STOP;
-                intakeDirectionFlag = false;
-            } else if (driver.getRawButton(6) && solenoidPosition == true && intakeDirectionFlag == false) {
-                Robot.currentIntakeState = IntakeToggle.FORWARD;
-                intakeDirectionFlag = true;
-            }
+        // ButtonLayout 4 = Green
+        // ButtonLayout 3 = Red
+        if (Intake.getSolenoidState() == Intake.IntakeSolenoid.DOWN && ButtonLayout.getRawButton(3) && toggleFlag == false && Intake.getMotorState() != Intake.IntakeMotorState.REVERSE) {
+            Robot.currentIntakeState = IntakeToggle.REVERSE;
+        } else if (Intake.getSolenoidState() == Intake.IntakeSolenoid.DOWN && ButtonLayout.getRawButton(4) && toggleFlag == false && Intake.getMotorState() != Intake.IntakeMotorState.FORWARD) {
+            Robot.currentIntakeState = IntakeToggle.FORWARD;
+        } else if ((ButtonLayout.getRawButton(4) && toggleFlag == false && Intake.getMotorState() == Intake.IntakeMotorState.FORWARD) || 
+                            (ButtonLayout.getRawButton(3) && toggleFlag == false && Intake.getMotorState() == Intake.IntakeMotorState.REVERSE)){
+            Robot.currentIntakeState = IntakeToggle.STOP;
+        }
+
+        if(ButtonLayout.getRawButton(4) || ButtonLayout.getRawButton(3)){
+            toggleFlag = true;
+        }
+        else{
+            toggleFlag = false;
+        }
+
+        if(ButtonLayout.getRawButton(6)){ //White Button
+            Intake.liftIntake();
+            Robot.currentIntakeState = IntakeToggle.STOP;
+        }
+        if(ButtonLayout.getRawButton(5)){ //Black Button
+            Intake.dropIntake();
+            Robot.currentIntakeState = IntakeToggle.FORWARD;
+        }
 
         if (Robot.currentIntakeState == IntakeToggle.FORWARD) {
             WallOfWheels.controlWall(WallState.FORWARD);
-            Intake.controlIntake(IntakeState.INTAKE);
+            Intake.controlIntake(IntakeMotorState.FORWARD);
         } else if (Robot.currentIntakeState == IntakeToggle.REVERSE) {
             WallOfWheels.controlWall(WallState.REVERSE);
-            Intake.controlIntake(IntakeState.REVERSE);
+            Intake.controlIntake(IntakeMotorState.REVERSE);
         } else if (Robot.currentIntakeState == IntakeToggle.STOP) {
             WallOfWheels.controlWall(WallState.STOP);
-            Intake.controlIntake(IntakeState.STOP);
+            Intake.controlIntake(IntakeMotorState.STOP);
         }
 
-        if(ButtonLayout.getRawButton(5)){
-            Intake.dropIntake();
-            solenoidPosition = true;
-        }
-        if(ButtonLayout.getRawButton(6)){
-            Intake.liftIntake();
-            solenoidPosition = false;
-        }
+
 
         // ----------------------------------------------------------------------------------------------
         // // Color Wheel Control
@@ -199,7 +198,7 @@ public class TeleopControl{
 
         if (driver.getRawButton(1)) {
             Pneumatics.controlCompressor(CompressorState.DISABLED);
-            if(driver.getRawButton(4) != true  && driver.getRawButton(6) != true){
+            if(ButtonLayout.getRawButton(4) != true  && ButtonLayout.getRawButton(3) != true){
                 Robot.currentIntakeState = IntakeToggle.STOP;
             }
             

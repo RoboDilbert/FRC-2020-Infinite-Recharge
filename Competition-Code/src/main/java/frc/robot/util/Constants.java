@@ -62,7 +62,7 @@ public class Constants{
     public static final double shootIndexerSpeed = .3;
 
     // Intake
-    public static final double intakeSpeed = .3;
+    public static final double intakeSpeed = .25;
 
     // LiftSystem
     public static final double lifterSpeedUp = .9;
@@ -72,7 +72,7 @@ public class Constants{
     public static boolean shootFlag = false;
 
     // Wall of Wheels
-    public static final double wallOfWheelsSpeed = 0.90;
+    public static final double wallOfWheelsSpeed = 0.70;
     
     //Can IDs
     public static final int leftFrontMotorID = 1;
