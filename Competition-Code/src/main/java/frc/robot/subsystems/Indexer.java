@@ -135,7 +135,7 @@ public class Indexer{
         //SmartDashboard.putNumber("Feeder Indexer Motor Encoder", IndexFeedMotorEncoder.getPosition());
         //SmartDashboard.putNumber("Shoot Indexer Motor Encoder", IndexShootMotorEncoder.getPosition());
         //SmartDashboard.putBoolean("ballFlag", ballCountFlag);
-        SmartDashboard.putNumber("Ballz", currentBallCount);
+        SmartDashboard.putNumber("Ball Count", currentBallCount);
         
     }
 }

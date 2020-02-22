@@ -66,6 +66,7 @@ public class TeleopControl{
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         // add usb camera
          autoIndex = false;
+         Limelight.LimelightInitialize();
     }
 
     public static void run() {
@@ -75,20 +76,20 @@ public class TeleopControl{
         // -----------------------------------------------------------------------
         Constants.roboGyro = Gyro.updateGyroAngle();
         //Gyro.getGyroValues();
-        if (driver.getRawButton(3)) {
+        if (driver.getRawButton(3)){
             Gyro.resetGyro();
         }
-        // if (driver.getRawButton(2)) {
-        //     Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ() / 3, Constants.roboGyro);
-        // } 
-
-        // else if (driver.getRawButton(5)) {
-        //     Drive.run(driver.getX() / 4, driver.getY() / 4, driver.getZ() / 6, Constants.roboGyro);
-        // } 
-        //else {
-            Drive.run(driver.getX() / Constants.movementRestriction, driver.getY() / Constants.movementRestriction,
+        if (driver.getRawButton(2)){
+             Drive.lineUpShot();
+        }
+        else if (driver.getRawButton(4)){
+            Drive.run(driver.getX() / 4, driver.getY() / 4, driver.getZ() / 6, Constants.roboGyro);
+        }
+        else{
+            Drive.run(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction,
                     driver.getZ() / 3, Constants.roboGyro);
-        //}
+            Limelight.setLedMode(LightMode.OFF);
+        }
 
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intake Control
@@ -290,9 +291,8 @@ public class TeleopControl{
 
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
-         //Indexer.debugIndexer();
-         //Shooter.debugShooter();
-        //SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+        Indexer.debugIndexer();
+        SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }
 }
