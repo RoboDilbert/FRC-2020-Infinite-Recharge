@@ -40,5 +40,6 @@ public class WallOfWheels{
 
     public static void debugWall(){
         SmartDashboard.putNumber("Wall Encoder", WallMotorEncoder.getPosition());
+        SmartDashboard.putNumber("Wall Current", WallMotor.getBusVoltage());
     }
 }

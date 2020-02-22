@@ -79,13 +79,23 @@ public class Limelight{
         DRIVER;
     }
     
+
+
     public static void setLedMode(LightMode mode) {
-		getValue("ledMode").setNumber(mode.ordinal());
+        if(mode.equals(LightMode.ON)){
+            getValue("ledMode").setNumber(3);
+        }
+        else if(mode.equals(LightMode.OFF)){
+            getValue("ledMode").setNumber(1);
+        }
+        if(mode.equals(LightMode.BLINK)){
+            getValue("ledMode").setNumber(2);
+        }
 	}
 
-	public static void setCameraMode(CameraMode mode) {
-		getValue("camMode").setNumber(mode.ordinal());
-    }
+	// public static void setCameraMode(CameraMode mode) {
+	// 	getValue("camMode").setNumber(mode.ordinal());
+    // }
     
     public static void setPipeline(int number) {
 		getValue("pipeline").setNumber(number);

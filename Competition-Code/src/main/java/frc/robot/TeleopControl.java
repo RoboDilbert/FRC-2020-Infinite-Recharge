@@ -20,6 +20,7 @@ import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.Pneumatics.CompressorState;
 import frc.robot.util.sensors.*;
+import frc.robot.util.sensors.Limelight.LightMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // import com.revrobotics.CANSparkMax;
@@ -51,6 +52,7 @@ public class TeleopControl{
     private static boolean intakeDirectionFlag;
     private static boolean intakeFlipFlag = true;
     private static boolean toggleFlag;
+    private static int shooterClock = 0;
 
     private static boolean autoIndex;
 
@@ -195,19 +197,27 @@ public class TeleopControl{
 
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
-
-        if (driver.getRawButton(1)) {
+        if(ButtonLayout.getRawButton(2) && !driver.getRawButton(1)){
+            Shooter.controlShooter(ShooterState.FORWARD);
+            if(autoIndex = false){
+                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+            }
+            Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+            shooterClock++;
+        }
+        if (driver.getRawButton(1)){
             Pneumatics.controlCompressor(CompressorState.DISABLED);
             if(ButtonLayout.getRawButton(4) != true  && ButtonLayout.getRawButton(3) != true){
                 Robot.currentIntakeState = IntakeToggle.STOP;
             }
             
-            if (Shooter.getShooterWheelSpeed() < 3300) {
+            if (Shooter.getShooterWheelSpeed() < 3300 || shooterClock < 25) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if(autoIndex = false){
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 }
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                shooterClock++;
             } else if (Shooter.getShooterWheelSpeed() > 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if (autoIndex = false) {
@@ -227,12 +237,15 @@ public class TeleopControl{
             Indexer.indexerClear();
         }
         else{
-            Shooter.controlShooter(ShooterState.STOP);
+            if(!ButtonLayout.getRawButton(2)){
+                Shooter.controlShooter(ShooterState.STOP);
             if(autoIndex = false){
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             }
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
             Pneumatics.controlCompressor(CompressorState.ENABLED);
+                 shooterClock = 0;
+            }
         }
 
         // -------------------------------------------------------------------------------------------------------
@@ -267,6 +280,13 @@ public class TeleopControl{
         // if(Timer.getMatchTime() < 30){
         //     Pneumatics.controlCompressor(CompressorState.DISABLED);
         // }
+
+        //Test junk
+        if(coDriver.getRawButton(1)){
+            Limelight.setLedMode(LightMode.ON);
+        }else if(coDriver.getRawButton(2)){
+            Limelight.setLedMode(LightMode.OFF);
+        }
 
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
