@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.*;
 public class Limelight{
     
     static NetworkTable table;
+    private static NetworkTableInstance table1 = null;
     public static NetworkTableEntry camMode, ledMode, tx, ty, ta, tv, ts, tl;
 
     public static UsbCamera drive;
@@ -38,7 +39,7 @@ public class Limelight{
         videoMode = new VideoMode(PixelFormat.kYUYV, 800, 448, 30);
         drive.setFPS(30);
         drive.setVideoMode(videoMode);
-       // NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
+       NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
     }
 
     //Methods to access information
@@ -66,35 +67,37 @@ public class Limelight{
         }
     }
 
-    //Camera Setting
-    public static void setLedMode(String mode){
-        if(mode.equals("on")){
-            ledMode.setNumber(0);
-        }
-        else if(mode.equals("off")){
-            ledMode.setNumber(1);
-        }
-        else if(mode.equals("blink")){
-            ledMode.setNumber(2);
-        }
-        else{
-            System.out.println("Limelight: setLedMode(String mode) ----> not recognised. Setting Leds to blink");
-            ledMode.setNumber(2);
-        }
-    }
+    //LED Setting
+    public static enum LightMode {
+        ON,
+        OFF, 
+        BLINK;
+	}
 
-    public static void setCameraMode(String mode){
-        if(mode.equals("vision")){
-            camMode.setNumber(0);
-        }
-        else if(mode.equals("driver")){
-            camMode.setNumber(1);
-        }
-        else{
-            System.out.println("Limelight: setCameraMode(String mode) ----> not recognised. Setting camera to vision");
-            camMode.setNumber(2);
-        }
+	public static enum CameraMode {
+        VISION,
+        DRIVER;
     }
+    
+    public static void setLedMode(LightMode mode) {
+		getValue("ledMode").setNumber(mode.ordinal());
+	}
+
+	public static void setCameraMode(CameraMode mode) {
+		getValue("camMode").setNumber(mode.ordinal());
+    }
+    
+    public static void setPipeline(int number) {
+		getValue("pipeline").setNumber(number);
+	}
+
+	private static NetworkTableEntry getValue(String key) {
+		if (table1 == null) {
+			table1 = NetworkTableInstance.getDefault();
+		}
+
+		return table1.getTable("limelight").getEntry(key);
+	}
 
     public static void debug(){
         SmartDashboard.putString("Limelight Horizontal", Double.toString(tx.getDouble(0.0)));

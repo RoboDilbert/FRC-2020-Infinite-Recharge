@@ -30,9 +30,9 @@ public class WallOfWheels{
 
     private static void powerWall(SpeedController power, WallState value){
         if(value == WallState.FORWARD){
-            power.set(Constants.wallOfWheelsSpeed);
-        }else if(value == WallState.REVERSE){
             power.set(-Constants.wallOfWheelsSpeed);
+        }else if(value == WallState.REVERSE){
+            power.set(Constants.wallOfWheelsSpeed);
         }else if(value == WallState.STOP){
             power.set(0);
         }

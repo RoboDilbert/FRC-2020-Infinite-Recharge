@@ -12,49 +12,71 @@ import edu.wpi.first.wpilibj.SpeedController;
 public class Intake {
 
     private static CANSparkMax IntakeMotor;
-    
     private static DoubleSolenoid intakeDrop;
-    
-    public enum IntakeState{
-        INTAKE, 
+    private static IntakeMotorState currentMotorState;
+    private static IntakeSolenoid currentSolenoidState;
+
+    public enum IntakeSolenoid{
+        DOWN,
+        UP;
+    }
+
+    public enum IntakeMotorState{
+        FORWARD, 
         STOP, 
         REVERSE;
     }
 
     public static void init() {
+        currentMotorState = IntakeMotorState.STOP;
+        currentSolenoidState = IntakeSolenoid.UP;
         intakeDrop = new DoubleSolenoid(Constants.intakeDropForwardSolenoid, Constants.intakeDropBackSolenoid);
         IntakeMotor = new CANSparkMax(Constants.IntakeMotorID, MotorType.kBrushless);
         IntakeMotor.setIdleMode(IdleMode.kCoast);
     }
     
+    public static IntakeMotorState getMotorState(){
+        return currentMotorState;
+    }
+
+    public static IntakeSolenoid getSolenoidState(){
+        return currentSolenoidState;
+    }
+
     // --------------------------------------------------------------------
-    // Pneumatic Drop (possibly Motors)
+    // Pneumatic Drop
     public static void dropIntake(){
+        currentSolenoidState = IntakeSolenoid.DOWN;
         intakeDrop.set(Value.kForward);
     }
 
     public static void liftIntake(){
+        currentSolenoidState = IntakeSolenoid.UP;
         intakeDrop.set(Value.kReverse);
     }
 
     //---------------------------------------------------------------------
     // intake motor
 
-    public static void controlIntake(IntakeState value){
+    public static void controlIntake(IntakeMotorState value){
         powerIntake(IntakeMotor, value);
     }
 
-    private static void powerIntake(SpeedController m_intake, IntakeState value){
-        if(value == IntakeState.INTAKE){
+    private static void powerIntake(SpeedController m_intake, IntakeMotorState value){
+        if(value == IntakeMotorState.FORWARD){
+            currentMotorState = IntakeMotorState.FORWARD;
             m_intake.set(-Constants.intakeSpeed);
         }
-        else if(value == IntakeState.REVERSE){
+        else if(value == IntakeMotorState.REVERSE){
+            currentMotorState = IntakeMotorState.REVERSE;
             m_intake.set(Constants.intakeSpeed);
         }
-        else if(value == IntakeState.STOP){
+        else if(value == IntakeMotorState.STOP){
+            currentMotorState = IntakeMotorState.STOP;
             m_intake.set(0);
         }
         else{
+            currentMotorState = IntakeMotorState.STOP;
             m_intake.set(0);
         }
     }
