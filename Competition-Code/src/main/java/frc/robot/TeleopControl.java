@@ -20,6 +20,7 @@ import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.Pneumatics.CompressorState;
 import frc.robot.util.sensors.*;
+import frc.robot.util.sensors.Limelight.LightMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // import com.revrobotics.CANSparkMax;
@@ -30,32 +31,20 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class TeleopControl{
 
-
-
-    // AHRS ahrs;
-    
     public static Joystick driver;
     private static Joystick coDriver;
     private static Joystick ButtonLayout;
 
     private static String foundColor;
-    // public double yValue;
-    // public double xValue;
-    // public double zValue;
-    // public float leftPower;
-    // public float rightPower;
-    // public double roboGyro;
     private static int ColorCount;
     private static String gameData;
     private static boolean colorFlag;
     private static boolean intakeDirectionFlag;
     private static boolean intakeFlipFlag = true;
     private static boolean toggleFlag;
+    private static int shooterClock = 0;
 
     private static boolean autoIndex;
-
-    static Timer shootTimer = new Timer();
-    //static TimerTask shootTask = new Helper();
 
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
@@ -64,6 +53,7 @@ public class TeleopControl{
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         // add usb camera
          autoIndex = false;
+         Limelight.LimelightInitialize();
     }
 
     public static void run() {
@@ -73,20 +63,30 @@ public class TeleopControl{
         // -----------------------------------------------------------------------
         Constants.roboGyro = Gyro.updateGyroAngle();
         //Gyro.getGyroValues();
-        if (driver.getRawButton(3)) {
+        if (driver.getRawButton(3)){
             Gyro.resetGyro();
         }
-        // if (driver.getRawButton(2)) {
-        //     Drive.lineUpShot(driver.getX(), driver.getY(), driver.getZ() / 3, Constants.roboGyro);
-        // } 
-
-        // else if (driver.getRawButton(5)) {
-        //     Drive.run(driver.getX() / 4, driver.getY() / 4, driver.getZ() / 6, Constants.roboGyro);
-        // } 
-        //else {
-            Drive.run(driver.getX() / Constants.movementRestriction, driver.getY() / Constants.movementRestriction,
+        if (driver.getRawButton(2)){
+             Drive.lineUpShot();
+        }
+        else if (driver.getRawButton(4)){
+            Drive.run(driver.getX() / 4, driver.getY() / 4, driver.getZ() / 6, Constants.roboGyro);
+        }
+        else{
+            Drive.run(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction,
                     driver.getZ() / 3, Constants.roboGyro);
-        //}
+            Limelight.setLedMode(LightMode.OFF);
+            Drive.tInPosition = false;
+            if(!driver.getRawButton(1)){
+                Shooter.controlShooter(ShooterState.STOP);
+                if(autoIndex = false){
+                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                }
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                Pneumatics.controlCompressor(CompressorState.ENABLED);
+            }
+
+        }
 
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intake Control
@@ -128,8 +128,6 @@ public class TeleopControl{
             WallOfWheels.controlWall(WallState.STOP);
             Intake.controlIntake(IntakeMotorState.STOP);
         }
-
-
 
         // ----------------------------------------------------------------------------------------------
         // // Color Wheel Control
@@ -185,7 +183,9 @@ public class TeleopControl{
         // ------------------------------------------------------------------------------------------------------
         // Indexer Control
 
-        autoIndex = Indexer.Index();
+        if(!driver.getRawButton(2)){
+            autoIndex = Indexer.Index();
+        }
 
         if(coDriver.getRawButton(4)){
             Indexer.currentBallCount++;
@@ -195,44 +195,49 @@ public class TeleopControl{
 
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
-
-        if (driver.getRawButton(1)) {
+        if(!driver.getRawButton(2)){
+        if(ButtonLayout.getRawButton(2) && !driver.getRawButton(1)){
+            Shooter.controlShooter(ShooterState.FORWARD);
+            if(autoIndex = false){
+                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+            }
+            Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+            shooterClock++;
+        }
+        if (driver.getRawButton(1) && !driver.getRawButton(2)){
             Pneumatics.controlCompressor(CompressorState.DISABLED);
             if(ButtonLayout.getRawButton(4) != true  && ButtonLayout.getRawButton(3) != true){
                 Robot.currentIntakeState = IntakeToggle.STOP;
             }
             
-            if (Shooter.getShooterWheelSpeed() < 3300) {
+            if (Shooter.getShooterWheelSpeed() < 3300 || shooterClock < 25) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if(autoIndex = false){
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 }
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                shooterClock++;
             } else if (Shooter.getShooterWheelSpeed() > 3300) {
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if (autoIndex = false) {
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                 }
-                //if (Shooter.getShooterWheelSpeed() > 3500) {
-                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-                   // Constants.shootFlag = false;
-                    SmartDashboard.updateValues();
-                    //shootTimer.purge();
-                 //else {
-                    // if (Constants.shootFlag == false) {
-                    //     //shootTimer.schedule(shootTask, 1000);
-                    // }
-                //}
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+                SmartDashboard.updateValues();
             }
             Indexer.indexerClear();
         }
         else{
-            Shooter.controlShooter(ShooterState.STOP);
+            if(!ButtonLayout.getRawButton(2)){
+                Shooter.controlShooter(ShooterState.STOP);
             if(autoIndex = false){
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             }
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
             Pneumatics.controlCompressor(CompressorState.ENABLED);
+                 shooterClock = 0;
+            }
+        }
         }
 
         // -------------------------------------------------------------------------------------------------------
@@ -294,26 +299,14 @@ public class TeleopControl{
         }
         //-------------------------------------------------------------------------------------------------------
         //Compressor Shut Off
-        
         // if(Timer.getMatchTime() < 30){
         //     Pneumatics.controlCompressor(CompressorState.DISABLED);
-        // }
-
+        //}
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
-         //Indexer.debugIndexer();
-         //Shooter.debugShooter();
-        //SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+        Indexer.debugIndexer();
+        Drive.LineUpData();
+        SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }
 }
-
-// class Helper extends TimerTask{
-
-//     public void run() 
-//     { 
-//         Constants.shootFlag = true;
-
-//         SmartDashboard.updateValues();
-//     } 
-// }

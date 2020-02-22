@@ -24,6 +24,7 @@ public class Routine{
     private static boolean notShot;
     private static boolean inPosition;
     private static boolean isSeeing;
+    private static int autoShootCount = 0;
 
     public static void init(){
         Limelight.LimelightInitialize();
@@ -37,6 +38,7 @@ public class Routine{
         notShot = false;
         inPosition = false;
         isSeeing = false;
+        autoShootCount = 0;
     }
 
     public static void run(){
@@ -60,14 +62,14 @@ public class Routine{
            //limelight locked on and X value of limelight
             if(cameraX < -1){
                 XPower = Math.pow((Math.pow((0.18 * cameraX), 2)), 1/1.5);
-                if(XPower > .15){
-                    XPower = .15;
+                if(XPower > .3){//.2
+                    XPower = .3;
                 }
             }
             else if(cameraX > 1){
                 XPower = -Math.pow((Math.pow((0.18 * cameraX), 2)), 1/1.5);
-                if(XPower < -.15){
-                    XPower = -.15;
+                if(XPower < -.3){//-.2
+                    XPower = -.3;
                 }
             }
             else{
@@ -77,22 +79,22 @@ public class Routine{
 
             //Y Power
             if(isSeeing == true){
-                if(Drive.leftPPDistance < 700 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 700 && Drive.rightPPDistance > 0){
-                    YPower = -0.1;
+                if(Drive.leftPPDistance < 1200 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 700 && Drive.rightPPDistance > 0){
+                    YPower = -0.15;//.1
                 }
-                else if(Drive.averagePPLength > 750){
+                else if(Drive.averagePPLength > 1200){
                     YPower = ((1.8*Math.pow((Drive.averagePPLength - 150) , 2)) /10000000) + feedForward;
-                    if(YPower > 0.2){
-                        YPower = 0.2;
+                    if(YPower > 0.3){//.2
+                        YPower = 0.3;
                     }
                 }
-                if(Drive.leftPP.getRange() < 750 && Drive.leftPP.getRange() > 700 &&
-                                Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 700){
+                if(Drive.leftPP.getRange() < 1300 && Drive.leftPP.getRange() > 1200 &&
+                                Drive.rightPP.getRange() < 1300 && Drive.rightPP.getRange() > 1200){
                     YPower = 0;
                 }
             }
             else if(isSeeing == false){//If we don't see anything, drive straight
-                YPower = -0.1;
+                YPower = 0.15;//.1
             }
             
             //ZPower
@@ -102,8 +104,11 @@ public class Routine{
                 }
                 else{
                     ZPower = ((Drive.leftPPDistance - Drive.rightPPDistance) / 750) + feedForward;
-                    if(ZPower > 0.12){
-                        ZPower = 0.12;
+                    if(ZPower > 0.2){//.12
+                        ZPower = 0.2;
+                    }
+                    else if(ZPower < -0.2){
+                        ZPower = -0.2;
                     }
                 }
             }
@@ -134,50 +139,43 @@ public class Routine{
         }
         if(inPosition == true){
             Pneumatics.controlCompressor(CompressorState.DISABLED);
-            System.out.println("In Position");
             Drive.run(0, 0, 0, 0);
             Limelight.setLedMode(LightMode.OFF);
             //Shoot
-            //if(Timer.getMatchTime() < 10 && Timer.getMatchTime() > 0){
-            if (Shooter.getShooterWheelSpeed() < 3600) {
-            
-                Shooter.controlShooter(ShooterState.FORWARD);
+            if(autoShootCount < 175){
+                if (Shooter.getShooterWheelSpeed() < 3600) {            
+                    Shooter.controlShooter(ShooterState.FORWARD);
+                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                }
+                else if (Shooter.getShooterWheelSpeed() > 3600) {
+                    Shooter.controlShooter(ShooterState.FORWARD);
+                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+                }
+                autoShootCount++;
+                Indexer.indexerClear();
+            }
+            else{
+                Shooter.controlShooter(ShooterState.STOP);
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-            }
-            else if (Shooter.getShooterWheelSpeed() > 3600) {
-                Shooter.controlShooter(ShooterState.FORWARD);
-                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
-                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-            }
-            // if(Drive.leftPP.getRange() > 700 && Drive.leftPP.getRange() < 800
-            // && Drive.rightPP.getRange() < 800 && Drive.rightPP.getRange() > 700
-            // && cameraX > -1 && cameraX < 1){
-            //     inPosition = true;
-            // }
-            // else{
-            //     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
-            //     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-            //     Shooter.controlShooter(ShooterState.STOP);
-            //     inPosition = false;
-            // }
-            Indexer.indexerClear();
+                }
         }
         debugAuto();
-        
     }
 
     public static void debugAuto(){
-            SmartDashboard.putBoolean("isSeeing", isSeeing);
-            SmartDashboard.putNumber("LeftDistance", Drive.leftPPDistance);
-            SmartDashboard.putNumber("RightDistance", Drive.rightPPDistance);
-            SmartDashboard.putNumber("AverageDistance", Drive.averagePPLength);
-            SmartDashboard.putBoolean("inPosition", inPosition);
-            SmartDashboard.putNumber("YPower", YPower);
-            SmartDashboard.putNumber("LimelightX", cameraX);
-            SmartDashboard.putNumber("XPower", XPower);
-            SmartDashboard.putNumber("ZPower", ZPower);
-          //  SmartDashboard.putBoolean("notShot", notShot);
-          SmartDashboard.updateValues();
+        SmartDashboard.putBoolean("isSeeing", isSeeing);
+        SmartDashboard.putBoolean("inPosition", inPosition);
+        SmartDashboard.putNumber("LeftDistance", Drive.leftPPDistance);
+        SmartDashboard.putNumber("RightDistance", Drive.rightPPDistance);
+        SmartDashboard.putNumber("AverageDistance", Drive.averagePPLength);
+        SmartDashboard.putNumber("YPower", YPower);
+        SmartDashboard.putNumber("LimelightX", cameraX);
+        SmartDashboard.putNumber("XPower", XPower);
+        SmartDashboard.putNumber("ZPower", ZPower);
+        SmartDashboard.putNumber("AutoShootCount", autoShootCount);
+        SmartDashboard.updateValues();
     }
 }

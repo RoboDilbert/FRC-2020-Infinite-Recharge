@@ -11,8 +11,8 @@ public class Gyro{
     
     public static void init() {
         ahrs = new AHRS(SPI.Port.kMXP);
-        SmartDashboard.putBoolean("init gyro bool", ahrs.isConnected());
-        SmartDashboard.putNumber("init gyro",ahrs.getAngle());
+        //SmartDashboard.putBoolean("init gyro bool", ahrs.isConnected());
+        //SmartDashboard.putNumber("init gyro",ahrs.getAngle());
         System.out.println("INIT GYRO");
     }
 

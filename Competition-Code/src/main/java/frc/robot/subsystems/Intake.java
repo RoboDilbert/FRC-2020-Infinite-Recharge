@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SpeedController;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake {
 
@@ -82,6 +83,6 @@ public class Intake {
     }
 
     public static void debugIntake(){
-
+        SmartDashboard.putNumber("Intkae volt", IntakeMotor.getBusVoltage());
     }
 }
