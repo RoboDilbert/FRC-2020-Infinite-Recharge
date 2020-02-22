@@ -76,6 +76,16 @@ public class TeleopControl{
             Drive.run(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction,
                     driver.getZ() / 3, Constants.roboGyro);
             Limelight.setLedMode(LightMode.OFF);
+            Drive.tInPosition = false;
+            if(!driver.getRawButton(1)){
+                Shooter.controlShooter(ShooterState.STOP);
+                if(autoIndex = false){
+                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                }
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                Pneumatics.controlCompressor(CompressorState.ENABLED);
+            }
+
         }
 
         // -------------------------------------------------------------------------------------------------------------------
@@ -173,7 +183,9 @@ public class TeleopControl{
         // ------------------------------------------------------------------------------------------------------
         // Indexer Control
 
-        autoIndex = Indexer.Index();
+        if(!driver.getRawButton(2)){
+            autoIndex = Indexer.Index();
+        }
 
         if(coDriver.getRawButton(4)){
             Indexer.currentBallCount++;
@@ -183,6 +195,7 @@ public class TeleopControl{
 
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
+        if(!driver.getRawButton(2)){
         if(ButtonLayout.getRawButton(2) && !driver.getRawButton(1)){
             Shooter.controlShooter(ShooterState.FORWARD);
             if(autoIndex = false){
@@ -191,7 +204,7 @@ public class TeleopControl{
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
             shooterClock++;
         }
-        if (driver.getRawButton(1)){
+        if (driver.getRawButton(1) && !driver.getRawButton(2)){
             Pneumatics.controlCompressor(CompressorState.DISABLED);
             if(ButtonLayout.getRawButton(4) != true  && ButtonLayout.getRawButton(3) != true){
                 Robot.currentIntakeState = IntakeToggle.STOP;
@@ -224,6 +237,7 @@ public class TeleopControl{
             Pneumatics.controlCompressor(CompressorState.ENABLED);
                  shooterClock = 0;
             }
+        }
         }
 
         // -------------------------------------------------------------------------------------------------------
@@ -260,6 +274,7 @@ public class TeleopControl{
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
         Indexer.debugIndexer();
+        Drive.LineUpData();
         SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }

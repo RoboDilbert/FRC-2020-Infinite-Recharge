@@ -139,7 +139,6 @@ public class Routine{
         }
         if(inPosition == true){
             Pneumatics.controlCompressor(CompressorState.DISABLED);
-            System.out.println("In Position");
             Drive.run(0, 0, 0, 0);
             Limelight.setLedMode(LightMode.OFF);
             //Shoot
