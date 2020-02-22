@@ -31,21 +31,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class TeleopControl{
 
-
-
-    // AHRS ahrs;
-    
     public static Joystick driver;
     private static Joystick coDriver;
     private static Joystick ButtonLayout;
 
     private static String foundColor;
-    // public double yValue;
-    // public double xValue;
-    // public double zValue;
-    // public float leftPower;
-    // public float rightPower;
-    // public double roboGyro;
     private static int ColorCount;
     private static String gameData;
     private static boolean colorFlag;
@@ -55,9 +45,6 @@ public class TeleopControl{
     private static int shooterClock = 0;
 
     private static boolean autoIndex;
-
-    static Timer shootTimer = new Timer();
-    //static TimerTask shootTask = new Helper();
 
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
@@ -131,8 +118,6 @@ public class TeleopControl{
             WallOfWheels.controlWall(WallState.STOP);
             Intake.controlIntake(IntakeMotorState.STOP);
         }
-
-
 
         // ----------------------------------------------------------------------------------------------
         // // Color Wheel Control
@@ -224,16 +209,8 @@ public class TeleopControl{
                 if (autoIndex = false) {
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                 }
-                //if (Shooter.getShooterWheelSpeed() > 3500) {
-                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-                   // Constants.shootFlag = false;
-                    SmartDashboard.updateValues();
-                    //shootTimer.purge();
-                 //else {
-                    // if (Constants.shootFlag == false) {
-                    //     //shootTimer.schedule(shootTask, 1000);
-                    // }
-                //}
+                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+                SmartDashboard.updateValues();
             }
             Indexer.indexerClear();
         }
@@ -277,18 +254,9 @@ public class TeleopControl{
         }
         //-------------------------------------------------------------------------------------------------------
         //Compressor Shut Off
-        
         // if(Timer.getMatchTime() < 30){
         //     Pneumatics.controlCompressor(CompressorState.DISABLED);
-        // }
-
-        //Test junk
-        if(coDriver.getRawButton(1)){
-            Limelight.setLedMode(LightMode.ON);
-        }else if(coDriver.getRawButton(2)){
-            Limelight.setLedMode(LightMode.OFF);
-        }
-
+        //}
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
         Indexer.debugIndexer();
@@ -296,13 +264,3 @@ public class TeleopControl{
         SmartDashboard.updateValues();
     }
 }
-
-// class Helper extends TimerTask{
-
-//     public void run() 
-//     { 
-//         Constants.shootFlag = true;
-
-//         SmartDashboard.updateValues();
-//     } 
-// }

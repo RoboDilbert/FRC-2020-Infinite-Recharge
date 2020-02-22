@@ -39,7 +39,7 @@ public class Limelight{
         videoMode = new VideoMode(PixelFormat.kYUYV, 800, 448, 30);
         drive.setFPS(30);
         drive.setVideoMode(videoMode);
-       NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
+       //NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
     }
 
     //Methods to access information
