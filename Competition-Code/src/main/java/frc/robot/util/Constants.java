@@ -47,7 +47,7 @@ public class Constants{
 
     //Color Wheel
     public static final double searchSpeed = 0.5;
-    public static final double wheelSpeed = .4;
+    public static final double wheelSpeed = .6;
     public static String initalColor;
     public static String nextColor;
     public static String bufferColor;
