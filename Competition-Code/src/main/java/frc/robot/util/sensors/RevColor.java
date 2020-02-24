@@ -20,12 +20,18 @@ Color B;
  Color R;
 Color G;
 
+
 public void displayColor(){
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
-    SmartDashboard.putNumber("IR", IR);
-    SmartDashboard.putNumber("Proximity", proximity);
+    double alpha = ((double)m_colorSensor.getRawColor().blue + (double)m_colorSensor.getRawColor().red + (double)m_colorSensor.getRawColor().green);
+
+    SmartDashboard.putNumber("blue", (double)m_colorSensor.getRawColor().blue/ alpha);
+    SmartDashboard.putNumber("red", (double)m_colorSensor.getRawColor().red / alpha);
+    SmartDashboard.putNumber("green", (double)m_colorSensor.getRawColor().green / alpha);
+    SmartDashboard.putNumber("alpha", alpha);
+   
+    //SmartDashboard.putNumber("IR", IR);
+   // SmartDashboard.putNumber("Proximity", proximity);
+   SmartDashboard.updateValues();
 }
 
 public double returnValue(String command) {
@@ -48,19 +54,23 @@ else if(command == "proximity"){
 }
 
 public String searchColor(){
- Color found = m_colorSensor.getColor();
+    double alpha = ((double)m_colorSensor.getRawColor().blue + (double)m_colorSensor.getRawColor().red + (double)m_colorSensor.getRawColor().green);
+
  
-    if(found == B){
+    if((double)m_colorSensor.getRawColor().blue/ alpha > .3 && (double)m_colorSensor.getRawColor().green/ alpha > .3){
         return "B";
     }
-    else if(found == R){
+    else if((double)m_colorSensor.getRawColor().red/ alpha > .4){
         return "R";
     }
-    else if(found == G){
+    else if((double)m_colorSensor.getRawColor().green/ alpha > .5 && (double)m_colorSensor.getRawColor().blue/ alpha < .3 && (double)m_colorSensor.getRawColor().red/ alpha < .2){
         return "G";
     }
+    else if((double)m_colorSensor.getRawColor().red/ alpha > .3 && (double)m_colorSensor.getRawColor().green/ alpha > .4  && (double)m_colorSensor.getRawColor().blue/ alpha < .2){
+        return "Y";
+    }
     else{
-        return null;
+        return "N";
     }
     
 }
