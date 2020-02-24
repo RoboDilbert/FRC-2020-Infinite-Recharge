@@ -80,7 +80,7 @@ public class Constants{
     public static final int rightBackMotorID = 4;
     public static final int WallOfWheelsMotorID = 6;
     public static final int IntakeMotorID = 7;
-    public static final int colorWheelMotorID = 8;//not hooked up
+    public static final int hangingWheelMotorID = 8;\
     public static final int IndexShootMotorID = 9;
     public static final int ShooterMotorID = 10;
     public static final int UPPER_INDEXER_TOF_ID = 11;
@@ -90,7 +90,7 @@ public class Constants{
     public static final int IndexFeedMotorID = 15;
     public static final int lifterLeftMotorID = 16;
     public static final int lifterRightMotorID = 17;
-    public static final int hangingWheelMotorID = 18;
+    public static final int colorWheelMotorID = 18;
 
     public static enum IntakeToggle{
         FORWARD,

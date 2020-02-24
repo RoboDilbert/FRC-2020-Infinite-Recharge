@@ -293,6 +293,7 @@ public class TeleopControl{
         Indexer.debugIndexer();
         Drive.LineUpData();
         ColorWheel.colorWheelDebug();
+        //Gyro.getGyroValues();
         SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }

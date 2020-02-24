@@ -21,7 +21,7 @@ public class HangingMove{
     }
 
     public static void init(){
-        HangingMoveMotor = new CANSparkMax(Constants.hangingWheelMotorID, MotorType.kBrushless);
+        HangingMoveMotor = new CANSparkMax(Constants.hangingWheelMotorID, MotorType.kBrushed);
         HangingMoveMotor.setIdleMode(IdleMode.kBrake);
         HangingMoveMotorEncoder = HangingMoveMotor.getEncoder();
     }
