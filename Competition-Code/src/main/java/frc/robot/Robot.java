@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
     WallOfWheels.init();
     TeleopControl.init();
     Pneumatics.init();
-    Pneumatics.controlCompressor(CompressorState.ENABLED);
+    Pneumatics.controlCompressor(CompressorState.DISABLED);
     
     //Limelight.setLedMode(LightMode.OFF);
     //Limelight.initUSBCamera();

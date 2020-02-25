@@ -85,7 +85,7 @@ public class TeleopControl{
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 }
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-                Pneumatics.controlCompressor(CompressorState.ENABLED);
+              //  Pneumatics.controlCompressor(CompressorState.ENABLED);
             }
 
         }
@@ -251,7 +251,7 @@ public class TeleopControl{
                 Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             }
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-            Pneumatics.controlCompressor(CompressorState.ENABLED);
+            //Pneumatics.controlCompressor(CompressorState.ENABLED);
                  shooterClock = 0;
             }
         }
