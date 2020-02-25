@@ -7,6 +7,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.Constants;
 //import frc.robot.util.sensors.*;
 import com.playingwithfusion.TimeOfFlight;
+import com.playingwithfusion.TimeOfFlight.RangingMode;
+
 //import com.playingwithfusion.TimeOfFlight.RangingMode;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
@@ -21,6 +23,8 @@ public class Indexer{
 
     private static TimeOfFlight uppperIndex = new TimeOfFlight(Constants.UPPER_INDEXER_TOF_ID);
     private static TimeOfFlight lowerIndex = new TimeOfFlight(Constants.LOWER_INDEXER_TOF_ID);
+   
+
 
     public static int currentBallCount;
     private static boolean ballCountFlag = false;
@@ -45,6 +49,8 @@ public class Indexer{
         IndexFeedMotorEncoder = IndexFeedMotor.getEncoder();
         IndexShootMotorEncoder = IndexShootMotor.getEncoder();
         currentBallCount = 0;
+        uppperIndex.setRangingMode(RangingMode.Short, 25);
+        lowerIndex.setRangingMode(RangingMode.Short, 25);
     }
 
     public static void controlIndexer(SelectIndexer selectValue, IndexerState stateValue){

@@ -12,7 +12,7 @@ import frc.robot.util.*;
 public class HangingMove{
 
     private static CANSparkMax HangingMoveMotor;
-    private static CANEncoder HangingMoveMotorEncoder;
+   // private static CANEncoder HangingMoveMotorEncoder;
 
     public enum HangingMoveState{
         LEFT,
@@ -23,7 +23,7 @@ public class HangingMove{
     public static void init(){
         HangingMoveMotor = new CANSparkMax(Constants.hangingWheelMotorID, MotorType.kBrushed);
         HangingMoveMotor.setIdleMode(IdleMode.kBrake);
-        HangingMoveMotorEncoder = HangingMoveMotor.getEncoder();
+        //HangingMoveMotorEncoder = HangingMoveMotor.getEncoder();
     }
 
     public static void controlMove(HangingMoveState value){
@@ -43,7 +43,7 @@ public class HangingMove{
     }
 
     public static void hangingDebug(){
-        SmartDashboard.putNumber("Hang Motor Velocity", HangingMoveMotorEncoder.getVelocity());
+        //SmartDashboard.putNumber("Hang Motor Velocity", HangingMoveMotorEncoder.getVelocity());
     }
 
 }

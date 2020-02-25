@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.util.Constants;
+
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -16,6 +18,7 @@ public class Intake {
     private static DoubleSolenoid intakeDrop;
     private static IntakeMotorState currentMotorState;
     private static IntakeSolenoid currentSolenoidState;
+    private static CANEncoder intakeEncoder;
 
     public enum IntakeSolenoid{
         DOWN,
@@ -34,6 +37,7 @@ public class Intake {
         intakeDrop = new DoubleSolenoid(Constants.intakeDropForwardSolenoid, Constants.intakeDropBackSolenoid);
         IntakeMotor = new CANSparkMax(Constants.IntakeMotorID, MotorType.kBrushless);
         IntakeMotor.setIdleMode(IdleMode.kCoast);
+        intakeEncoder = IntakeMotor.getEncoder();
     }
     
     public static IntakeMotorState getMotorState(){
