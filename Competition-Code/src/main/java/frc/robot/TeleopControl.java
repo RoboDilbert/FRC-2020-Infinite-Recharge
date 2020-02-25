@@ -221,7 +221,7 @@ public class TeleopControl{
                 shooterClock++;
             }
             if (driver.getRawButton(1) && !driver.getRawButton(2)){
-                //Pneumatics.controlCompressor(CompressorState.DISABLED);
+                Pneumatics.controlCompressor(CompressorState.DISABLED);
                 if(!ButtonLayout.getRawButton(4) && !ButtonLayout.getRawButton(3)){
                     Robot.currentIntakeState = IntakeToggle.STOP;
                 }
@@ -251,7 +251,7 @@ public class TeleopControl{
                         Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                     }
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-                    //Pneumatics.controlCompressor(CompressorState.ENABLED);
+                    Pneumatics.controlCompressor(CompressorState.ENABLED);
                     shooterClock = 0;
                 }
             }

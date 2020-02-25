@@ -101,14 +101,14 @@ public class Drive{
                 //limelight locked on and X value of limelight
                 if(tCameraX < -1){
                     tXPower = Math.pow((Math.pow((0.18 * tCameraX), 2)), 1/1.5);
-                    if(tXPower > .27){//.2
-                        tXPower = .27;
+                    if(tXPower > .24){//.2
+                        tXPower = .24;
                     }
                 }
                 else if(tCameraX > 1){
                     tXPower = -Math.pow((Math.pow((0.18 * tCameraX), 2)), 1/1.5);
-                    if(tXPower < -.27){//-.2
-                        tXPower = -.27;
+                    if(tXPower < -.24){//-.2
+                        tXPower = -.24;
                     }
                 }
                 else{
@@ -117,17 +117,17 @@ public class Drive{
 
                 //Y Power
                 if(tIsSeeing == true){
-                    if(Drive.leftPPDistance < 1200 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 700 && Drive.rightPPDistance > 0){
+                    if(Drive.leftPPDistance < 1000 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 1000 && Drive.rightPPDistance > 0){
                         tYPower = -0.135;//.1
                     }
-                    else if(Drive.averagePPLength > 1200){
+                    else if(Drive.averagePPLength > 1000){
                         tYPower = ((1.8*Math.pow((Drive.averagePPLength - 150) , 2)) /10000000) + tFeedForward;
                         if(tYPower > 0.27){//.2
                             tYPower = 0.27;
                         }
                     }
-                    if(Drive.leftPP.getRange() < 1300 && Drive.leftPP.getRange() > 1200 &&
-                        Drive.rightPP.getRange() < 1300 && Drive.rightPP.getRange() > 1200){
+                    if(Drive.leftPP.getRange() < 1100 && Drive.leftPP.getRange() > 1000 &&
+                        Drive.rightPP.getRange() < 1100 && Drive.rightPP.getRange() > 1000){
                         tYPower = 0;
                     }
                 }
@@ -142,7 +142,7 @@ public class Drive{
                     }
                     else{
                         tZPower = ((Drive.leftPPDistance - Drive.rightPPDistance) / 750) + tFeedForward;
-                        if(tZPower > 0.2){//.12
+                        if(tZPower > 0.2){//.2
                             tZPower = 0.2;
                         }
                         else if(tZPower < -0.2){
@@ -169,8 +169,8 @@ public class Drive{
             
                 Drive.run(-tXPower, -tYPower, tZPower, 0);
 
-                if(Drive.leftPP.getRange() > 1200 && Drive.leftPP.getRange() < 1300
-                && Drive.rightPP.getRange() < 1300 && Drive.rightPP.getRange() > 1200
+                if(Drive.leftPP.getRange() > 1000 && Drive.leftPP.getRange() < 1100
+                && Drive.rightPP.getRange() < 1100 && Drive.rightPP.getRange() > 1000
                 && tCameraX > -1 && tCameraX < 1){
                     tInPosition = true;
                 }

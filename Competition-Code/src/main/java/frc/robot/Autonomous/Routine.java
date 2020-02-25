@@ -62,14 +62,14 @@ public class Routine{
            //limelight locked on and X value of limelight
             if(cameraX < -1){
                 XPower = Math.pow((Math.pow((0.18 * cameraX), 2)), 1/1.5);
-                if(XPower > .3){//.2
-                    XPower = .3;
+                if(XPower > .24){//.2
+                    XPower = .24;
                 }
             }
             else if(cameraX > 1){
                 XPower = -Math.pow((Math.pow((0.18 * cameraX), 2)), 1/1.5);
-                if(XPower < -.3){//-.2
-                    XPower = -.3;
+                if(XPower < -.24){//-.2
+                    XPower = -.24;
                 }
             }
             else{
@@ -79,17 +79,17 @@ public class Routine{
 
             //Y Power
             if(isSeeing == true){
-                if(Drive.leftPPDistance < 1200 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 700 && Drive.rightPPDistance > 0){
-                    YPower = -0.15;//.1
+                if(Drive.leftPPDistance < 1000 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 1000 && Drive.rightPPDistance > 0){
+                    YPower = -0.135;//.1
                 }
-                else if(Drive.averagePPLength > 1200){
+                else if(Drive.averagePPLength > 1000){
                     YPower = ((1.8*Math.pow((Drive.averagePPLength - 150) , 2)) /10000000) + feedForward;
-                    if(YPower > 0.3){//.2
-                        YPower = 0.3;
+                    if(YPower > 0.27){//.2
+                        YPower = 0.27;
                     }
                 }
-                if(Drive.leftPP.getRange() < 1300 && Drive.leftPP.getRange() > 1200 &&
-                                Drive.rightPP.getRange() < 1300 && Drive.rightPP.getRange() > 1200){
+                if(Drive.leftPP.getRange() < 1000 && Drive.leftPP.getRange() > 900 &&
+                                Drive.rightPP.getRange() < 1000 && Drive.rightPP.getRange() > 900){
                     YPower = 0;
                 }
             }
@@ -131,10 +131,11 @@ public class Routine{
             
             Drive.run(-XPower, -YPower, ZPower, 0);
 
-            if(Drive.leftPP.getRange() > 1200 && Drive.leftPP.getRange() < 1300
-            && Drive.rightPP.getRange() < 1300 && Drive.rightPP.getRange() > 1200
+            if(Drive.leftPP.getRange() > 900 && Drive.leftPP.getRange() < 1000
+            && Drive.rightPP.getRange() < 1000 && Drive.rightPP.getRange() > 900
             && cameraX > -1 && cameraX < 1){
                 inPosition = true;
+    
             }
         }
         if(inPosition == true){
