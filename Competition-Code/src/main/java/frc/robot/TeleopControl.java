@@ -14,8 +14,6 @@ import frc.robot.subsystems.WallOfWheels.*;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 
-import com.fasterxml.jackson.core.PrettyPrinter;
-
 import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.Pneumatics.CompressorState;
@@ -132,7 +130,14 @@ public class TeleopControl{
         }
 
         // ----------------------------------------------------------------------------------------------
-        ColorWheel.getGameData();
+        if(driver.getRawButton(5)){
+            ColorWheel.getGameData();
+            if(ColorWheel.colorSensor.searchColor() != desiredColor){
+                ColorWheel.controlColorWheel(ColorWheel.SearchValue.FORWARD);
+            }else{
+                ColorWheel.controlColorWheel(ColorWheel.SearchValue.STOP);
+            }
+        }
 
         if(ColorWheel.gameDataColor == "BLUE"){
             desiredColor = "RED";
@@ -146,13 +151,7 @@ public class TeleopControl{
             desiredColor = "NULL";
         }
 
-        if(driver.getRawButton(5)){
-            if(ColorWheel.colorSensor.searchColor() != desiredColor){
-                ColorWheel.controlColorWheel(ColorWheel.SearchValue.FORWARD);
-            }else{
-                ColorWheel.controlColorWheel(ColorWheel.SearchValue.STOP);
-            }
-        }
+        
 
 
         // // Color Wheel Control
@@ -213,48 +212,49 @@ public class TeleopControl{
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
         if(!driver.getRawButton(2)){
-        if(ButtonLayout.getRawButton(2) && !driver.getRawButton(1)){
-            Shooter.controlShooter(ShooterState.FORWARD);
-            if(autoIndex = false){
-                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
-            }
-            Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-            shooterClock++;
-        }
-        if (driver.getRawButton(1) && !driver.getRawButton(2)){
-            Pneumatics.controlCompressor(CompressorState.DISABLED);
-            if(ButtonLayout.getRawButton(4) != true  && ButtonLayout.getRawButton(3) != true){
-                Robot.currentIntakeState = IntakeToggle.STOP;
-            }
-            
-            if (Shooter.getShooterWheelSpeed() < 3300 || shooterClock < 25) {
+            if(ButtonLayout.getRawButton(2) && !driver.getRawButton(1)){
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if(autoIndex = false){
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 }
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
                 shooterClock++;
-            } else if (Shooter.getShooterWheelSpeed() > 3300) {
-                Shooter.controlShooter(ShooterState.FORWARD);
-                if (autoIndex = false) {
-                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+            }
+            if (driver.getRawButton(1) && !driver.getRawButton(2)){
+                //Pneumatics.controlCompressor(CompressorState.DISABLED);
+                if(!ButtonLayout.getRawButton(4) && !ButtonLayout.getRawButton(3)){
+                    Robot.currentIntakeState = IntakeToggle.STOP;
                 }
-                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-                SmartDashboard.updateValues();
+            
+                if (Shooter.getShooterWheelSpeed() < 3300 || shooterClock < 25) {
+                    Shooter.controlShooter(ShooterState.FORWARD);
+                    if(autoIndex = false){
+                        Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                    }
+                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                    shooterClock++;
+                }
+                else if (Shooter.getShooterWheelSpeed() > 3300) {
+                    Shooter.controlShooter(ShooterState.FORWARD);
+                    if (autoIndex = false) {
+                        Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                    }
+                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+                    SmartDashboard.updateValues();
+                }
+                Indexer.indexerClear();
             }
-            Indexer.indexerClear();
-        }
-        else{
-            if(!ButtonLayout.getRawButton(2)){
-                Shooter.controlShooter(ShooterState.STOP);
-            if(autoIndex = false){
-                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+            else{
+                if(!ButtonLayout.getRawButton(2)){
+                    Shooter.controlShooter(ShooterState.STOP);
+                    if(autoIndex = false){
+                        Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                    }
+                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                    //Pneumatics.controlCompressor(CompressorState.ENABLED);
+                    shooterClock = 0;
+                }
             }
-            Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-            //Pneumatics.controlCompressor(CompressorState.ENABLED);
-                 shooterClock = 0;
-            }
-        }
         }
 
         // -------------------------------------------------------------------------------------------------------
@@ -291,10 +291,10 @@ public class TeleopControl{
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
         Indexer.debugIndexer();
-        Drive.LineUpData();
-        ColorWheel.colorWheelDebug();
+        //Drive.LineUpData();
+        //ColorWheel.colorWheelDebug();
         //Gyro.getGyroValues();
-        SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+        //SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }
 }

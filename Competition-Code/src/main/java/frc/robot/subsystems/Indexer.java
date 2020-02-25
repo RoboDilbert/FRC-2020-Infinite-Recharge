@@ -136,8 +136,8 @@ public class Indexer{
     }
 
     public static void debugIndexer(){
-        SmartDashboard.putNumber("Upper TOF", uppperIndex.getRange());
-        SmartDashboard.putNumber("Lower TOF", lowerIndex.getRange());
+       // SmartDashboard.putNumber("Upper TOF", uppperIndex.getRange());
+        //SmartDashboard.putNumber("Lower TOF", lowerIndex.getRange());
         //SmartDashboard.putNumber("Feeder Indexer Motor Encoder", IndexFeedMotorEncoder.getPosition());
         //SmartDashboard.putNumber("Shoot Indexer Motor Encoder", IndexShootMotorEncoder.getPosition());
         //SmartDashboard.putBoolean("ballFlag", ballCountFlag);

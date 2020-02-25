@@ -14,7 +14,7 @@ public class Limelight{
     private static NetworkTableInstance table1 = null;
     public static NetworkTableEntry camMode, ledMode, tx, ty, ta, tv, ts, tl;
 
-    public static UsbCamera drive;
+   // public static UsbCamera drive;
     public static VideoMode videoMode;
 
 
@@ -35,10 +35,10 @@ public class Limelight{
     }
 
     public static void initUSBCamera() {
-        drive = CameraServer.getInstance().startAutomaticCapture();
-        videoMode = new VideoMode(PixelFormat.kYUYV, 800, 448, 30);
-        drive.setFPS(30);
-        drive.setVideoMode(videoMode);
+        // drive = CameraServer.getInstance().startAutomaticCapture();
+        // videoMode = new VideoMode(PixelFormat.kYUYV, 800, 448, 30);
+        // drive.setFPS(30);
+        // drive.setVideoMode(videoMode);
        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
     }
 
