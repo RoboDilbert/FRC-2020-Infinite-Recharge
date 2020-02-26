@@ -36,7 +36,7 @@ public class HangingMove{
         }
         else if(value == HangingMoveState.RIGHT){
             motor1.set(-Constants.hangerSpeed);
-        }
+        }//test
         else if(value == HangingMoveState.STOP){
             motor1.set(0);
         }
