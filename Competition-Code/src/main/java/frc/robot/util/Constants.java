@@ -34,11 +34,6 @@ public class Constants{
     //I2C Port
     public static double colorVar;
 
-    //TOF Sensor
-
-    
-    
-
     //Game Data Color
     public static String gameData;
 
