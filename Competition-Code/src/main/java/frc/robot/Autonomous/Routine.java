@@ -18,6 +18,8 @@ public class Routine{
     private static double YPower;
     private static double ZPower ;
     private static double cameraX;
+    private static double cameraY;
+    private static double limelightDistance;
     private static double angle;
     private static double complimentAngle;
     private static double feedForward;
@@ -32,6 +34,8 @@ public class Routine{
         YPower = 0;
         ZPower = 0;
         cameraX = 0;
+        cameraY = 0;
+        limelightDistance = 0;
         angle = 0;
         complimentAngle = 0;
         feedForward = 0.03;
@@ -46,6 +50,8 @@ public class Routine{
         //Get in Position
         if(inPosition == false){ 
             cameraX = Limelight.tx.getDouble(0.0);
+            cameraY = Limelight.ty.getDouble(0.0);
+            limelightDistance = ((98.19-26) / Math.tan(38+cameraY))-12;
             Limelight.setLedMode(LightMode.ON);
             debugAuto();
             if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){
@@ -78,43 +84,61 @@ public class Routine{
 
 
             //Y Power
-            if(isSeeing == true){
-                if(Drive.leftPPDistance < 1000 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 1000 && Drive.rightPPDistance > 0){
+            // if(isSeeing == true){
+            //     if(Drive.leftPPDistance < 1000 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 1000 && Drive.rightPPDistance > 0){
+            //         YPower = -0.135;//.1
+            //     }
+            //     else if(Drive.averagePPLength > 1000){
+            //         YPower = ((1.8*Math.pow((Drive.averagePPLength - 150) , 2)) /10000000) + feedForward;
+            //         if(YPower > 0.27){//.2
+            //             YPower = 0.27;
+            //         }
+            //     }
+            //     if(Drive.leftPP.getRange() < 1000 && Drive.leftPP.getRange() > 900 &&
+            //                     Drive.rightPP.getRange() < 1000 && Drive.rightPP.getRange() > 900){
+            //         YPower = 0;
+            //     }
+            // }
+            // else if(isSeeing == false){//If we don't see anything, drive straight
+            //     YPower = 0.15;//.1
+            // }
+
+            // YPower2
+    
+            
+            if(limelightDistance < 35.43 && limelightDistance  > 0){
                     YPower = -0.135;//.1
                 }
-                else if(Drive.averagePPLength > 1000){
-                    YPower = ((1.8*Math.pow((Drive.averagePPLength - 150) , 2)) /10000000) + feedForward;
-                    if(YPower > 0.27){//.2
-                        YPower = 0.27;
-                    }
-                }
-                if(Drive.leftPP.getRange() < 1000 && Drive.leftPP.getRange() > 900 &&
-                                Drive.rightPP.getRange() < 1000 && Drive.rightPP.getRange() > 900){
-                    YPower = 0;
+            else if((98.19-26)/ Math.tan(38+cameraY) > 39.37){
+                YPower = limelightDistance/1000;
+                if(YPower > 0.27){//.2
+                    YPower = 0.27;
                 }
             }
-            else if(isSeeing == false){//If we don't see anything, drive straight
+            if(limelightDistance < 39.37 && limelightDistance  > 35.43){
+                YPower = 0;//.1
+            }
+            else if(cameraY == 0){//If we don't see anything, drive straight
                 YPower = 0.15;//.1
             }
-            
-            //ZPower
-            if(Drive.averagePPLength < 2508){
-                if(Drive.leftPPDistance == 0 || Drive.rightPPDistance == 0){
-                    ZPower = 0;
-                }
-                else{
-                    ZPower = ((Drive.leftPPDistance - Drive.rightPPDistance) / 750) + feedForward;
-                    if(ZPower > 0.2){//.12
-                        ZPower = 0.2;
-                    }
-                    else if(ZPower < -0.2){
-                        ZPower = -0.2;
-                    }
-                }
-            }
-            else{
-                ZPower = 0;
-            }
+            // //ZPower
+            // if(Drive.averagePPLength < 2508){
+            //     if(Drive.leftPPDistance == 0 || Drive.rightPPDistance == 0){
+            //         ZPower = 0;
+            //     }
+            //     else{
+            //         ZPower = ((Drive.leftPPDistance - Drive.rightPPDistance) / 750) + feedForward;
+            //         if(ZPower > 0.2){//.12
+            //             ZPower = 0.2;
+            //         }
+            //         else if(ZPower < -0.2){
+            //             ZPower = -0.2;
+            //         }
+            //     }
+            // }
+            // else{
+            //     ZPower = 0;
+            // }
         
             if(Drive.averagePPLength < 4000 && Drive.averagePPLength > 2000){
                 Drive.rightPP.setRangingMode(RangingMode.Long, 25);
@@ -129,7 +153,7 @@ public class Routine{
                 Drive.leftPP.setRangingMode(RangingMode.Short, 25);
             }
             
-            Drive.run(-XPower, -YPower, ZPower, 0);
+            Drive.run(-XPower, -YPower, 0, 0);
 
             if(Drive.leftPP.getRange() > 900 && Drive.leftPP.getRange() < 1000
             && Drive.rightPP.getRange() < 1000 && Drive.rightPP.getRange() > 900
