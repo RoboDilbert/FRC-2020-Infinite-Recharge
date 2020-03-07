@@ -16,7 +16,8 @@ public class Shooter{
     public static enum ShooterState{
         FORWARD, 
         REVERSE, 
-        STOP;
+        STOP,
+        CALCULATED;
     }
    
     public static void init(){
@@ -38,6 +39,9 @@ public class Shooter{
         }
         else if (value == ShooterState.STOP){
             controller1.set(0);
+        }
+        else if (value == ShooterState.CALCULATED){
+            controller1.set(Constants.calculatedPower);
         }
     }
 

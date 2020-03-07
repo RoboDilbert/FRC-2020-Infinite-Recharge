@@ -34,11 +34,6 @@ public class Constants{
     //I2C Port
     public static double colorVar;
 
-    //TOF Sensor
-
-    
-    
-
     //Game Data Color
     public static String gameData;
 
@@ -69,6 +64,7 @@ public class Constants{
     // Shooter
     public static final double shooterSpeed = .70;
     public static boolean shootFlag = false;
+    public static double calculatedPower = 0;
 
     // Wall of Wheels
     public static final double wallOfWheelsSpeed = 0.78;

@@ -14,6 +14,8 @@ import frc.robot.subsystems.WallOfWheels.*;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 
+import com.fasterxml.jackson.core.PrettyPrinter;
+
 import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.Pneumatics.CompressorState;
@@ -43,8 +45,6 @@ public class TeleopControl{
     private static int shooterClock = 0;
 
     private static boolean autoIndex;
-
-    private static String desiredColor;
 
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
@@ -84,10 +84,22 @@ public class TeleopControl{
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                 }
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
-              //  Pneumatics.controlCompressor(CompressorState.ENABLED);
+                Pneumatics.controlCompressor(CompressorState.ENABLED);
             }
 
         }
+
+
+
+
+        // Test Auto Line Up 2
+        if(driver.getRawButton(5)){
+            Drive.lockOn(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction, Constants.roboGyro);
+        }
+
+
+
+        
 
         // -------------------------------------------------------------------------------------------------------------------
         // Wall of Wheels & Intake Control
@@ -134,30 +146,6 @@ public class TeleopControl{
         }
 
         // ----------------------------------------------------------------------------------------------
-        if(driver.getRawButton(5)){
-            ColorWheel.getGameData();
-            if(ColorWheel.colorSensor.searchColor() != desiredColor){
-                ColorWheel.controlColorWheel(ColorWheel.SearchValue.FORWARD);
-            }else{
-                ColorWheel.controlColorWheel(ColorWheel.SearchValue.STOP);
-            }
-        }
-
-        if(ColorWheel.gameDataColor == "BLUE"){
-            desiredColor = "RED";
-        } else if(ColorWheel.gameDataColor == "GREEN"){
-            desiredColor = "YELLOW";
-        }else if(ColorWheel.gameDataColor == "YELLOW"){
-            desiredColor = "GREEN";
-        }else if(ColorWheel.gameDataColor == "RED"){
-            desiredColor= "BLUE";
-        }else if(ColorWheel.gameDataColor == "NULL"){
-            desiredColor = "NULL";
-        }
-
-        
-
-
         // // Color Wheel Control
         // if (coDriver.getRawButton(12) && foundColor != gameData) {
         // foundColor = colorSensor.searchColor();
@@ -187,12 +175,20 @@ public class TeleopControl{
         // ColorWheel.WheelSearch(SearchValue.STOP);
         // }
 
-        if(driver.getRawButton(8)){
-            ColorWheel.controlColorWheel(SearchValue.FORWARD);
-        }
-        else{
-            ColorWheel.controlColorWheel(SearchValue.STOP);
-        }
+        // if(driver.getRawButton(8)){
+        //     ColorWheel.controlColorWheel(SearchValue.FORWARD);
+        // }
+        // else{
+        //     ColorWheel.controlColorWheel(SearchValue.STOP);
+        // }
+
+        // if(ButtonLayout.getRawButton(2)){
+        //     ColorWheel.controlColorWheel(SearchValue.FORWARD);
+        // } else if(ButtonLayout.getRawButton(1)){
+        //     ColorWheel.controlColorWheel(SearchValue.REVERSE);
+        // }else{
+        //     ColorWheel.controlColorWheel(SearchValue.STOP);
+        // }
 
         // if(coDriver.getRawButton(4)){
         //     ColorWheel.liftWheel();
@@ -207,11 +203,11 @@ public class TeleopControl{
             autoIndex = Indexer.Index();
         }
 
-        // if(coDriver.getRawButton(4)){
-        //     Indexer.currentBallCount++;
-        // }else if(coDriver.getRawButton(2)){
-        //     Indexer.currentBallCount--;
-        // }
+        if(coDriver.getRawButton(4)){
+            Indexer.currentBallCount++;
+        }else if(coDriver.getRawButton(2)){
+            Indexer.currentBallCount--;
+        }
 
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
@@ -223,10 +219,14 @@ public class TeleopControl{
                 }
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
                 shooterClock++;
-            }
+            }   
             if (driver.getRawButton(1) && !driver.getRawButton(2)){
                 Pneumatics.controlCompressor(CompressorState.DISABLED);
+<<<<<<< HEAD
                 if(!coDriver.getRawButton(1) && !coDriver.getRawButton(3)){
+=======
+                if(ButtonLayout.getRawButton(4) != true  && ButtonLayout.getRawButton(3) != true){
+>>>>>>> 2f66dfb73c0291f6b21b86ed537b83e6a235ff3a
                     Robot.currentIntakeState = IntakeToggle.STOP;
                 }
             
@@ -252,7 +252,7 @@ public class TeleopControl{
                 if(!coDriver.getRawButton(10)){
                     Shooter.controlShooter(ShooterState.STOP);
                     if(autoIndex = false){
-                        Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                    Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                     }
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
                     Pneumatics.controlCompressor(CompressorState.ENABLED);
@@ -282,6 +282,7 @@ public class TeleopControl{
         }
         else if(coDriver.getRawButton(6)){
             HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
+<<<<<<< HEAD
         }else if(coDriver.getRawButton(5)){
             HangingMove.controlMove(HangingMove.HangingMoveState.RIGHT);
         }
@@ -295,6 +296,10 @@ public class TeleopControl{
         //     HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
         //}
         else{
+=======
+        }else{
+
+>>>>>>> 2f66dfb73c0291f6b21b86ed537b83e6a235ff3a
             HangingMove.controlMove(HangingMove.HangingMoveState.STOP);
             LiftSystem.controlLifter(LifterState.STOP);
         }
@@ -311,10 +316,8 @@ public class TeleopControl{
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
         Indexer.debugIndexer();
-        //Drive.LineUpData();
-        //ColorWheel.colorWheelDebug();
-        //Gyro.getGyroValues();
-        //SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+        Drive.LineUpData();
+        SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         SmartDashboard.updateValues();
     }
 }
