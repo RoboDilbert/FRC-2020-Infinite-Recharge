@@ -9,14 +9,15 @@ import frc.robot.util.sensors.*;
 import frc.robot.util.sensors.Limelight.LightMode;
 import frc.robot.subsystems.Indexer.*;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.subsystems.Shooter.*;
 
-public class Routine{
-    //test
-    //public static TOFSensor tofSensor = new TOFSensor();
+public class Routine {
+    // test
+    // public static TOFSensor tofSensor = new TOFSensor();
     private static double XPower;
     private static double YPower;
-    private static double ZPower ;
+    private static double ZPower;
     private static double cameraX;
     private static double angle;
     private static double complimentAngle;
@@ -24,9 +25,10 @@ public class Routine{
     private static boolean notShot;
     private static boolean inPosition;
     private static boolean isSeeing;
+    private static boolean sleepTick;
     private static int autoShootCount = 0;
 
-    public static void init(){
+    public static void init() {
         Limelight.LimelightInitialize();
         XPower = 0;
         YPower = 0;
@@ -38,11 +40,20 @@ public class Routine{
         notShot = false;
         inPosition = false;
         isSeeing = false;
+        sleepTick = false;
         autoShootCount = 0;
     }
 
-    public static void run(){
-        
+    public static void run() {
+        if(sleepTick == false)
+        {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+            
+            }
+            sleepTick = true;
+        }
         //Get in Position
         if(inPosition == false){ 
             cameraX = Limelight.tx.getDouble(0.0);

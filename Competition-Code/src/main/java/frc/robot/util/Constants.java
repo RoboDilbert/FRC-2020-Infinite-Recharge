@@ -54,24 +54,24 @@ public class Constants{
     public static int colorCount = 0;
    
     // Hanger Move
-    public static final double hangerSpeed = .8;
+    public static final double hangerSpeed = .77;
 
     // Indexer
     public static final double feedIndexerSpeed = .4;
     public static final double shootIndexerSpeed = .3;
 
     // Intake
-    public static final double intakeSpeed = .25;
+    public static final double intakeSpeed = .45;
 
     // LiftSystem
-    public static final double lifterSpeedUp = .9;
+    public static final double lifterSpeedUp = .5;
     public static final double lifterSpeedDown = .5;
     // Shooter
     public static final double shooterSpeed = .70;
     public static boolean shootFlag = false;
 
     // Wall of Wheels
-    public static final double wallOfWheelsSpeed = 0.70;
+    public static final double wallOfWheelsSpeed = 0.78;
     
     //Can IDs
     public static final int leftFrontMotorID = 1;

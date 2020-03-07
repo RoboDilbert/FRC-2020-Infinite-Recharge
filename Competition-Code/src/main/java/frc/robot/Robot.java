@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     Pneumatics.init();
     Pneumatics.controlCompressor(CompressorState.ENABLED);
     
-    //Limelight.setLedMode(LightMode.OFF);
+    Limelight.setLedMode(LightMode.OFF);
     //Limelight.initUSBCamera();
     currentIntakeState = IntakeToggle.STOP;
   }
