@@ -93,7 +93,7 @@ public class TeleopControl{
 
         // Test Auto Line Up 2
         if(driver.getRawButton(5)){
-            Drive.autoLineUp(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction, Constants.roboGyro);
+            Drive.lockOn(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction, Constants.roboGyro);
         }
 
 

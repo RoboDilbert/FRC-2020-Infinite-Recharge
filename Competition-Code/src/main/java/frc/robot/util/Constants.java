@@ -64,6 +64,7 @@ public class Constants{
     // Shooter
     public static final double shooterSpeed = .70;
     public static boolean shootFlag = false;
+    public static double calculatedPower = 0;
 
     // Wall of Wheels
     public static final double wallOfWheelsSpeed = 0.70;

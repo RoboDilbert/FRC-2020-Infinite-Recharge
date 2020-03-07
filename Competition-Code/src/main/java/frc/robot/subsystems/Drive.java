@@ -189,13 +189,7 @@ public class Drive{
     }
     // auto shoot 2 test
 
-
-
-
-
-
-
-    public static void autoLineUp(double stickX, double stickY, double roboGyro){
+    public static void lockOn(double stickX, double stickY, double roboGyro){
         Limelight.setLedMode(LightMode.ON);
         tCameraX = Limelight.tx.getDouble(0.0);
         tCameraY = Limelight.ty.getDouble(0.0);
@@ -221,10 +215,10 @@ public class Drive{
             }
             /* adjustable hood calculations  (limeLight is on the hood (allows for this calculation))
             if(tCameraY < -1){
-                function for hood - gives a positive double power value of hoodPower
+                function for hood -> gives a positive double power value of hoodPower
             }
             else if(tCameraY > 1){
-                function for hood - gives a negative double power value of hoodPower
+                function for hood -> gives a negative double power value of hoodPower
             }
 
             hood.setPower(hoodPower);
@@ -232,44 +226,30 @@ public class Drive{
 
 
 
-            /* power Calculations with LimeLight Area ( not final way of calculating)
+            /* power Calculations with LimeLight Area ( may not be final way of calculating)
             (calculate power needed from multiple positions on the field and plot points to create a starting function)
             
             function of power/tCameraA
-            
+
             use value of calculated power for shooter power
             */
 
 
             Drive.run(stickX, stickY, tZPower, roboGyro);
 
-            if(tCameraX > -1 && tCameraX < 1 && tCameraY > -1 && tCameraY < 1){
+            if(tCameraX > -1 && tCameraX < 1 /* && tCameraY > -1 && tCameraY < 1 */){
                 tInPosition = true;
             }
         }
         else if(tInPosition == true && TeleopControl.driver.getRawButton(1)){
             Shooter.controlShooter(ShooterState.FORWARD);
+            // shooter.controlShooter(ShooterState.CALCULATED)
             Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
             Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
             Indexer.indexerClear();
         }
         
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     public static void driveWithoutTurn(double stickX, double stickY, double roboGyro){
         Drive.run(stickX, stickY, 0, roboGyro);
