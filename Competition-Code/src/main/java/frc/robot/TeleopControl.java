@@ -318,6 +318,7 @@ public class TeleopControl{
         Indexer.debugIndexer();
         Drive.LineUpData();
         SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+        Limelight.debug();
         SmartDashboard.updateValues();
     }
 }
