@@ -17,6 +17,7 @@ public class Shooter{
         FORWARD, 
         REVERSE, 
         STOP,
+        AUTO,
         CALCULATED;
     }
    
@@ -42,6 +43,9 @@ public class Shooter{
         }
         else if (value == ShooterState.CALCULATED){
             controller1.set(Constants.calculatedPower);
+        }
+        else if (value == ShooterState.AUTO){
+            controller1.set(0.65);
         }
     }
 

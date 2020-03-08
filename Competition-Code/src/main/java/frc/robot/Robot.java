@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     if(TeleopControl.driver.getThrottle() > 0.75){
-     // Routine.run();
+     Routine.run();
       Routine.debugAuto();
     }
     else if (TeleopControl.driver.getThrottle() < 0.25){

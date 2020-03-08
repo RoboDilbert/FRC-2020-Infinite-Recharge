@@ -74,6 +74,12 @@ public class Routine {
         // }
 
         //Get in Position
+        if(limelightDistance < 64 && limelightDistance > 59
+            && cameraX > -1 && cameraX < 1 && cameraX != 0 //&&
+            /*((cameraS > -1.3 && cameraS < 0) || (cameraS < -86 && cameraS > -90))*/){
+                inPosition = true;
+            }
+
         if(inPosition == false){ 
             cameraX = Limelight.tx.getDouble(0.0);
             cameraY = Limelight.ty.getDouble(0.0);
@@ -109,9 +115,9 @@ public class Routine {
                     XPower = -.2;
                 }
             }
-            // else{
-            //     XPower = 0;
-            // }
+            else{
+                XPower = 0;
+            }
         
 
             //Y Power
@@ -170,20 +176,41 @@ public class Routine {
             // else{
             //     ZPower = 0;
             // }
-
+            cameraX = Limelight.tx.getDouble(0.0);
+            cameraY = Limelight.ty.getDouble(0.0);
+            cameraS = Limelight.ts.getDouble(1);
+            SmartDashboard.updateValues();
             //ZPower
-            if(limelightDistance < 185){
+            if(limelightDistance < 64 && limelightDistance > 59
+            && cameraX > -1 && cameraX < 1 && cameraX != 0 &&
+            ((cameraS > -1.3 && cameraS < 0) || (cameraS < -86 && cameraS > -90))){
+                inPosition = true;
+            }
+
+            if(limelightDistance < 185 && !inPosition){
                 if(limelightDistance == 0){
                     ZPower = 0;
                 }
                 else{
-                    if(cameraS < 0 && cameraS > -45){
-                        ZPower = Math.abs(cameraS/120) + 2*feedForward + 0.01;
-                        if(ZPower > 0.2){
+                    if(cameraS < 0 && cameraS > -45 && cameraX < 20 && cameraX > -20){
+                        ZPower = Math.abs(cameraS/120) + 2*feedForward;
+                       
+                        if((limelightDistance < 64 && limelightDistance > 59
+                            && cameraX > -1 && cameraX < 1 && cameraX != 0 &&(cameraS > -10 && cameraS < 0))){
+                            //ZPower = Math.abs((cameraS - 4)/120) + feedForward;
+                            ZPower = 0.1 * Math.pow(cameraX, 1/2);
+                        }
+                         if(ZPower > 0.2){
                             ZPower = 0.2;
                         }
-                    }else if(cameraS < -45 && cameraS > -90){
-                        ZPower = (cameraS)/225 - 2*feedForward + 0.01;
+                    }else if(cameraS < -45 && cameraS > -90 && cameraX < 20 && cameraX > -20){
+                        ZPower = (cameraS)/225 - feedForward;
+                        
+                        if (limelightDistance < 64 && limelightDistance > 59
+                            && cameraX > -1 && cameraX < 1 && cameraX != 0 &&((cameraS > -85 && cameraS < -90))){
+                                //ZPower = (-(cameraS + 90)/160) - feedForward;
+                                ZPower = -(0.1 * Math.pow(cameraX, 1/2));
+                        }
                         if(ZPower < -0.2){
                             ZPower = -0.2;
                         }
@@ -207,14 +234,25 @@ public class Routine {
                 Drive.leftPP.setRangingMode(RangingMode.Short, 25);
             }
             
+            // if(limelightDistance < 69 && limelightDistance > 64
+            // && cameraX > -2 && cameraX < 2 && cameraX != 0 &&
+            // ((cameraS > -5 && cameraS < 0) || (cameraS < -85 && cameraS > -90))){
+            //     Drive.run(-XPower * 0.75, -YPower * 0.75, ZPower * 0.75, 0);
+            // }
+
             Drive.run(-XPower, -YPower, ZPower, 0);
             //testSkew = Limelight.ts.getDouble(1);
 
-            if(limelightDistance < 64 && limelightDistance > 59
-            && cameraX > -1 && cameraX < 1 && cameraX != 0 &&
-            ((cameraS > -5 && cameraS < 0) || (cameraS < -85 && cameraS > -90))){
-                inPosition = true;
-            }
+            // if(limelightDistance < 64 && limelightDistance > 59
+            // && cameraX > -1 && cameraX < 1 && cameraX != 0 &&
+            // ((cameraS > -1 && cameraS < 0) || (cameraS < -85 && cameraS > -90))){
+            //     inPosition = true;
+            // }
+            // else if(limelightDistance < 64 && limelightDistance > 59
+            // && cameraX > -1 && cameraX < 1 && cameraX != 0 &&
+            // ((cameraS > -10 && cameraS < -1))){
+            //     Drive.run(0,0,0.1,0); 
+            // }
         }
         if(inPosition == true){
             Pneumatics.controlCompressor(CompressorState.DISABLED);
@@ -222,14 +260,14 @@ public class Routine {
             Limelight.setLedMode(LightMode.OFF);
             //Shoot
             if(autoShootCount < 250){
-                if (Shooter.getShooterWheelSpeed() < 3250 || shooterClock < 25) {            
-                    Shooter.controlShooter(ShooterState.FORWARD);
+                if (Shooter.getShooterWheelSpeed() < 3000 || shooterClock < 25) {            
+                    Shooter.controlShooter(ShooterState.AUTO);
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
                     shooterClock++;
                 }
-                else if (Shooter.getShooterWheelSpeed() > 3250) {
-                    Shooter.controlShooter(ShooterState.FORWARD);
+                else if (Shooter.getShooterWheelSpeed() > 3000) {
+                    Shooter.controlShooter(ShooterState.AUTO);
                     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
                 }
