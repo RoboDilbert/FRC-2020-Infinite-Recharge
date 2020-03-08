@@ -70,14 +70,29 @@ public class Robot extends TimedRobot {
     // m_autoSelected = "kCustomAuto"; //m_chooser.getSelected();
     //                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     // System.out.println("Auto selected: " + m_autoSelected);
+    if(TeleopControl.driver.getThrottle() > 0.75){
     Routine.init();
+    }
+    else if (TeleopControl.driver.getThrottle() < 0.25){
+    TrenchAuto.init();
+    }
   }
 
   @Override
   public void autonomousPeriodic() {
-    Routine.run();
-    Routine.debugAuto();
-
+    if(TeleopControl.driver.getThrottle() > 0.75){
+     // Routine.run();
+      Routine.debugAuto();
+    }
+    else if (TeleopControl.driver.getThrottle() < 0.25){
+      TrenchAuto.start();
+      Routine.debugAuto();
+      Indexer.debugIndexer();
+    }
+    else if(TeleopControl.driver.getThrottle() <= 0.75 && TeleopControl.driver.getThrottle() >= 0.25){
+     // Routine.run();
+      Routine.debugAuto();
+    }
     // switch (m_autoSelected) {
     //   case kCustomAuto:
     //     // Put custom auto code herea

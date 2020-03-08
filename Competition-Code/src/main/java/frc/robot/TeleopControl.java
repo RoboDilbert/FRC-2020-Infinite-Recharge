@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 
 import com.fasterxml.jackson.core.PrettyPrinter;
-
+import frc.robot.util.obstacleAvoidance;
 import frc.robot.util.*;
 import frc.robot.util.Constants.IntakeToggle;
 import frc.robot.util.Pneumatics.CompressorState;
@@ -46,6 +46,9 @@ public class TeleopControl{
 
     private static boolean autoIndex;
 
+    private static double cameraY;
+    public static double limelightDistance;
+
     public static void init() {
         driver = new Joystick(Constants.DRIVER_CONTROLLER_ID);
         coDriver = new Joystick(Constants.CODRIVER_CONTROLLER_ID);
@@ -54,6 +57,7 @@ public class TeleopControl{
         // add usb camera
          autoIndex = false;
          Limelight.LimelightInitialize();
+         Indexer.currentBallCount = 0;
         
     }
 
@@ -73,6 +77,9 @@ public class TeleopControl{
         else if (driver.getRawButton(4)){
             Drive.run(driver.getX() / 4, driver.getY() / 4, driver.getZ() / 6, Constants.roboGyro);
         }
+        else if(driver.getRawButton(5)){
+            Drive.lockOn(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction, Constants.roboGyro);
+        }
         else{
             Drive.run(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction,
                     driver.getZ() / 3, Constants.roboGyro);
@@ -88,14 +95,7 @@ public class TeleopControl{
             }
 
         }
-
-
-
-
-        // Test Auto Line Up 2
-        if(driver.getRawButton(5)){
-            Drive.lockOn(driver.getX() * Constants.movementRestriction, driver.getY() * Constants.movementRestriction, Constants.roboGyro);
-        }
+       
 
 
 
@@ -222,11 +222,7 @@ public class TeleopControl{
             }   
             if (driver.getRawButton(1) && !driver.getRawButton(2)){
                 Pneumatics.controlCompressor(CompressorState.DISABLED);
-<<<<<<< HEAD
                 if(!coDriver.getRawButton(1) && !coDriver.getRawButton(3)){
-=======
-                if(ButtonLayout.getRawButton(4) != true  && ButtonLayout.getRawButton(3) != true){
->>>>>>> 2f66dfb73c0291f6b21b86ed537b83e6a235ff3a
                     Robot.currentIntakeState = IntakeToggle.STOP;
                 }
             
@@ -282,7 +278,6 @@ public class TeleopControl{
         }
         else if(coDriver.getRawButton(6)){
             HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
-<<<<<<< HEAD
         }else if(coDriver.getRawButton(5)){
             HangingMove.controlMove(HangingMove.HangingMoveState.RIGHT);
         }
@@ -296,10 +291,6 @@ public class TeleopControl{
         //     HangingMove.controlMove(HangingMove.HangingMoveState.LEFT);
         //}
         else{
-=======
-        }else{
-
->>>>>>> 2f66dfb73c0291f6b21b86ed537b83e6a235ff3a
             HangingMove.controlMove(HangingMove.HangingMoveState.STOP);
             LiftSystem.controlLifter(LifterState.STOP);
         }
@@ -315,10 +306,13 @@ public class TeleopControl{
         //}
         //-------------------------------------------------------------------------------------------------------
         //Debug Control
-        Indexer.debugIndexer();
+        //Indexer.debugIndexer();
+
+        cameraY = Limelight.ty.getDouble(0.0);
         Drive.LineUpData();
         SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         Limelight.debug();
+        obstacleAvoidance.debugObstacle();
         SmartDashboard.updateValues();
     }
 }

@@ -41,6 +41,7 @@ public class Drive{
     private static double tCameraX;
     private static double tCameraY;
     private static double tCameraA;
+    private static double tlimelightDistance;
     private static double tFeedForward;
     private static boolean tIsSeeing;
     public static boolean tInPosition;
@@ -83,6 +84,9 @@ public class Drive{
             stickZ = 0;
         }
         my_Robot.driveCartesian(stickX, -stickY, stickZ, -roboGyro);
+        Drive.rightPPDistance = Drive.rightPP.getRange();
+                Drive.leftPPDistance = Drive.leftPP.getRange();
+        Drive.averagePPLength = (Drive.rightPPDistance + Drive.leftPPDistance)/2;
     }
 
     public static void lineUpShot(){
@@ -191,23 +195,24 @@ public class Drive{
 
     public static void lockOn(double stickX, double stickY, double roboGyro){
         Limelight.setLedMode(LightMode.ON);
+        tlimelightDistance = (72.19 / Math.tan(Math.toRadians(38 + Limelight.ty.getDouble(0.0))))-24;
         tCameraX = Limelight.tx.getDouble(0.0);
         tCameraY = Limelight.ty.getDouble(0.0);
         tCameraA = Limelight.ta.getDouble(0.0);
-        
-        if(!tInPosition){
             // Z Power
             //limelight locked on and X value of limelight
-            if(tCameraX < -1){
-                tZPower = Math.pow((Math.pow((0.18 * tCameraX), 2)), 1/1.5) + tFeedForward;
-                if(tZPower > .24){//.2
-                    tZPower = .24;
+            if(tCameraX > -0.18){
+               tZPower = 0.1 * Math.pow(tCameraX, 1/2);
+                //tZPower = Math.pow((Math.pow((0.2*tCameraX), 2)), 1/1.5)/5 + tFeedForward;
+                if(tZPower > .12){//.2
+                    tZPower = .12;
                 }
             }
-            else if(tCameraX > 1){
-                tZPower = -Math.pow((Math.pow((0.18 * tCameraX), 2)), 1/1.5) + tFeedForward;
-                if(tZPower < -.24){//-.2
-                    tZPower = -.24;
+            else if(tCameraX < 0.18){
+                tZPower = -(0.1 * Math.pow(tCameraX, 1/2));
+                //tZPower = -Math.pow((Math.pow((0.2 * tCameraX), 2)), 1/1.5)/5 + tFeedForward;
+                if(tZPower < -.12){//-.2
+                    tZPower = -.12;
                 }
             }
             else{
@@ -233,21 +238,29 @@ public class Drive{
 
             use value of calculated power for shooter power
             */
-
-
-            Drive.run(stickX, stickY, tZPower, roboGyro);
-
+            // if(stickX > 0.475){
+            //    tZPower = Math.pow((Math.pow((0.18 * tCameraX + 1), 2)), 1/1.5)/5 + tFeedForward;
+            // }
+            // else if(stickX < 0.525){
+            //     tZPower = -Math.pow((Math.pow((0.18 * tCameraX - 1), 2)), 1/1.5)/5 + tFeedForward;
+            // }
+            if(tlimelightDistance < 110){
+                Drive.run(stickX, stickY, tZPower, roboGyro);
+            }
+            else{
+                Drive.run(stickX, -0.2, tZPower, roboGyro);
+            }
             if(tCameraX > -1 && tCameraX < 1 /* && tCameraY > -1 && tCameraY < 1 */){
                 tInPosition = true;
             }
-        }
-        else if(tInPosition == true && TeleopControl.driver.getRawButton(1)){
-            Shooter.controlShooter(ShooterState.FORWARD);
-            // shooter.controlShooter(ShooterState.CALCULATED)
-            Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
-            Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-            Indexer.indexerClear();
-        }
+        
+        // if(TeleopControl.driver.getRawButton(1)){
+        //     Shooter.controlShooter(ShooterState.FORWARD);
+        //     // shooter.controlShooter(ShooterState.CALCULATED)
+        //     Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+        //     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+        //     Indexer.indexerClear();
+        // }
         
 }
     
@@ -319,10 +332,12 @@ public class Drive{
        SmartDashboard.updateValues();
    }
    public static void LineUpData(){
+    
     // SmartDashboard.putBoolean("isSeeing", tIsSeeing);
     // SmartDashboard.putNumber("LeftDistance", Drive.leftPPDistance);
     // SmartDashboard.putNumber("RightDistance", Drive.rightPPDistance);
-    // SmartDashboard.putNumber("AverageDistance", Drive.averagePPLength);
+    SmartDashboard.putNumber("AverageDistance", Drive.averagePPLength);
+    SmartDashboard.putNumber("PP FT from back of robot", (Drive.averagePPLength / 305) + 2);
     // SmartDashboard.putNumber("YPower", tYPower);
     // SmartDashboard.putNumber("LimelightX", tCameraX);
     // SmartDashboard.putNumber("XPower", tXPower);
