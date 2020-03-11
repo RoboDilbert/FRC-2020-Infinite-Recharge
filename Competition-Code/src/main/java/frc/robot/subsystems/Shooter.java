@@ -18,6 +18,7 @@ public class Shooter{
         REVERSE, 
         STOP,
         AUTO,
+        MIX,
         CALCULATED;
     }
    
@@ -46,6 +47,9 @@ public class Shooter{
         }
         else if (value == ShooterState.AUTO){
             controller1.set(0.65);
+        }
+        else if(value == ShooterState.MIX){
+            controller1.set(Constants.shooterMix);
         }
     }
 

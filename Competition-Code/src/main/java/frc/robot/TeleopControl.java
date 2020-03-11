@@ -42,6 +42,7 @@ public class TeleopControl{
     private static boolean intakeDirectionFlag;
     private static boolean intakeFlipFlag = true;
     private static boolean toggleFlag;
+    private static boolean firstBallFlag;
     private static int shooterClock = 0;
 
     private static boolean autoIndex;
@@ -58,6 +59,7 @@ public class TeleopControl{
          autoIndex = false;
          Limelight.LimelightInitialize();
          Indexer.currentBallCount = 0;
+         firstBallFlag = true;
         
     }
 
@@ -203,15 +205,15 @@ public class TeleopControl{
             autoIndex = Indexer.Index();
         }
 
-        if(coDriver.getRawButton(4)){
-            Indexer.currentBallCount++;
-        }else if(coDriver.getRawButton(2)){
-            Indexer.currentBallCount--;
-        }
+        // if(coDriver.getRawButton(4)){
+        //     Indexer.currentBallCount++;
+        // }else if(coDriver.getRawButton(2)){
+        //     Indexer.currentBallCount--;
+        // }
 
         // -------------------------------------------------------------------------------------------------------
         // Shooter Control
-        if(!driver.getRawButton(2)){
+        
             if(coDriver.getRawButton(10) && !driver.getRawButton(1)){
                 Shooter.controlShooter(ShooterState.FORWARD);
                 if(autoIndex = false){
@@ -220,13 +222,35 @@ public class TeleopControl{
                 Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
                 shooterClock++;
             }   
-            if (driver.getRawButton(1) && !driver.getRawButton(2)){
+            if (driver.getRawButton(1)){
                 Pneumatics.controlCompressor(CompressorState.DISABLED);
                 if(!coDriver.getRawButton(1) && !coDriver.getRawButton(3)){
                     Robot.currentIntakeState = IntakeToggle.STOP;
                 }
-            
-                if (Shooter.getShooterWheelSpeed() < 3300 || shooterClock < 25) {
+                if(firstBallFlag == true){
+                    if(Shooter.getShooterWheelSpeed() < 2100){
+                        
+                        Shooter.controlShooter(ShooterState.MIX);
+                        if(autoIndex = false){
+                            Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
+                        }
+                        Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
+                        firstBallFlag = false;
+                    }
+                    else if (Shooter.getShooterWheelSpeed() > 2100) { //3300
+                        
+                        if (autoIndex = false) {
+                            Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FULLSPEED);
+                        }
+                        Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FULLSPEED);
+                        SmartDashboard.updateValues();
+                        shooterClock++;
+                        if(shooterClock == 15){
+                            firstBallFlag = false; 
+                        }
+                    }
+                }
+                else if (Shooter.getShooterWheelSpeed() < 2300 && firstBallFlag == false || shooterClock < 25 && firstBallFlag == false) { //3300
                     Shooter.controlShooter(ShooterState.FORWARD);
                     if(autoIndex = false){
                         Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
@@ -234,12 +258,12 @@ public class TeleopControl{
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
                     shooterClock++;
                 }
-                else if (Shooter.getShooterWheelSpeed() > 3300) {
+                else if (Shooter.getShooterWheelSpeed() > 2300) { //3300
                     Shooter.controlShooter(ShooterState.FORWARD);
                     if (autoIndex = false) {
-                        Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
+                        Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FULLSPEED);
                     }
-                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+                    Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FULLSPEED);
                     SmartDashboard.updateValues();
                 }
                 Indexer.indexerClear();
@@ -253,9 +277,10 @@ public class TeleopControl{
                     Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);
                     Pneumatics.controlCompressor(CompressorState.ENABLED);
                     shooterClock = 0;
+                    firstBallFlag = true;
                 }
             }
-        }
+        
 
         // -------------------------------------------------------------------------------------------------------
         // Lifter Control
@@ -312,6 +337,7 @@ public class TeleopControl{
         Drive.LineUpData();
         SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
         Limelight.debug();
+        Indexer.debugIndexer();
         obstacleAvoidance.debugObstacle();
         SmartDashboard.updateValues();
     }

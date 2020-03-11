@@ -183,7 +183,7 @@ public class Routine {
             //ZPower
             if(limelightDistance < 64 && limelightDistance > 59
             && cameraX > -1 && cameraX < 1 && cameraX != 0 &&
-            ((cameraS > -1.3 && cameraS < 0) || (cameraS < -86 && cameraS > -90))){
+            ((cameraS > -1.3 && cameraS < 0) || (cameraS < -89 && cameraS > -90))){
                 inPosition = true;
             }
 
@@ -193,23 +193,23 @@ public class Routine {
                 }
                 else{
                     if(cameraS < 0 && cameraS > -45 && cameraX < 20 && cameraX > -20){
-                        ZPower = Math.abs(cameraS/120) + 2*feedForward;
+                        ZPower = Math.abs(cameraS/150);
                        
                         if((limelightDistance < 64 && limelightDistance > 59
                             && cameraX > -1 && cameraX < 1 && cameraX != 0 &&(cameraS > -10 && cameraS < 0))){
                             //ZPower = Math.abs((cameraS - 4)/120) + feedForward;
-                            ZPower = 0.1 * Math.pow(cameraX, 1/2);
+                            ZPower = (0.055 * Math.abs(cameraX/10));
                         }
                          if(ZPower > 0.2){
                             ZPower = 0.2;
                         }
                     }else if(cameraS < -45 && cameraS > -90 && cameraX < 20 && cameraX > -20){
-                        ZPower = (cameraS)/225 - feedForward;
+                        ZPower = (1 - (Math.abs(90/cameraS)));
                         
                         if (limelightDistance < 64 && limelightDistance > 59
                             && cameraX > -1 && cameraX < 1 && cameraX != 0 &&((cameraS > -85 && cameraS < -90))){
                                 //ZPower = (-(cameraS + 90)/160) - feedForward;
-                                ZPower = -(0.1 * Math.pow(cameraX, 1/2));
+                                ZPower = -(0.055 * Math.abs(cameraX/10));
                         }
                         if(ZPower < -0.2){
                             ZPower = -0.2;

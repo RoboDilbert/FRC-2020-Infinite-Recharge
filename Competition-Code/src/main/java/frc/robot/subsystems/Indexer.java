@@ -40,7 +40,8 @@ public class Indexer{
     public static enum IndexerState{
         FORWARD,
         REVERSE,
-        STOP;
+        STOP,
+        FULLSPEED
     }
 
     public static void init(){
@@ -62,6 +63,7 @@ public class Indexer{
         else if(selectValue == SelectIndexer.SHOOT){
             powerIndexer(IndexShootMotor, stateValue, -Constants.shootIndexerSpeed);
         }
+
     }
 
     private static void powerIndexer(SpeedController power, IndexerState value, double speed){
@@ -70,14 +72,17 @@ public class Indexer{
         }else if(value == IndexerState.STOP){
             power.set(0);
         }
+        else if(value == IndexerState.FULLSPEED){
+            power.set(Constants.shootIndexerShootSpeed);
+        }
     }
 
     public static void ShootAll(){
         double time = Timer.getFPGATimestamp();
 
         if(time < time + 10){
-            controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
-            controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
+            controlIndexer(SelectIndexer.FEEDER, IndexerState.FULLSPEED);
+            controlIndexer(SelectIndexer.SHOOT, IndexerState.FULLSPEED);
         } else if(time > time + 10){
             controlIndexer(SelectIndexer.FEEDER, IndexerState.STOP);
             controlIndexer(SelectIndexer.SHOOT, IndexerState.STOP);

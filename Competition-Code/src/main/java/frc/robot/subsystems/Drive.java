@@ -80,9 +80,9 @@ public class Drive{
         if(Math.abs(stickY) < yDeadband){
             stickY = 0;
         }
-        if(Math.abs(stickZ) < zDeadband){
-            stickZ = 0;
-        }
+        // if(Math.abs(stickZ) < zDeadband){
+        //     stickZ = 0;
+        // }
         my_Robot.driveCartesian(stickX, -stickY, stickZ, -roboGyro);
         Drive.rightPPDistance = Drive.rightPP.getRange();
                 Drive.leftPPDistance = Drive.leftPP.getRange();
@@ -94,7 +94,7 @@ public class Drive{
             tCameraX = Limelight.tx.getDouble(0.0);
             
             if(!tInPosition){
-                Shooter.controlShooter(ShooterState.FORWARD);
+                //Shooter.controlShooter(ShooterState.FORWARD);
                 if(Drive.rightPP.getRange() >  0 || Drive.leftPP.getRange() > 0){
                     tIsSeeing = true;
                 }
@@ -125,17 +125,17 @@ public class Drive{
 
                 //Y Power
                 if(tIsSeeing == true){
-                    if(Drive.leftPPDistance < 1000 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 1000 && Drive.rightPPDistance > 0){
+                    if(Drive.leftPPDistance < 650 && Drive.leftPPDistance > 0 || Drive.rightPPDistance < 650 && Drive.rightPPDistance > 0){
                         tYPower = -0.135;//.1
                     }
-                    else if(Drive.averagePPLength > 1000){
+                    else if(Drive.averagePPLength > 650){
                         tYPower = ((1.8*Math.pow((Drive.averagePPLength - 150) , 2)) /10000000) + tFeedForward;
                         if(tYPower > 0.27){//.2
                             tYPower = 0.27;
                         }
                     }
-                    if(Drive.leftPP.getRange() < 1100 && Drive.leftPP.getRange() > 1000 &&
-                        Drive.rightPP.getRange() < 1100 && Drive.rightPP.getRange() > 1000){
+                    if(Drive.leftPP.getRange() < 750 && Drive.leftPP.getRange() > 650 &&
+                        Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 650){
                         tYPower = 0;
                     }
                 }
@@ -177,18 +177,17 @@ public class Drive{
             
                 Drive.run(-tXPower, -tYPower, tZPower, 0);
 
-                if(Drive.leftPP.getRange() > 1000 && Drive.leftPP.getRange() < 1100
-                && Drive.rightPP.getRange() < 1100 && Drive.rightPP.getRange() > 1000
+                if(Drive.leftPP.getRange() > 650 && Drive.leftPP.getRange() < 750
+                && Drive.rightPP.getRange() < 750 && Drive.rightPP.getRange() > 650
                 && tCameraX > -1 && tCameraX < 1){
                     tInPosition = true;
                 }
             }
-            else if(tInPosition == true && TeleopControl.driver.getRawButton(1)){
-                Shooter.controlShooter(ShooterState.FORWARD);
-                Indexer.controlIndexer(SelectIndexer.FEEDER, IndexerState.FORWARD);
-                Indexer.controlIndexer(SelectIndexer.SHOOT, IndexerState.FORWARD);
-                Indexer.indexerClear();
-            }
+            // else if(tInPosition == true && TeleopControl.driver.getRawButton(1)){
+                
+                
+            //     Indexer.indexerClear();
+            // }
             
     }
     // auto shoot 2 test
@@ -202,18 +201,20 @@ public class Drive{
         
             // Z Power
             //limelight locked on and X value of limelight
-            if(tCameraX > -0.18){
-               tZPower = 0.1 * Math.pow(tCameraX, 1/2);
+            if(tCameraX > -20 && tCameraX < -2){
+                tCameraX = Limelight.tx.getDouble(0.0);
+               tZPower = -(0.055 * Math.abs(tCameraX/10));
                 //tZPower = Math.pow((Math.pow((0.2*tCameraX), 2)), 1/1.5)/5 + tFeedForward;
-                if(tZPower > .12){//.2
-                    tZPower = .12;
+                if(tZPower > -.12){//.2
+                    tZPower = -.12;
                 }
             }
-            else if(tCameraX < 0.18){
-                tZPower = -(0.1 * Math.pow(tCameraX, 1/2));
+            else if(tCameraX < 20 && tCameraX > 2){
+                tCameraX = Limelight.tx.getDouble(0.0);
+                tZPower = (0.055 * Math.abs(tCameraX/10));
                 //tZPower = -Math.pow((Math.pow((0.2 * tCameraX), 2)), 1/1.5)/5 + tFeedForward;
-                if(tZPower < -.12){//-.2
-                    tZPower = -.12;
+                if(tZPower < .12){//-.2
+                    tZPower = .12;
                 }
             }
             else{
@@ -245,7 +246,7 @@ public class Drive{
             // else if(stickX < 0.525){
             //     tZPower = -Math.pow((Math.pow((0.18 * tCameraX - 1), 2)), 1/1.5)/5 + tFeedForward;
             // }
-            if(tlimelightDistance < 110){
+            if(tlimelightDistance < 56.74){
                 Drive.run(stickX, stickY, tZPower, roboGyro);
             }
             else{
@@ -339,10 +340,10 @@ public class Drive{
     // SmartDashboard.putNumber("RightDistance", Drive.rightPPDistance);
     SmartDashboard.putNumber("AverageDistance", Drive.averagePPLength);
     SmartDashboard.putNumber("PP FT from back of robot", (Drive.averagePPLength / 305) + 2);
-    // SmartDashboard.putNumber("YPower", tYPower);
-    // SmartDashboard.putNumber("LimelightX", tCameraX);
-    // SmartDashboard.putNumber("XPower", tXPower);
-    // SmartDashboard.putNumber("ZPower", tZPower);
+    SmartDashboard.putNumber("YPower", tYPower);
+    SmartDashboard.putNumber("LimelightX", tCameraX);
+    SmartDashboard.putNumber("XPower", tXPower);
+    SmartDashboard.putNumber("ZPower", tZPower);
     SmartDashboard.putBoolean("tInPosiiton", tInPosition);
     SmartDashboard.updateValues();
    }

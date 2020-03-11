@@ -55,6 +55,9 @@ public class Constants{
     public static final double feedIndexerSpeed = .4;
     public static final double shootIndexerSpeed = .3;
 
+
+    public static final double shootIndexerShootSpeed = -.85;
+    public static final double shooterMix = .5;
     // Intake
     public static final double intakeSpeed = .45;
 
@@ -67,7 +70,7 @@ public class Constants{
     public static double calculatedPower = 0;
 
     // Wall of Wheels
-    public static final double wallOfWheelsSpeed = 0.78;
+    public static final double wallOfWheelsSpeed = 0.60;
     
     //Can IDs
     public static final int leftFrontMotorID = 1;
